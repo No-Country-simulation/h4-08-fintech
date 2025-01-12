@@ -7,5 +7,5 @@ import java.util.List;
 import java.util.Optional;
 
 public interface RUser extends JpaRepository<User, Long> {
-    Optional<List<User>> findByCustomer_PhoneNumber(String phoneNumber);
+    Optional<RUser> findByCustomer_PhoneNumber(String phoneNumber);
 }

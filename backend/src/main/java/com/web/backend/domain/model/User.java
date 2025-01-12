@@ -22,6 +22,8 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @OneToOne(mappedBy = "user")
+    private Customer customer;
     private String username;
     private String password;
     private RolesEnum role;

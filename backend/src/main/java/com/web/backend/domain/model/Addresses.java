@@ -21,6 +21,7 @@ public class Addresses {
     private Long id;
 
     @OneToOne
+    @JoinColumn(name = "customer_id")
     private Customer customer;
     private String address;
     private String currency;

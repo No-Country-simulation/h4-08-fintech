@@ -2,11 +2,18 @@ spring.application.name=backend
 
 # Configuracion del origen de datos
 spring.datasource.url=${DB_URL}${DB_NAME}
+#spring.datasource.url=jdbc:postgresql://localhost:5433/iupi
+#spring.datasource.username=postgres
 spring.datasource.username=${DB_USER}
 spring.datasource.password=${DB_PASS}
+#spring.datasource.password=123456
 spring.datasource.driver-class-name=org.postgresql.Driver
 spring.jpa.database-platform=org.hibernate.dialect.PostgreSQLDialect
 
+server.address=0.0.0.0
+server.port=8080
+
+
 # Configuracion para crear la base de datos si no existe
-spring.jpa.hibernate.ddl-auto=update
+spring.jpa.hibernate.ddl-auto=create
 spring.jpa.hibernate.generate_statistics=true

@@ -1,5 +1,6 @@
-package com.web.backend.domain.model;
+package com.web.backend.domain.model.Financials;
 
+import com.web.backend.domain.model.Customer.Customer;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -15,18 +16,21 @@ import java.util.Date;
 @ToString
 @RequiredArgsConstructor
 @Entity
-public class FinancialSnapshot {
+public class FinancialProfile {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @OneToOne
     @JoinColumn(name = "customer_id")
     private Customer customer;
-    private float income;
-    private float fixedExpenses;
-    private float debts;
-    private float currentSavings;
-    private Date snapshotDate;
+
+    private float main_goal;
+    private short tolerance;
+    private float estimated_income;
+    private float estimated_expenses;
+    private float savings_capacity;
+    private boolean stepsCompleted;
 
     @Column(name = "created_at", updatable = false)
     @Temporal(TemporalType.TIMESTAMP)

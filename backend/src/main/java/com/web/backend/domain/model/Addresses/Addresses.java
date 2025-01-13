@@ -1,5 +1,6 @@
-package com.web.backend.domain.model;
+package com.web.backend.domain.model.Addresses;
 
+import com.web.backend.domain.model.Customer.Customer;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

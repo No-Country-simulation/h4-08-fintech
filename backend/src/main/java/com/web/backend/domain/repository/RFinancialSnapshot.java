@@ -1,6 +1,6 @@
 package com.web.backend.domain.repository;
 
-import com.web.backend.domain.model.FinancialSnapshot;
+import com.web.backend.domain.model.Financials.FinancialSnapshot;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 

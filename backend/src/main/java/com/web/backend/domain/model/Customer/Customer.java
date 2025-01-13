@@ -1,7 +1,9 @@
-package com.web.backend.domain.model;
+package com.web.backend.domain.model.Customer;
 
-import com.web.backend.infrastructure.api.utils.RolesEnum;
+import com.web.backend.domain.model.user.User;
+import com.web.backend.infrastructure.api.utils.AccountType;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -16,18 +18,19 @@ import java.util.Date;
 @ToString
 @RequiredArgsConstructor
 @Entity
-public class User {
-
+public class Customer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne(mappedBy = "user")
-    private Customer customer;
-    private String username;
-    private String password;
-    private RolesEnum role;
-    private String email;
+    @NotNull
+    @OneToOne
+    private User user;
+    private String fullName;
+    private float balance;
+    private AccountType accountType;
+    private Date dateOfBirth;
+    private String phoneNumber;
 
     @Column(name = "created_at", updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
@@ -38,5 +41,4 @@ public class User {
     @Temporal(TemporalType.TIMESTAMP)
     @LastModifiedDate
     private Date updatedAt;
-
 }

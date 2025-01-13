@@ -1,5 +1,7 @@
-package com.web.backend.domain.model;
+package com.web.backend.domain.model.user;
 
+import com.web.backend.domain.model.Customer.Customer;
+import com.web.backend.infrastructure.api.utils.RolesEnum;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -15,21 +17,18 @@ import java.util.Date;
 @ToString
 @RequiredArgsConstructor
 @Entity
-public class FinancialProfile {
+public class User {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne
-    @JoinColumn(name = "customer_id")
+    @OneToOne(mappedBy = "user")
     private Customer customer;
-
-    private float main_goal;
-    private short tolerance;
-    private float estimated_income;
-    private float estimated_expenses;
-    private float savings_capacity;
-    private boolean stepsCompleted;
+    private String username;
+    private String password;
+    private RolesEnum role;
+    private String email;
 
     @Column(name = "created_at", updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
@@ -40,4 +39,5 @@ public class FinancialProfile {
     @Temporal(TemporalType.TIMESTAMP)
     @LastModifiedDate
     private Date updatedAt;
+
 }

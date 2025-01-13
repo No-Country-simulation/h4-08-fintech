@@ -1,8 +1,7 @@
-package com.web.backend.domain.model;
+package com.web.backend.domain.model.Financials;
 
-import com.web.backend.infrastructure.api.utils.AccountType;
+import com.web.backend.domain.model.Customer.Customer;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -17,19 +16,18 @@ import java.util.Date;
 @ToString
 @RequiredArgsConstructor
 @Entity
-public class Customer {
+public class FinancialSnapshot {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @NotNull
     @OneToOne
-    private User user;
-    private String fullName;
-    private float balance;
-    private AccountType accountType;
-    private Date dateOfBirth;
-    private String phoneNumber;
+    @JoinColumn(name = "customer_id")
+    private Customer customer;
+    private float income;
+    private float fixedExpenses;
+    private float debts;
+    private float currentSavings;
+    private Date snapshotDate;
 
     @Column(name = "created_at", updatable = false)
     @Temporal(TemporalType.TIMESTAMP)

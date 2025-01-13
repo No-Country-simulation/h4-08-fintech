@@ -1,6 +1,6 @@
 package com.web.backend.domain.repository;
 
-import com.web.backend.domain.model.Customer;
+import com.web.backend.domain.model.Customer.Customer;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

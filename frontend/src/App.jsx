@@ -1,11 +1,13 @@
 import './App.css'
+import AppRouter from './router'
+
 
 function App() {
 
   return (
-    <div>
-      <h1 className='bg-black text-cyan-50'>Home</h1>
-    </div>
+    <>
+      <AppRouter />
+    </>
   )
 }
 

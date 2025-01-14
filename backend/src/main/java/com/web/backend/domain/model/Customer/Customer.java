@@ -1,6 +1,6 @@
 package com.web.backend.domain.model.Customer;
 
-import com.web.backend.domain.model.user.User;
+import com.web.backend.domain.model.user.UserModel;
 import com.web.backend.infrastructure.api.utils.AccountType;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -25,7 +25,7 @@ public class Customer {
 
     @NotNull
     @OneToOne
-    private User user;
+    private UserModel userModel;
     private String fullName;
     private float balance;
     private AccountType accountType;

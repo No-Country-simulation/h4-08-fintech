@@ -3,10 +3,7 @@ package com.web.backend.domain.model.user;
 import com.web.backend.domain.model.Customer.Customer;
 import com.web.backend.infrastructure.api.utils.RolesEnum;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
@@ -17,13 +14,13 @@ import java.util.Date;
 @ToString
 @RequiredArgsConstructor
 @Entity
-public class User {
+public class UserModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne(mappedBy = "user")
+    @OneToOne(mappedBy = "userModel")
     private Customer customer;
     private String username;
     private String password;

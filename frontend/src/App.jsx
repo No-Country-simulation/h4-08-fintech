@@ -1,9 +1,8 @@
 import './App.css'
-import AppRouter from './router'
+import AppRouter from './router.jsx'
 
 
 function App() {
-
   return (
     <>
       <AppRouter />
@@ -11,4 +10,4 @@ function App() {
   )
 }
 
-export default App
+export default App;

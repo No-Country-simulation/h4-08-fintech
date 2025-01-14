@@ -17,7 +17,7 @@ const Login = () => {
   return (
     <>
       <div className="container mx-auto p-6 flex flex-col justify-center items-center">
-        <h2 className="text-[32px] font-bold mt-20 mb-12">Iniciar Sesión</h2>
+        <h2 className="text-[32px] font-bold mb-12">Iniciar Sesión</h2>
         <form onSubmit={handleSubmit(onSubmit)} className="w-full">
           {" "}
           <div className="mb-4">

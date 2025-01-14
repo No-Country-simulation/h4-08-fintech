@@ -1,15 +1,13 @@
-import "./App.css";
-import Inicio from "./pages/Inicio";
-import Login from "./pages/Login";
+import './App.css'
+import AppRouter from './router'
+
 
 function App() {
   return (
-    <div>
-      <h1 className="bg-black text-cyan-50">Home</h1>
-      <Inicio />{" "}
-      <Login></Login>
-    </div>
-  );
+    <>
+      <AppRouter />
+    </>
+  )
 }
 
 export default App;

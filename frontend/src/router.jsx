@@ -8,6 +8,7 @@ export default function AppRouter() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path='/login' element={<Login/>} />
+        <Route path='/registro' element={<Home/>} />
       </Routes>
     </Router>
   );

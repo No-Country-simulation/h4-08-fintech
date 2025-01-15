@@ -28,4 +28,6 @@ public class Objective {
     @ManyToOne
     @JoinColumn(name = "objective_status_id")
     private ObjectiveStatus objectiveStatus;
+    @Column(name = "is_deleted")
+    private boolean isDeleted;
 }

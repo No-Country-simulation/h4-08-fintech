@@ -27,4 +27,6 @@ public class News {
     @ManyToOne
     @JoinColumn(name = "news_category_id")
     private NewsCategory category;
+    @Column(name = "is_deleted")
+    private boolean isDeleted;
 }

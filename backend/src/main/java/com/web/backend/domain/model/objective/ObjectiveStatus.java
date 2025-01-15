@@ -1,5 +1,6 @@
 package com.web.backend.domain.model.objective;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -17,4 +18,6 @@ public class ObjectiveStatus {
     @GeneratedValue
     public Long id;
     public String name;
+    @Column(name = "is_deleted")
+    private boolean isDeleted;
 }

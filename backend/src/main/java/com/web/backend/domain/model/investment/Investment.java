@@ -31,4 +31,6 @@ public class Investment {
     @Column(name = "current_value")
     private Float currentValue;
     private String status;
+    @Column(name = "is_deleted")
+    private boolean isDeleted;
 }

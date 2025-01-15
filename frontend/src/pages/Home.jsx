@@ -4,7 +4,7 @@ import logo from "../assets/logo-completo.png";
 const Home = () => {
   return (
     <div>
-          <div className="h-screen flex flex-col justify-center items-center">
+        <div className="h-screen flex flex-col justify-center items-center">
         <img src={logo} alt="" />
         <div className="w-full">
           <h2 className="text-[32px] font-bold mt-20 mb-12">¡Bienvenido!</h2>

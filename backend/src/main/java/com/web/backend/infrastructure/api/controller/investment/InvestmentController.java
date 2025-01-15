@@ -1,15 +1,9 @@
 package com.web.backend.infrastructure.api.controller.investment;
 
-//import com.web.backend.application.dto.investment.InvestmentRequest;
-//import com.web.backend.application.dto.investment.InvestmentResponse;
-//import com.web.backend.application.service.investment.InvestmentService;
 import com.web.backend.application.dto.investment.InvestmentRequest;
 import com.web.backend.application.dto.investment.InvestmentResponse;
-import com.web.backend.application.service.investment.InvestmentService;
-import com.web.backend.domain.model.investment.Investment;
-import lombok.AllArgsConstructor;
+import com.web.backend.application.service.interfaces.investment.InvestmentService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

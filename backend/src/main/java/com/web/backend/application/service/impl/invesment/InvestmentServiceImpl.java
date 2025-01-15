@@ -1,8 +1,8 @@
-package com.web.backend.application.impl;
+package com.web.backend.application.service.impl.invesment;
 
 import com.web.backend.application.dto.investment.InvestmentRequest;
 import com.web.backend.application.dto.investment.InvestmentResponse;
-import com.web.backend.application.service.investment.InvestmentService;
+import com.web.backend.application.service.interfaces.investment.InvestmentService;
 import com.web.backend.domain.model.investment.Investment;
 import com.web.backend.domain.model.investment.InvestmentType;
 import com.web.backend.domain.repository.investment.InvestmentRepository;

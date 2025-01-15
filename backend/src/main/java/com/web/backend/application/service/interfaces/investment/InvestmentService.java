@@ -1,4 +1,4 @@
-package com.web.backend.application.service.investment;
+package com.web.backend.application.service.interfaces.investment;
 
 import com.web.backend.application.dto.investment.InvestmentRequest;
 import com.web.backend.application.dto.investment.InvestmentResponse;

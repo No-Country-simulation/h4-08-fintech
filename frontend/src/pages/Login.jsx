@@ -1,7 +1,8 @@
-import { FaRegEyeSlash } from "react-icons/fa";
+import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import { FaApple } from "react-icons/fa";
 import { useForm } from "react-hook-form";
+import { useState } from "react";
 
 const Login = () => {
   const {
@@ -9,9 +10,24 @@ const Login = () => {
     handleSubmit,
     formState: { errors },
   } = useForm();
+  const [showPassword, setShowPassword] = useState(false);
+
+  const togglePassword = () => {
+    setShowPassword(!showPassword);
+  };
 
   const onSubmit = (data) => {
-    console.log(data); 
+    console.log(data);
+    const userTest = {
+      email: "prueba@gmail.com",
+      password: "12345678",
+    };
+    if (userTest.email === data.email && userTest.password === data.password) {
+      console.log("inicio de sesion correcto");
+
+    } else {
+      alert("error al iniciar");
+    }
   };
 
   return (
@@ -48,24 +64,28 @@ const Login = () => {
             </label>
             <input
               placeholder="********"
-              type="password"
+              type={showPassword ? "text" : "password"}
               {...register("password", {
                 required: "La contraseña es obligatoria",
               })}
               className="block mt-1 w-full px-3 py-2 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
             />
+            <button
+              type="button"
+              onClick={togglePassword}
+              className="absolute inset-y-10 right-3 flex items-center"
+            >
+              {showPassword ? (
+                <FaRegEye className="text-lg" />
+              ) : (
+                <FaRegEyeSlash className="text-lg" />
+              )}
+            </button>
             {errors.password && (
               <p className="text-red-500 text-xs mt-1">
                 {errors.password.message}
               </p>
             )}
-
-            <button
-              type="button"
-              className="absolute inset-y-10 right-3 flex items-center"
-            >
-              <FaRegEyeSlash className="text-lg" />
-            </button>
           </div>
           <div className="my-8">
             <button

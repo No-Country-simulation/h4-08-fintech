@@ -1,5 +1,6 @@
 package com.web.backend.domain.model.Financials;
 
+import com.web.backend.config.filter.interfaces.SoftDeletable;
 import com.web.backend.domain.model.Customer.Customer;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -16,7 +17,7 @@ import java.util.Date;
 @ToString
 @RequiredArgsConstructor
 @Entity
-public class FinancialProfile {
+public class FinancialProfile implements SoftDeletable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -31,6 +32,8 @@ public class FinancialProfile {
     private float estimated_expenses;
     private float savings_capacity;
     private boolean stepsCompleted;
+
+    private boolean isDeleted = false;
 
     @Column(name = "created_at", updatable = false)
     @Temporal(TemporalType.TIMESTAMP)

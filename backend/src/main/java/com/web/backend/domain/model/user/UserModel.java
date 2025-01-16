@@ -1,5 +1,6 @@
 package com.web.backend.domain.model.user;
 
+import com.web.backend.config.filter.interfaces.SoftDeletable;
 import com.web.backend.domain.model.Customer.Customer;
 import com.web.backend.infrastructure.api.utils.RolesEnum;
 import jakarta.persistence.*;
@@ -14,7 +15,7 @@ import java.util.Date;
 @ToString
 @RequiredArgsConstructor
 @Entity
-public class UserModel {
+public class UserModel implements SoftDeletable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,6 +27,8 @@ public class UserModel {
     private String password;
     private RolesEnum role;
     private String email;
+
+    private boolean isDeleted = false;
 
     @Column(name = "created_at", updatable = false)
     @Temporal(TemporalType.TIMESTAMP)

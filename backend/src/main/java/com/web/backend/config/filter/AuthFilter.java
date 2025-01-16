@@ -1,4 +1,4 @@
-package com.web.backend.application.service.auth;
+package com.web.backend.config.filter;
 
 import com.web.backend.infrastructure.api.utils.auth.JwtTokenUtil;
 import jakarta.servlet.FilterChain;

@@ -1,5 +1,6 @@
 package com.web.backend.domain.model.Addresses;
 
+import com.web.backend.config.filter.interfaces.SoftDeletable;
 import com.web.backend.domain.model.Customer.Customer;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -16,7 +17,7 @@ import java.util.Date;
 @ToString
 @RequiredArgsConstructor
 @Entity
-public class Addresses {
+public class Addresses implements SoftDeletable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -26,6 +27,8 @@ public class Addresses {
     private Customer customer;
     private String address;
     private String currency;
+
+    private boolean isDeleted = false;
 
     @Column(name = "created_at", updatable = false)
     @Temporal(TemporalType.TIMESTAMP)

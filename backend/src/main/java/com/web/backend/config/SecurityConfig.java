@@ -1,7 +1,9 @@
 package com.web.backend.config;
 
-import com.web.backend.application.service.auth.AuthFilter;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.web.backend.application.service.Auth.CustomOAuth2UserService;
+import com.web.backend.config.filter.AuthFilter;
+import com.web.backend.infrastructure.api.utils.auth.JwtTokenUtil;
+import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -14,7 +16,10 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableWebSecurity
+@AllArgsConstructor
 public class SecurityConfig {
+
+    private final JwtTokenUtil jwtUtil;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http, AuthFilter jwtAuthenticationFilter) throws Exception {
@@ -43,14 +48,17 @@ public class SecurityConfig {
                         .logoutUrl("/logout")
                         .clearAuthentication(true)
                         .invalidateHttpSession(true)
-                        .deleteCookies("JSESSIONID", "Idea-2e8e7cee")
+                        .deleteCookies("T","RT")
                         .logoutSuccessUrl("/login")
                 );
 
         return http.build();
     }
 
-
+    @Bean
+    public CustomOAuth2UserService customOAuth2UserService() {
+        return new CustomOAuth2UserService(jwtUtil);
+    }
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
         return authenticationConfiguration.getAuthenticationManager();

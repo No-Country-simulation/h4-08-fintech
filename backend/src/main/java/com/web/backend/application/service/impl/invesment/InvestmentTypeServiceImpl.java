@@ -43,8 +43,8 @@ public class InvestmentTypeServiceImpl implements InvestmentTypeService {
     @Override
     public InvestmentTypeResponse updateInvestmentType(Long id, InvestmentTypeRequest investmentTypeRequest) {
         InvestmentType investmentType = investmentTypeRepository.getReferenceById(id);
-        if(investmentTypeRequest.name() != null)
-            investmentType.setName(investmentTypeRequest.name());
+        investmentTypeMapper.updateInvestmentTypeFromRequest(investmentTypeRequest, investmentType);
+        investmentTypeRepository.save(investmentType);
         return investmentTypeMapper.toInvestmentTypeResponse(investmentType);
     }
 

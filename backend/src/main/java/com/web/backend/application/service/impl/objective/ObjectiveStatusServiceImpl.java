@@ -44,8 +44,8 @@ public class ObjectiveStatusServiceImpl implements ObjectiveStatusService {
     public ObjectiveStatusResponse updateObjectiveStatus(Long id, ObjectiveStatusRequest request) {
         ObjectiveStatus status = objectiveStatusRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("ObjectiveStatus not found"));
-        status.setName(request.name());
-        status = objectiveStatusRepository.save(status);
+        objectiveStatusMapper.updateObjectiveStatusFromRequest(request, status);
+        objectiveStatusRepository.save(status);
         return objectiveStatusMapper.toObjectiveStatusResponse(status);
     }
 

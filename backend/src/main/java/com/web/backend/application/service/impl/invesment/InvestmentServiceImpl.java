@@ -42,7 +42,8 @@ public class InvestmentServiceImpl implements InvestmentService {
     public InvestmentResponse updateInvestment(Long id, InvestmentRequest investmentRequest) {
         Investment existingInvestment = investmentRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Investment not found with id: " + id));
-    
+
+        investmentMapper.updateInvestmentFromRequest(investmentRequest, existingInvestment);
 //        if (investmentRequest.customerId() != null) {
 //            existingInvestment.set(investmentRequest.customerId());
 //        }
@@ -50,18 +51,6 @@ public class InvestmentServiceImpl implements InvestmentService {
             InvestmentType investmentType = investmentTypeRepository.findById(investmentRequest.investmentTypeId())
                     .orElseThrow();
             existingInvestment.setInvestmentType(investmentType);
-        }
-        if (investmentRequest.amount() != null) {
-            existingInvestment.setAmount(investmentRequest.amount());
-        }
-        if (investmentRequest.maturityDate() != null) {
-            existingInvestment.setMaturityDate(investmentRequest.maturityDate());
-        }
-        if (investmentRequest.currentValue() != null) {
-            existingInvestment.setCurrentValue(investmentRequest.currentValue());
-        }
-        if (investmentRequest.status() != null) {
-            existingInvestment.setStatus(investmentRequest.status());
         }
     
         investmentRepository.save(existingInvestment);

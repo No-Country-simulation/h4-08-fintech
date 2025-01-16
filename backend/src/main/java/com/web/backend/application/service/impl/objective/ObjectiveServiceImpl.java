@@ -43,16 +43,7 @@ public class ObjectiveServiceImpl implements ObjectiveService {
     public ObjectiveResponse updateObjective(Long id, ObjectiveRequest objectiveRequest) {
         Objective existingObjective = objectiveRepository.findById(id).orElseThrow();
 
-        if(objectiveRequest.title() != null)
-            existingObjective.setTitle(objectiveRequest.title());
-        if(objectiveRequest.description() != null)
-            existingObjective.setDescription(objectiveRequest.description());
-        if(objectiveRequest.targetAmount() != null)
-            existingObjective.setTargetAmount(objectiveRequest.targetAmount());
-        if(objectiveRequest.currentAmount() != null)
-            existingObjective.setCurrentAmount(objectiveRequest.currentAmount());
-        if(objectiveRequest.dueDate() != null)
-            existingObjective.setDueDate(objectiveRequest.dueDate());
+        objectiveMapper.updateObjectiveFromRequest(objectiveRequest, existingObjective);
         if(objectiveRequest.objectiveStatusId() != null) {
             ObjectiveStatus objectiveStatus = objectiveStatusRepository.
                     findById(objectiveRequest.objectiveStatusId()).orElseThrow();

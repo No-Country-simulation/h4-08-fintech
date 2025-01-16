@@ -1,0 +1,59 @@
+package com.web.backend.application.service.impl.news;
+
+import com.web.backend.application.dto.news.NewsSourceRequest;
+import com.web.backend.application.dto.news.NewsSourceResponse;
+import com.web.backend.application.service.interfaces.news.NewsSourceService;
+import com.web.backend.domain.model.news.NewsSource;
+import com.web.backend.domain.repository.news.NewsSourceRepository;
+import com.web.backend.infrastructure.api.mapper.NewsSourceMapper;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+@Service
+@RequiredArgsConstructor
+public class NewsSourceServiceImpl implements NewsSourceService {
+
+    private final NewsSourceRepository newsSourceRepository;
+    private final NewsSourceMapper newsSourceMapper;
+
+    @Override
+    public NewsSourceResponse createNewsSource(NewsSourceRequest request) {
+        NewsSource source = newsSourceMapper.toNewsSource(request);
+        source = newsSourceRepository.save(source);
+        return newsSourceMapper.toNewsSourceResponse(source);
+    }
+
+    @Override
+    public NewsSourceResponse getNewsSourceById(Long id) {
+        NewsSource source = newsSourceRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("NewsSource not found"));
+        return newsSourceMapper.toNewsSourceResponse(source);
+    }
+
+    @Override
+    public List<NewsSourceResponse> getAllNewsSources() {
+        return newsSourceRepository.findAll().stream()
+                .map(newsSourceMapper::toNewsSourceResponse)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public NewsSourceResponse updateNewsSource(Long id, NewsSourceRequest request) {
+        NewsSource source = newsSourceRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("NewsSource not found"));
+        newsSourceMapper.updateNewsSourceFromRequest(request, source);
+        source = newsSourceRepository.save(source);
+        return newsSourceMapper.toNewsSourceResponse(source);
+    }
+
+    @Override
+    public void deleteNewsSource(Long id) {
+        NewsSource source = newsSourceRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("NewsSource not found"));
+        source.setDeleted(true);
+        newsSourceRepository.save(source);
+    }
+}

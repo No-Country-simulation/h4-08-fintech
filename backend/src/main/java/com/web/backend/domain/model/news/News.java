@@ -3,7 +3,7 @@ package com.web.backend.domain.model.news;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 @Getter
 @Setter
@@ -20,7 +20,7 @@ public class News {
     private String content;
     private String author;
     @Column(name = "publish_date")
-    private Date publishDate;
+    private LocalDate publishDate;
     @ManyToOne
     @JoinColumn(name = "news_source_id")
     private NewsSource source;

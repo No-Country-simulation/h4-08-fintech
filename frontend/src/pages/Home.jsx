@@ -8,9 +8,9 @@ const Home = () => {
     <div>
           <div className="h-screen flex flex-col justify-center items-center">
         <img src={logo} alt="" />
-        <div className="w-full">
-          <h2 className="text-[32px] font-bold mt-20 mb-12">¡Bienvenido!</h2>
-          <div>
+        <div className="w-full ">
+          <h2 className="text-[32px] text-center font-bold mt-20 mb-12">¡Bienvenido!</h2>
+          <div className="mx-3">
           <Link to={'/login'}>
             <button className="w-full rounded-2xl bg-blue-500 px-3 py-2 text-sm/6 font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 ">
               Iniciar Sesión

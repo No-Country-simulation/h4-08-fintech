@@ -2,7 +2,7 @@ package com.web.backend.application.service.impl.invesment;
 
 import com.web.backend.application.dto.investment.InvestmentTypeRequest;
 import com.web.backend.application.dto.investment.InvestmentTypeResponse;
-import com.web.backend.application.exception.InvestmentTypeNotFoundException;
+import com.web.backend.application.exception.investment.InvestmentTypeNotFoundException;
 import com.web.backend.application.service.interfaces.investment.InvestmentTypeService;
 import com.web.backend.domain.model.investment.InvestmentType;
 import com.web.backend.domain.repository.investment.InvestmentTypeRepository;

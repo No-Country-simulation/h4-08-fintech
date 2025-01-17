@@ -2,6 +2,8 @@ package com.web.backend.domain.model.objective;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.SQLRestriction;
 
 import java.util.Date;
 
@@ -12,6 +14,8 @@ import java.util.Date;
 @NoArgsConstructor
 @ToString
 @Builder
+@SQLDelete(sql = "UPDATE objective SET deleted = true where id = ?")
+@SQLRestriction("deleted=false")
 public class Objective {
     @Id
     @GeneratedValue
@@ -28,6 +32,5 @@ public class Objective {
     @ManyToOne
     @JoinColumn(name = "objective_status_id")
     private ObjectiveStatus objectiveStatus;
-    @Column(name = "is_deleted")
-    private boolean isDeleted;
+    private boolean deleted = false;
 }

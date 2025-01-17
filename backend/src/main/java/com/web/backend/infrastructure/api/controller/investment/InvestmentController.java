@@ -31,8 +31,8 @@ public class InvestmentController {
     }
 
     @GetMapping
-    public ResponseEntity<List<InvestmentResponse>> getAllInvestments() {
-        List<InvestmentResponse> investments = investmentService.getAllInvestments();
+    public ResponseEntity<List<InvestmentResponse>> getAllInvestments(@RequestParam(name = "deleted", defaultValue = "false") boolean deleted) {
+        List<InvestmentResponse> investments = investmentService.getInvestmentsByDeleted(deleted);
         return ResponseEntity.ok(investments);
     }
 

@@ -2,8 +2,11 @@ package com.web.backend.domain.model.investment;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.SQLRestriction;
 import org.springframework.data.annotation.CreatedDate;
 
+import java.time.Instant;
 import java.util.Date;
 
 @Getter
@@ -13,6 +16,8 @@ import java.util.Date;
 @NoArgsConstructor
 @ToString
 @Builder
+@SQLDelete(sql = "UPDATE investment SET deleted = true where id = ?")
+@SQLRestriction("deleted=false")
 public class Investment {
     @Id
     @GeneratedValue
@@ -23,14 +28,13 @@ public class Investment {
     private InvestmentType investmentType;
     private Float amount;
     @Column(name = "investment_date")
-    @Temporal(TemporalType.TIMESTAMP)
     @CreatedDate
+    @Temporal(TemporalType.TIMESTAMP)
     private Date investmentDate;
     @Column(name = "maturity_date")
     private Date maturityDate;
     @Column(name = "current_value")
     private Float currentValue;
     private String status;
-    @Column(name = "is_deleted")
-    private boolean isDeleted;
+    private boolean deleted = false;
 }

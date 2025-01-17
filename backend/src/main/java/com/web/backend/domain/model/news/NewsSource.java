@@ -18,6 +18,5 @@ public class NewsSource {
     @GeneratedValue
     private long id;
     private String name;
-    @Column(name = "is_deleted")
-    private boolean isDeleted;
+    private boolean deleted = false;
 }

@@ -2,6 +2,8 @@ package com.web.backend.domain.model.news;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.SQLRestriction;
 
 import java.time.LocalDate;
 
@@ -12,6 +14,8 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @ToString
 @Builder
+@SQLDelete(sql = "UPDATE news SET deleted = true where id = ?")
+@SQLRestriction("deleted=false")
 public class News {
     @Id
     @GeneratedValue
@@ -27,6 +31,5 @@ public class News {
     @ManyToOne
     @JoinColumn(name = "news_category_id")
     private NewsCategory category;
-    @Column(name = "is_deleted")
-    private boolean isDeleted;
+    private boolean deleted = false;
 }

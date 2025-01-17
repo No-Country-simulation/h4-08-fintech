@@ -5,6 +5,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import lombok.*;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.SQLRestriction;
 
 @Getter
 @Setter
@@ -13,11 +15,12 @@ import lombok.*;
 @NoArgsConstructor
 @ToString
 @Builder
+@SQLDelete(sql = "UPDATE news_category SET deleted = true where id = ?")
+@SQLRestriction("deleted=false")
 public class NewsCategory {
     @Id
     @GeneratedValue
     private Long id;
     private String name;
-    @Column(name = "is_deleted")
-    private boolean isDeleted;
+    private boolean deleted = false;
 }

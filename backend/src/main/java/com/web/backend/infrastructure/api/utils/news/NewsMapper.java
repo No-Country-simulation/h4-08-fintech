@@ -9,7 +9,6 @@ import org.mapstruct.*;
 public interface NewsMapper {
 
     @Mapping(target = "id", ignore = true)
-    @Mapping(target = "isDeleted", ignore = true)
     News toNews(NewsRequest newsRequest);
 
     NewsResponse toNewsResponse(News news);

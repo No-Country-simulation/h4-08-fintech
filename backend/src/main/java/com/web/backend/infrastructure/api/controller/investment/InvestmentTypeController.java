@@ -31,8 +31,8 @@ public class InvestmentTypeController {
     }
 
     @GetMapping
-    public ResponseEntity<List<InvestmentTypeResponse>> getAllInvestments() {
-        List<InvestmentTypeResponse> investmentTypes = investmentTypeService.getAllInvestmentTypes();
+    public ResponseEntity<List<InvestmentTypeResponse>> getAllInvestments(@RequestParam(name = "deleted", defaultValue = "false") boolean deleted) {
+        List<InvestmentTypeResponse> investmentTypes = investmentTypeService.getInvestmentTypesByDeleted(deleted);
         return ResponseEntity.ok(investmentTypes);
     }
 

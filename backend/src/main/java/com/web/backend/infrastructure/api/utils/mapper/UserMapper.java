@@ -15,6 +15,8 @@ public interface UserMapper {
 
     @Mapping(target = "id", ignore = true)
     void updateUserFromDto(UserUpdateDto source, @MappingTarget UserModel target);
+    @Mapping(source = "username", target = "username")
+    @Mapping(source = "email", target = "email")
     void toPublicUserFromEntity(UserModel source, @MappingTarget PublicUserDto target);
     void RegisterUserToUserModel(RegisterAuthRequest source,@MappingTarget UserModel target);
 }

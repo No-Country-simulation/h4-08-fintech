@@ -41,9 +41,9 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> loginAndTokenGen(@RequestBody LoginDto loginAuthRequest) {
+    public ResponseEntity<?> loginAndTokenGen(@RequestBody UserModel loginAuthRequest) {
 
-        PublicUserDto user = userService.loginUser(loginAuthRequest);
+        PublicUserDto user = userService.loginUser(loginAuthRequest,LoginType.PASSWORD);
 
         if (user.getEmail().isEmpty() || user.getUsername().isEmpty()) throw new RuntimeException("Error en el login");
 

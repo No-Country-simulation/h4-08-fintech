@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 
 @RestController
 @RequestMapping("/oauth2")
@@ -34,25 +35,25 @@ public class AuthGoogleController {
         String decryptedEmail = URLDecoder.decode(aesUtil.decrypt(email), StandardCharsets.UTF_8);
         String decryptedName = URLDecoder.decode(aesUtil.decrypt(name), StandardCharsets.UTF_8);
 
-        LoginDto newLogin = LoginDto.builder()
+
+        UserModel newUser = UserModel.builder()
                 .email(decryptedEmail)
                 .username(decryptedName)
                 .build();
 
         try {
-            PublicUserDto publicUser = userService.loginUser(newLogin);
+            PublicUserDto publicUser = userService.loginUser(newUser,LoginType.GOOGLE);
+            System.out.println("ANTES COOKIE "+newUser.getEmail()+ newUser.getUsername());
+            System.out.println(decryptedToken);
             ResponseCookie cookie = CreateCookie.auth(decryptedToken);
-
+            System.out.println("COOOKE" + cookie.getValue());
             return ResponseEntity.ok()
                     .header(HttpHeaders.SET_COOKIE, cookie.toString())
                     .body(publicUser);
         } catch (RuntimeException e) {
-            System.out.println("Registrando Usuario");
 
-            UserModel newUser = UserModel.builder()
-                    .email(decryptedEmail)
-                    .username(decryptedName)
-                    .build();
+            System.out.println(e.getMessage());
+            System.out.println("Registrando Usuario");
 
             PublicUserDto createUser = userService.createUser(newUser, LoginType.GOOGLE);
             System.out.println(decryptedToken);
@@ -62,7 +63,7 @@ public class AuthGoogleController {
 
             return ResponseEntity.ok()
                     .header(HttpHeaders.SET_COOKIE, cookie.toString())
-                    .body(newUser);
+                    .body(createUser);
         }
     }
 

@@ -24,7 +24,7 @@ public class UserService {
     private final RUser repository;
     private final EntityManager entityManager;
 
-    public PublicUserDto loginUser(LoginDto loginData) {
+    public PublicUserDto loginUser(UserModel loginData, LoginType loginType) {
         try (Session session = entityManager.unwrap(Session.class)) {
             Filter filter = session.enableFilter("deletedUserFilter");
             filter.setParameter("isDeleted", false);
@@ -43,17 +43,18 @@ public class UserService {
                                 "No se encontró el usuario con ese nombre de usuario"
                         ));
             }
-
-            if (!BCrypt.checkpw(loginData.getPassword(), userEntity.getPassword())) {
-                throw new RuntimeException("Credenciales inválidas");
+            if (loginType != LoginType.GOOGLE && (loginData.getPassword() == null || loginData.getPassword().isEmpty())) {
+                throw new RuntimeException("Password cannot be null or empty");
             }
 
-            PublicUserDto publicUserDto = new PublicUserDto.Builder().build();
+            System.out.println("loginuser antes mapper " + userEntity.getEmail() + userEntity.getUsername());
+            PublicUserDto publicUserDto = new PublicUserDto();
 
             UserMapper mapper = UserMapper.INSTANCE;
 
             mapper.toPublicUserFromEntity(userEntity, publicUserDto);
-
+            UserMapper.INSTANCE.toPublicUserFromEntity(userEntity,publicUserDto);
+            System.out.println("LOGIN USER "+publicUserDto.getEmail());
             return publicUserDto;
         }
     }

@@ -1,5 +1,6 @@
 package com.web.backend.application.DTO.User;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -8,14 +9,18 @@ import lombok.Setter;
 @Setter
 public class PublicUserDto {
 
-    private final String username;
-    private final String email;
-
+    private String username;
+    private String email;
 
     public PublicUserDto(Builder build) {
         this.email = build.email;
         this.username = build.username;
     }
+
+    public PublicUserDto() {
+
+    }
+
     public static class Builder {
         private String username;
 

@@ -52,11 +52,8 @@ export const FinancialGoals = ({setAvailableToContinue}) => {
   }, [selectedGoals])
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#E8F3FF] via-[#E3FFE7] to-[#DAFFDF] p-4">
-      {/* Back button */}
-      <button className="w-10 h-10 rounded-full bg-white/90 shadow-[0_2px_8px_rgba(0,0,0,0.05)] flex items-center justify-center">
-        <ChevronLeft className="w-5 h-5 text-gray-600" strokeWidth={2} />
-      </button>
+    <div className="min-h-screen p-4">
+      
 
       <div className="mt-8 space-y-4">
         <h1 className="text-[22px] font-semibold text-center px-8 text-gray-800">

@@ -1,6 +1,6 @@
 import {BrowserRouter as Router, Routes, Route} from 'react-router-dom';
-import Home from './pages/Home';
-import Login from './pages/Login';
+import Home from "./pages/Auth/Home"
+import Login from './pages/Auth/Login';
 import { Onboarding } from './pages/Onboarding/Onboarding';
 /* import OnboardingStep1 from './components/Onboarding/OnboardingStep1';
 import OnboardingStep2 from './components/Onboarding/OnboardingStep2';

@@ -2,6 +2,7 @@ package com.web.backend.application.service.impl.news;
 
 import com.web.backend.application.dto.news.NewsSourceRequest;
 import com.web.backend.application.dto.news.NewsSourceResponse;
+import com.web.backend.application.exception.news.NewsSourceNotFoundException;
 import com.web.backend.application.service.interfaces.news.NewsSourceService;
 import com.web.backend.domain.model.news.NewsSource;
 import com.web.backend.domain.repository.news.NewsSourceRepository;
@@ -22,14 +23,14 @@ public class NewsSourceServiceImpl implements NewsSourceService {
     @Override
     public NewsSourceResponse createNewsSource(NewsSourceRequest request) {
         NewsSource source = newsSourceMapper.toNewsSource(request);
-        source = newsSourceRepository.save(source);
+        newsSourceRepository.save(source);
         return newsSourceMapper.toNewsSourceResponse(source);
     }
 
     @Override
     public NewsSourceResponse getNewsSourceById(Long id) {
         NewsSource source = newsSourceRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("NewsSource not found"));
+                .orElseThrow(() -> new NewsSourceNotFoundException("NewsSource not found with id: " + id));
         return newsSourceMapper.toNewsSourceResponse(source);
     }
 
@@ -43,16 +44,16 @@ public class NewsSourceServiceImpl implements NewsSourceService {
     @Override
     public NewsSourceResponse updateNewsSource(Long id, NewsSourceRequest request) {
         NewsSource source = newsSourceRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("NewsSource not found"));
+                .orElseThrow(() -> new NewsSourceNotFoundException("NewsSource not found with id: " + id));
         newsSourceMapper.updateNewsSourceFromRequest(request, source);
-        source = newsSourceRepository.save(source);
+        newsSourceRepository.save(source);
         return newsSourceMapper.toNewsSourceResponse(source);
     }
 
     @Override
     public void deleteNewsSource(Long id) {
         NewsSource source = newsSourceRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("NewsSource not found"));
+                .orElseThrow(() -> new NewsSourceNotFoundException("NewsSource not found with id: " + id));
         source.setDeleted(true);
         newsSourceRepository.save(source);
     }

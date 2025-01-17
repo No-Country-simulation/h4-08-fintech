@@ -2,6 +2,8 @@ package com.web.backend.application.service.impl.news;
 
 import com.web.backend.application.dto.news.NewsCategoryRequest;
 import com.web.backend.application.dto.news.NewsCategoryResponse;
+import com.web.backend.application.exception.news.NewsCategoryNotFoundException;
+import com.web.backend.application.exception.news.NewsNotFoundException;
 import com.web.backend.application.service.interfaces.news.NewsCategoryService;
 import com.web.backend.domain.model.news.NewsCategory;
 import com.web.backend.domain.repository.news.NewsCategoryRepository;
@@ -22,14 +24,14 @@ public class NewsCategoryServiceImpl implements NewsCategoryService {
     @Override
     public NewsCategoryResponse createNewsCategory(NewsCategoryRequest request) {
         NewsCategory category = newsCategoryMapper.toNewsCategory(request);
-        category = newsCategoryRepository.save(category);
+        newsCategoryRepository.save(category);
         return newsCategoryMapper.toNewsCategoryResponse(category);
     }
 
     @Override
     public NewsCategoryResponse getNewsCategoryById(Long id) {
         NewsCategory category = newsCategoryRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("NewsCategory not found"));
+                .orElseThrow(() -> new NewsCategoryNotFoundException("NewsCategory not found with id: " + id));
         return newsCategoryMapper.toNewsCategoryResponse(category);
     }
 
@@ -43,7 +45,7 @@ public class NewsCategoryServiceImpl implements NewsCategoryService {
     @Override
     public NewsCategoryResponse updateNewsCategory(Long id, NewsCategoryRequest request) {
         NewsCategory category = newsCategoryRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("NewsCategory not found"));
+                .orElseThrow(() -> new NewsNotFoundException("NewsCategory not found with id: " + id));
         newsCategoryMapper.updateNewsCategoryFromRequest(request, category);
         category = newsCategoryRepository.save(category);
         return newsCategoryMapper.toNewsCategoryResponse(category);
@@ -52,7 +54,7 @@ public class NewsCategoryServiceImpl implements NewsCategoryService {
     @Override
     public void deleteNewsCategory(Long id) {
         NewsCategory category = newsCategoryRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("NewsCategory not found"));
+                .orElseThrow(() -> new NewsCategoryNotFoundException("NewsCategory not found with id: " + id));
         category.setDeleted(true);
         newsCategoryRepository.save(category);
     }

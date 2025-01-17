@@ -2,6 +2,7 @@ package com.web.backend.application.service.impl.invesment;
 
 import com.web.backend.application.dto.investment.InvestmentTypeRequest;
 import com.web.backend.application.dto.investment.InvestmentTypeResponse;
+import com.web.backend.application.exception.InvestmentTypeNotFoundException;
 import com.web.backend.application.service.interfaces.investment.InvestmentTypeService;
 import com.web.backend.domain.model.investment.InvestmentType;
 import com.web.backend.domain.repository.investment.InvestmentTypeRepository;
@@ -27,9 +28,10 @@ public class InvestmentTypeServiceImpl implements InvestmentTypeService {
 
     @Override
     public InvestmentTypeResponse getInvestmentTypeById(Long id) {
-        InvestmentType investmentType = investmentTypeRepository.getReferenceById(id);
+        InvestmentType investmentType = investmentTypeRepository.findById(id)
+                .orElseThrow(() -> new InvestmentTypeNotFoundException("Investment Type not found with id: " + id));
         if (investmentType.isDeleted()) {
-            throw new IllegalStateException("The investment type has been deleted.");
+            throw new IllegalStateException("The investment type with id: " + id + " has been deleted.");
         }
         return investmentTypeMapper.toInvestmentTypeResponse(investmentType);
     }
@@ -42,7 +44,8 @@ public class InvestmentTypeServiceImpl implements InvestmentTypeService {
 
     @Override
     public InvestmentTypeResponse updateInvestmentType(Long id, InvestmentTypeRequest investmentTypeRequest) {
-        InvestmentType investmentType = investmentTypeRepository.getReferenceById(id);
+        InvestmentType investmentType = investmentTypeRepository.findById(id)
+                .orElseThrow(() -> new InvestmentTypeNotFoundException("Investment Type not found with id: " + id));
         investmentTypeMapper.updateInvestmentTypeFromRequest(investmentTypeRequest, investmentType);
         investmentTypeRepository.save(investmentType);
         return investmentTypeMapper.toInvestmentTypeResponse(investmentType);
@@ -50,7 +53,8 @@ public class InvestmentTypeServiceImpl implements InvestmentTypeService {
 
     @Override
     public void deleteInvestmentType(Long id) {
-        InvestmentType investmentType = investmentTypeRepository.getReferenceById(id);
+        InvestmentType investmentType = investmentTypeRepository.findById(id)
+                .orElseThrow(() -> new InvestmentTypeNotFoundException("Investment Type not found with id: " + id));
         investmentType.setDeleted(true);
         investmentTypeRepository.save(investmentType);
     }

@@ -10,7 +10,6 @@ public record ObjectiveResponse(
         Float targetAmount,
         Float currentAmount,
         Date dueDate,
-        ObjectiveStatusResponse objectiveStatus,
-        boolean isDeleted
+        ObjectiveStatusResponse objectiveStatus
 ) {
 }

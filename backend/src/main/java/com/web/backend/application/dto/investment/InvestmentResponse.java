@@ -10,7 +10,6 @@ public record InvestmentResponse(
         Date investmentDate,
         Date maturityDate,
         Float currentValue,
-        String status,
-        boolean isDeleted
+        String status
 ) {
 }

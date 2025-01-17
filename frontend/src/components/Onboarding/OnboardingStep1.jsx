@@ -2,7 +2,7 @@ import logo from "../../assets/icons/logo/iUpi.svg";
 const OnboardingStep1 = () => {
   return (
     <div>
-      <div className="flex flex-col backdrop-blur-md mx-3 bg-white/50 rounded-lg shadow-lg p-8 max-w-sm  text-center">
+      <div className="flex flex-col backdrop-blur-md bg-white/50 rounded-lg shadow-lg p-8 max-w-sm  text-center">
         <h2 className="text-2xl font-bold text-black mb-4">Bienvenido a</h2>
         <div className="flex justify-center mt-3 mb-6">
           <img src={logo} alt="" className="" />

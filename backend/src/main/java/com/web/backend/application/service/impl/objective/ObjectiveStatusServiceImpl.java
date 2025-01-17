@@ -7,6 +7,7 @@ import com.web.backend.application.service.interfaces.objective.ObjectiveStatusS
 import com.web.backend.domain.model.objective.ObjectiveStatus;
 import com.web.backend.domain.repository.objective.ObjectiveStatusRepository;
 import com.web.backend.infrastructure.api.utils.objective.ObjectiveStatusMapper;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -21,7 +22,7 @@ public class ObjectiveStatusServiceImpl implements ObjectiveStatusService {
     private final ObjectiveStatusMapper objectiveStatusMapper;
 
     @Override
-    public ObjectiveStatusResponse createObjectiveStatus(ObjectiveStatusRequest request) {
+    public ObjectiveStatusResponse createObjectiveStatus(@Valid ObjectiveStatusRequest request) {
         ObjectiveStatus status = objectiveStatusMapper.toObjectiveStatus(request);
         objectiveStatusRepository.save(status);
         return objectiveStatusMapper.toObjectiveStatusResponse(status);

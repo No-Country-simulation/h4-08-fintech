@@ -8,6 +8,7 @@ import com.web.backend.application.service.interfaces.news.NewsCategoryService;
 import com.web.backend.domain.model.news.NewsCategory;
 import com.web.backend.domain.repository.news.NewsCategoryRepository;
 import com.web.backend.infrastructure.api.utils.news.NewsCategoryMapper;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -22,7 +23,7 @@ public class NewsCategoryServiceImpl implements NewsCategoryService {
     private final NewsCategoryMapper newsCategoryMapper;
 
     @Override
-    public NewsCategoryResponse createNewsCategory(NewsCategoryRequest request) {
+    public NewsCategoryResponse createNewsCategory(@Valid NewsCategoryRequest request) {
         NewsCategory category = newsCategoryMapper.toNewsCategory(request);
         newsCategoryRepository.save(category);
         return newsCategoryMapper.toNewsCategoryResponse(category);

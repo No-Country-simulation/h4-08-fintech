@@ -10,6 +10,7 @@ import com.web.backend.domain.model.investment.InvestmentType;
 import com.web.backend.domain.repository.investment.InvestmentRepository;
 import com.web.backend.domain.repository.investment.InvestmentTypeRepository;
 import com.web.backend.infrastructure.api.utils.investment.InvestmentMapper;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -23,7 +24,7 @@ public class InvestmentServiceImpl implements InvestmentService {
     private final InvestmentMapper investmentMapper;
     private final InvestmentTypeRepository investmentTypeRepository;
 
-    public InvestmentResponse createInvestment(InvestmentRequest investmentRequest) {
+    public InvestmentResponse createInvestment(@Valid InvestmentRequest investmentRequest) {
         Investment investment = investmentMapper.toInvestment(investmentRequest);
 
         if (investmentRequest.investmentTypeId() != null) {

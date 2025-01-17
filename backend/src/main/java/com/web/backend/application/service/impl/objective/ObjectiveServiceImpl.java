@@ -10,6 +10,7 @@ import com.web.backend.domain.model.objective.ObjectiveStatus;
 import com.web.backend.domain.repository.objective.ObjectiveRepository;
 import com.web.backend.domain.repository.objective.ObjectiveStatusRepository;
 import com.web.backend.infrastructure.api.utils.objective.ObjectiveMapper;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -23,7 +24,7 @@ public class ObjectiveServiceImpl implements ObjectiveService {
     private final ObjectiveMapper objectiveMapper;
 
     @Override
-    public ObjectiveResponse createObjective(ObjectiveRequest objectiveRequest) {
+    public ObjectiveResponse createObjective(@Valid ObjectiveRequest objectiveRequest) {
         Objective objective = objectiveMapper.toObjective(objectiveRequest);
         ObjectiveStatus status = objectiveStatusRepository.findById(objectiveRequest.objectiveStatusId())
                         .orElseThrow(() -> new ObjectiveStatusNotFoundException("Objective status not found with id: " + objectiveRequest.objectiveStatusId()));

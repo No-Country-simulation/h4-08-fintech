@@ -7,6 +7,7 @@ import com.web.backend.application.service.interfaces.investment.InvestmentTypeS
 import com.web.backend.domain.model.investment.InvestmentType;
 import com.web.backend.domain.repository.investment.InvestmentTypeRepository;
 import com.web.backend.infrastructure.api.utils.investment.InvestmentTypeMapper;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +21,7 @@ public class InvestmentTypeServiceImpl implements InvestmentTypeService {
     private final InvestmentTypeMapper investmentTypeMapper;
 
     @Override
-    public InvestmentTypeResponse createInvestmentType(InvestmentTypeRequest investmentTypeRequest) {
+    public InvestmentTypeResponse createInvestmentType(@Valid InvestmentTypeRequest investmentTypeRequest) {
         InvestmentType investmentType = investmentTypeMapper.toInvestmentType(investmentTypeRequest);
         investmentTypeRepository.save(investmentType);
         return investmentTypeMapper.toInvestmentTypeResponse(investmentType);

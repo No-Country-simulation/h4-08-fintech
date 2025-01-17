@@ -1,10 +1,14 @@
-import { FaRegEyeSlash } from "react-icons/fa";
+import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import { FaApple } from "react-icons/fa";
+import { useState } from "react";
+
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import * as yup from "yup";
 
 const Login = () => {
+
+  const [showPassword, setShowPassword] = useState(false);
 
   const initialValues = {
     email: "",
@@ -16,8 +20,22 @@ const Login = () => {
     password: yup.string().required("La contraseña es obligatoria")
   })
 
+  const togglePassword = () => {
+    setShowPassword(!showPassword);
+  };
+
   const handleSubmit = (data) => {
-    console.log(data); 
+    console.log(data);
+    const userTest = {
+      email: "prueba@gmail.com",
+      password: "12345678",
+    };
+    if (userTest.email === data.email && userTest.password === data.password) {
+      console.log("inicio de sesion correcto");
+
+    } else {
+      alert("error al iniciar");
+    }
   };
 
   return (
@@ -49,7 +67,7 @@ const Login = () => {
               </label>
               <Field
                 placeholder="********"
-                type="password"
+                type={showPassword ? "text" : "password"}
                 name="password"
                 className={`block mt-1 w-full px-3 py-2 border ${errors.password && touched.password ? 'border-red-500' : 'border-gray-300'} rounded-xl shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm`}
               />
@@ -57,9 +75,14 @@ const Login = () => {
 
               <button
                 type="button"
+                onClick={togglePassword}
                 className="absolute inset-y-11 right-3 flex items-center"
               >
+                {showPassword ? (
+                <FaRegEye className="text-lg" />
+              ) : (
                 <FaRegEyeSlash className="text-lg" />
+              )}
               </button>
             </div>
             <div className="my-8">
@@ -78,7 +101,6 @@ const Login = () => {
           <span className="mx-4 text-gray-500">o</span>
           <div className="flex-grow border-t border-gray-300"></div>
         </div>
-        <div></div>{" "}
         <button className="w-full my-2 flex items-center justify-center border border-blue-600 text-blue-600 font-semibold px-3 py-2 rounded-2xl hover:bg-blue-500 hover:text-white">
           <FcGoogle className="text-2xl me-2" />
           Continuar con Google

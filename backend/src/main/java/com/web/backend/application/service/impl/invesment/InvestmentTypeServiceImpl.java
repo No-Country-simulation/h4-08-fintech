@@ -4,9 +4,12 @@ import com.web.backend.application.dto.investment.InvestmentTypeRequest;
 import com.web.backend.application.dto.investment.InvestmentTypeResponse;
 import com.web.backend.application.exception.investment.InvestmentTypeNotFoundException;
 import com.web.backend.application.service.interfaces.investment.InvestmentTypeService;
+import com.web.backend.domain.model.investment.Investment;
 import com.web.backend.domain.model.investment.InvestmentType;
+import com.web.backend.domain.repository.investment.InvestmentRepository;
 import com.web.backend.domain.repository.investment.InvestmentTypeRepository;
 import com.web.backend.infrastructure.api.utils.investment.InvestmentTypeMapper;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +20,7 @@ import java.util.List;
 public class InvestmentTypeServiceImpl implements InvestmentTypeService {
     
     private final InvestmentTypeRepository investmentTypeRepository;
+    private final InvestmentRepository investmentRepository;
     private final InvestmentTypeMapper investmentTypeMapper;
 
     @Override
@@ -52,9 +56,17 @@ public class InvestmentTypeServiceImpl implements InvestmentTypeService {
     }
 
     @Override
+    @Transactional
     public void deleteInvestmentType(Long id) {
         InvestmentType investmentType = investmentTypeRepository.findById(id)
                 .orElseThrow(() -> new InvestmentTypeNotFoundException("Investment Type not found with id: " + id));
+
+        List<Investment> investments = investmentRepository.findByInvestmentType(investmentType);
+        for (Investment investment : investments) {
+            investment.setInvestmentType(null);
+        }
+        investmentRepository.saveAll(investments);
+
         investmentType.setDeleted(true);
         investmentTypeRepository.save(investmentType);
     }

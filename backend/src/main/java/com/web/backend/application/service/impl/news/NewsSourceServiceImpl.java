@@ -6,7 +6,7 @@ import com.web.backend.application.exception.news.NewsSourceNotFoundException;
 import com.web.backend.application.service.interfaces.news.NewsSourceService;
 import com.web.backend.domain.model.news.NewsSource;
 import com.web.backend.domain.repository.news.NewsSourceRepository;
-import com.web.backend.infrastructure.api.mapper.NewsSourceMapper;
+import com.web.backend.infrastructure.api.utils.news.NewsSourceMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

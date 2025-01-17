@@ -1,4 +1,4 @@
-package com.web.backend.infrastructure.api.mapper;
+package com.web.backend.infrastructure.api.utils.news;
 
 import com.web.backend.application.dto.news.NewsRequest;
 import com.web.backend.application.dto.news.NewsResponse;

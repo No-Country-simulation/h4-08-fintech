@@ -12,7 +12,7 @@ import com.web.backend.domain.model.news.NewsSource;
 import com.web.backend.domain.repository.news.NewsCategoryRepository;
 import com.web.backend.domain.repository.news.NewsRepository;
 import com.web.backend.domain.repository.news.NewsSourceRepository;
-import com.web.backend.infrastructure.api.mapper.NewsMapper;
+import com.web.backend.infrastructure.api.utils.news.NewsMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

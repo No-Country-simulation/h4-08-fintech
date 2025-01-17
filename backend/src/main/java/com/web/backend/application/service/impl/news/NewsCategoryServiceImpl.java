@@ -7,7 +7,7 @@ import com.web.backend.application.exception.news.NewsNotFoundException;
 import com.web.backend.application.service.interfaces.news.NewsCategoryService;
 import com.web.backend.domain.model.news.NewsCategory;
 import com.web.backend.domain.repository.news.NewsCategoryRepository;
-import com.web.backend.infrastructure.api.mapper.NewsCategoryMapper;
+import com.web.backend.infrastructure.api.utils.news.NewsCategoryMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

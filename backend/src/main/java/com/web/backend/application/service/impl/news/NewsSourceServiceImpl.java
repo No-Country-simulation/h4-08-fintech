@@ -7,7 +7,6 @@ import com.web.backend.application.service.interfaces.news.NewsSourceService;
 import com.web.backend.domain.model.news.NewsSource;
 import com.web.backend.domain.repository.news.NewsSourceRepository;
 import com.web.backend.infrastructure.api.utils.news.NewsSourceMapper;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -22,7 +21,7 @@ public class NewsSourceServiceImpl implements NewsSourceService {
     private final NewsSourceMapper newsSourceMapper;
 
     @Override
-    public NewsSourceResponse createNewsSource(@Valid NewsSourceRequest request) {
+    public NewsSourceResponse createNewsSource(NewsSourceRequest request) {
         NewsSource source = newsSourceMapper.toNewsSource(request);
         newsSourceRepository.save(source);
         return newsSourceMapper.toNewsSourceResponse(source);

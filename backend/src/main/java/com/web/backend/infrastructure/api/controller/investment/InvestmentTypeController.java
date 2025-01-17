@@ -3,6 +3,7 @@ package com.web.backend.infrastructure.api.controller.investment;
 import com.web.backend.application.dto.investment.InvestmentTypeRequest;
 import com.web.backend.application.dto.investment.InvestmentTypeResponse;
 import com.web.backend.application.service.interfaces.investment.InvestmentTypeService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +19,7 @@ public class InvestmentTypeController {
     private final InvestmentTypeService investmentTypeService;
 
     @PostMapping
-    public ResponseEntity<InvestmentTypeResponse> createInvestment(@RequestBody InvestmentTypeRequest Investment) {
+    public ResponseEntity<InvestmentTypeResponse> createInvestment(@Valid @RequestBody InvestmentTypeRequest Investment) {
         InvestmentTypeResponse createdInvestmentType = investmentTypeService.createInvestmentType(Investment);
         return new ResponseEntity<>(createdInvestmentType, HttpStatus.CREATED);
     }

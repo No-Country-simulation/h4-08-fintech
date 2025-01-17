@@ -3,6 +3,7 @@ package com.web.backend.infrastructure.api.controller.objective;
 import com.web.backend.application.dto.objective.ObjectiveStatusRequest;
 import com.web.backend.application.dto.objective.ObjectiveStatusResponse;
 import com.web.backend.application.service.interfaces.objective.ObjectiveStatusService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,7 +18,7 @@ public class ObjectiveStatusController {
     private final ObjectiveStatusService objectiveStatusService;
 
     @PostMapping
-    public ResponseEntity<ObjectiveStatusResponse> createObjectiveStatus(@RequestBody ObjectiveStatusRequest request) {
+    public ResponseEntity<ObjectiveStatusResponse> createObjectiveStatus(@Valid @RequestBody ObjectiveStatusRequest request) {
         return ResponseEntity.ok(objectiveStatusService.createObjectiveStatus(request));
     }
 

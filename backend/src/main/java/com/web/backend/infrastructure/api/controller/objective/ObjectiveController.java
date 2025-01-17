@@ -3,6 +3,7 @@ package com.web.backend.infrastructure.api.controller.objective;
 import com.web.backend.application.dto.objective.ObjectiveRequest;
 import com.web.backend.application.dto.objective.ObjectiveResponse;
 import com.web.backend.application.service.interfaces.objective.ObjectiveService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +19,7 @@ public class ObjectiveController {
     private final ObjectiveService objectiveService;
 
     @PostMapping
-    public ResponseEntity<ObjectiveResponse> createObjective(@RequestBody ObjectiveRequest objectiveRequest) {
+    public ResponseEntity<ObjectiveResponse> createObjective(@Valid @RequestBody ObjectiveRequest objectiveRequest) {
         ObjectiveResponse createdObjective = objectiveService.createObjective(objectiveRequest);
         return new ResponseEntity<>(createdObjective, HttpStatus.CREATED);
     }

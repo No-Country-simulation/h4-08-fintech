@@ -3,6 +3,7 @@ package com.web.backend.infrastructure.api.controller.news;
 import com.web.backend.application.dto.news.NewsRequest;
 import com.web.backend.application.dto.news.NewsResponse;
 import com.web.backend.application.service.interfaces.news.NewsService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,7 +18,7 @@ public class NewsController {
     private final NewsService newsService;
 
     @PostMapping
-    public ResponseEntity<NewsResponse> createNews(@RequestBody NewsRequest request) {
+    public ResponseEntity<NewsResponse> createNews(@Valid @RequestBody NewsRequest request) {
         return ResponseEntity.ok(newsService.createNews(request));
     }
 

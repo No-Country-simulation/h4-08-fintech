@@ -13,7 +13,6 @@ import com.web.backend.domain.repository.news.NewsCategoryRepository;
 import com.web.backend.domain.repository.news.NewsRepository;
 import com.web.backend.domain.repository.news.NewsSourceRepository;
 import com.web.backend.infrastructure.api.utils.news.NewsMapper;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -30,7 +29,7 @@ public class NewsServiceImpl implements NewsService {
     private final NewsMapper newsMapper;
 
     @Override
-    public NewsResponse createNews(@Valid NewsRequest request) {
+    public NewsResponse createNews(NewsRequest request) {
         News news = newsMapper.toNews(request);
         NewsCategory newsCategory = newsCategoryRepository.findById(request.categoryId())
                 .orElseThrow(() -> new NewsCategoryNotFoundException("News category not found with id: " + request.categoryId()));

@@ -1,5 +1,6 @@
 package com.web.backend.application.DTO.Auth;
 
+import jakarta.annotation.Nullable;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -10,5 +11,6 @@ import lombok.Setter;
 public class LoginDto {
     private String username;
     private String email;
+    @Nullable
     private String password;
 }

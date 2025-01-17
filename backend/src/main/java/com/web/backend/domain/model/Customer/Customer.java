@@ -1,7 +1,7 @@
 package com.web.backend.domain.model.Customer;
 
-import com.web.backend.config.filter.interfaces.SoftDeletable;
 import com.web.backend.domain.model.user.UserModel;
+import com.web.backend.domain.utils.Auditable;
 import com.web.backend.infrastructure.api.utils.AccountType;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -9,8 +9,6 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 
 import java.util.Date;
 
@@ -19,7 +17,7 @@ import java.util.Date;
 @ToString
 @RequiredArgsConstructor
 @Entity
-public class Customer implements SoftDeletable {
+public class Customer extends Auditable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -33,16 +31,6 @@ public class Customer implements SoftDeletable {
     private Date dateOfBirth;
     private String phoneNumber;
 
-    private boolean isDeleted = false;
-
-    @Column(name = "created_at", updatable = false)
-    @Temporal(TemporalType.TIMESTAMP)
-    @CreatedDate
-    private Date createdAt;
-
-    @Column(name = "updated_at")
-    @Temporal(TemporalType.TIMESTAMP)
-    @LastModifiedDate
-    private Date updatedAt;
+    private boolean deleted;
 
 }

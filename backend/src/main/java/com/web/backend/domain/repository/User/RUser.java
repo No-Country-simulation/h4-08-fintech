@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
 import java.util.Optional;
 
-public interface RUser extends JpaRepository<UserModel, Long>, JpaSpecificationExecutor<UserModel> {
+public interface RUser extends JpaRepository<UserModel, Long> {
     Optional<UserModel> findByCustomer_PhoneNumber(String phoneNumber);
     Optional<UserModel> findByEmail(String email);
     Optional<UserModel> findByUsername(String username);

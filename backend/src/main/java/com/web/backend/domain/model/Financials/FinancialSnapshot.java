@@ -1,15 +1,12 @@
 package com.web.backend.domain.model.Financials;
 
-import com.web.backend.config.filter.interfaces.SoftDeletable;
 import com.web.backend.domain.model.Customer.Customer;
+import com.web.backend.domain.utils.Auditable;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
-
 import java.util.Date;
 
 @Getter
@@ -17,7 +14,7 @@ import java.util.Date;
 @ToString
 @RequiredArgsConstructor
 @Entity
-public class FinancialSnapshot implements SoftDeletable {
+public class FinancialSnapshot extends Auditable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -30,15 +27,5 @@ public class FinancialSnapshot implements SoftDeletable {
     private float currentSavings;
     private Date snapshotDate;
 
-    private boolean isDeleted = false;
-
-    @Column(name = "created_at", updatable = false)
-    @Temporal(TemporalType.TIMESTAMP)
-    @CreatedDate
-    private Date createdAt;
-
-    @Column(name = "updated_at")
-    @Temporal(TemporalType.TIMESTAMP)
-    @LastModifiedDate
-    private Date updatedAt;
+    private boolean deleted;
 }

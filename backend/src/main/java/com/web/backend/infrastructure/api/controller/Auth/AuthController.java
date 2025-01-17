@@ -5,6 +5,7 @@ import com.web.backend.application.DTO.User.PublicUserDto;
 import com.web.backend.application.service.User.UserService;
 import com.web.backend.domain.model.user.UserModel;
 import com.web.backend.infrastructure.api.utils.auth.JwtTokenUtil;
+import com.web.backend.infrastructure.api.utils.auth.LoginType;
 import com.web.backend.infrastructure.api.utils.mapper.UserMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +29,7 @@ public class AuthController {
 
             UserMapper.INSTANCE.RegisterUserToUserModel(registerAuthRequest, user);
 
-            PublicUserDto createUser = userService.createUser(user);
+            PublicUserDto createUser = userService.createUser(user, LoginType.PASSWORD);
 
             if (createUser.getUsername().isEmpty()) throw new RuntimeException("Error en la creacion del usuario");
 

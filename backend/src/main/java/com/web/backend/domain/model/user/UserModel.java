@@ -1,21 +1,27 @@
 package com.web.backend.domain.model.user;
 
-import com.web.backend.config.filter.interfaces.SoftDeletable;
 import com.web.backend.domain.model.Customer.Customer;
+import com.web.backend.domain.utils.Auditable;
 import com.web.backend.infrastructure.api.utils.RolesEnum;
+import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
-
-import java.util.Date;
+import org.hibernate.annotations.Filter;
+import org.hibernate.annotations.FilterDef;
+import org.hibernate.annotations.ParamDef;
+import org.hibernate.annotations.SQLDelete;
 
 @Getter
 @Setter
 @ToString
 @RequiredArgsConstructor
 @Entity
-public class UserModel implements SoftDeletable {
+@Builder
+@AllArgsConstructor
+@SQLDelete(sql = "UPDATE user_model SET deleted = true WHERE id = ?")
+@FilterDef(name = "deletedUserFilter", parameters = @ParamDef(name = "isDeleted",type = Boolean.class))
+@Filter(name = "deletedUserFilter", condition = "deleted = :isDeleted")
+public class UserModel extends Auditable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,20 +30,12 @@ public class UserModel implements SoftDeletable {
     @OneToOne(mappedBy = "userModel")
     private Customer customer;
     private String username;
+
+    @Nullable
     private String password;
     private RolesEnum role;
     private String email;
 
-    private boolean isDeleted = false;
-
-    @Column(name = "created_at", updatable = false)
-    @Temporal(TemporalType.TIMESTAMP)
-    @CreatedDate
-    private Date createdAt;
-
-    @Column(name = "updated_at")
-    @Temporal(TemporalType.TIMESTAMP)
-    @LastModifiedDate
-    private Date updatedAt;
+    private boolean deleted = false;
 
 }

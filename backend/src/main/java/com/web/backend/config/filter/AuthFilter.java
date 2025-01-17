@@ -57,6 +57,8 @@ public class AuthFilter extends OncePerRequestFilter {
 
     private boolean requiresAuthentication(HttpServletRequest request) {
         String path = request.getRequestURI();
-        return !path.startsWith("/auth") && !path.startsWith("/public");
+        return !path.startsWith("/auth")
+                && !path.startsWith("/public")
+                && !path.startsWith("/oauth2");
     }
 }

@@ -2,161 +2,140 @@ package com.web.backend.application.service.User;
 
 import com.web.backend.application.DTO.Auth.LoginDto;
 import com.web.backend.application.DTO.User.PublicUserDto;
-import com.web.backend.config.filter.SpecificationFilter;
 import com.web.backend.domain.model.user.UserModel;
 import com.web.backend.domain.repository.User.RUser;
+import com.web.backend.infrastructure.api.utils.auth.LoginType;
 import com.web.backend.infrastructure.api.utils.mapper.UserMapper;
+import jakarta.persistence.EntityManager;
 import lombok.AllArgsConstructor;
-import org.springframework.data.jpa.domain.Specification;
+import org.hibernate.Filter;
+import org.hibernate.Session;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.Optional;
+import java.util.List;
 
 @Service
 @AllArgsConstructor
 public class UserService {
+
     private final RUser repository;
+    private final EntityManager entityManager;
 
-    public PublicUserDto createUser(UserModel newUserModel) {
-        try {
+    public PublicUserDto loginUser(LoginDto loginData) {
+        try (Session session = entityManager.unwrap(Session.class)) {
+            Filter filter = session.enableFilter("deletedUserFilter");
+            filter.setParameter("isDeleted", false);
 
-            Specification<UserModel> spec = Specification
-                    .where(SpecificationFilter.<UserModel>isNotDeleted())
-                    .and(SpecificationFilter.fieldEquals("email", newUserModel.getEmail()));
-
-            Optional<UserModel> userExist = repository.findOne(spec);
-
-            if (userExist.isPresent()) {
-                throw new ResponseStatusException(HttpStatus.CREATED, "El usuairo existe");
+            UserModel userEntity;
+            if (!loginData.getEmail().isEmpty()) {
+                userEntity = repository.findByEmail(loginData.getEmail())
+                        .orElseThrow(() -> new ResponseStatusException(
+                                HttpStatus.NOT_FOUND,
+                                "No se encontró el usuario con ese email"
+                        ));
+            } else {
+                userEntity = repository.findByUsername(loginData.getUsername())
+                        .orElseThrow(() -> new ResponseStatusException(
+                                HttpStatus.NOT_FOUND,
+                                "No se encontró el usuario con ese nombre de usuario"
+                        ));
             }
 
-            String hashPass = BCrypt.hashpw(newUserModel.getPassword(), BCrypt.gensalt());
-
-
-            UserModel createUserModel = new UserModel();
-            newUserModel.setPassword(hashPass);
-            newUserModel.setUsername(newUserModel.getUsername());
-            newUserModel.setEmail(newUserModel.getEmail());
+            if (!BCrypt.checkpw(loginData.getPassword(), userEntity.getPassword())) {
+                throw new RuntimeException("Credenciales inválidas");
+            }
 
             PublicUserDto publicUserDto = new PublicUserDto.Builder().build();
-            UserMapper.INSTANCE.toPublicUserFromEntity(newUserModel, publicUserDto);
+
+            UserMapper mapper = UserMapper.INSTANCE;
+
+            mapper.toPublicUserFromEntity(userEntity, publicUserDto);
+
+            return publicUserDto;
+        }
+    }
+
+    public PublicUserDto createUser(UserModel newUserModel, LoginType loginType) {
+
+
+        try (Session session = entityManager.unwrap(Session.class)) {
+
+
+            if (repository.findByEmail(newUserModel.getEmail()).isPresent()) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El usuario ya existe");
+            }
+
+            newUserModel.setDeleted(false);
+
+            Filter filter = session.enableFilter("deletedUserFilter");
+            filter.setParameter("isDeleted", false);
+
+            if (loginType == LoginType.PASSWORD) {
+                String hashedPassword = BCrypt.hashpw(newUserModel.getPassword(), BCrypt.gensalt());
+                newUserModel.setPassword(hashedPassword);
+            }
 
             repository.save(newUserModel);
 
-            return publicUserDto;
-
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    public PublicUserDto delete(LoginDto userData) {
-
-        try {
-
-            Specification<UserModel> spec = Specification
-                    .where(SpecificationFilter.<UserModel>isNotDeleted())
-                    .and(SpecificationFilter.fieldEquals("email", userData.getEmail()));
-
-            Optional<UserModel> userExist = repository.findOne(spec);
-
-            if (userExist.isEmpty())
-                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No existe el usuario con el email " + userData.getEmail());
-
-            userExist.get().setDeleted(true);
-
-            repository.save(userExist.get());
+            session.disableFilter("deletedUserFilter");
 
             PublicUserDto publicUserDto = new PublicUserDto.Builder().build();
-            UserMapper.INSTANCE.toPublicUserFromEntity(userExist.get(), publicUserDto);
+
+            UserMapper mapper = UserMapper.INSTANCE;
+
+            mapper.toPublicUserFromEntity(newUserModel, publicUserDto);
+
             return publicUserDto;
-
         } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+            throw new RuntimeException("Error al crear el usuario: " + e.getMessage(), e);
         }
-
     }
 
-    public PublicUserDto updateUser(UserModel newUserData) {
 
-        try {
+    public PublicUserDto updateUser(UserModel updatedUser) {
+        UserModel user = repository.findById(updatedUser.getId())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuario no encontrado"));
 
-            Specification<UserModel> spec = Specification
-                    .where(SpecificationFilter.<UserModel>isNotDeleted())
-                    .and(SpecificationFilter.fieldEquals("email", newUserData.getEmail()));
-
-            Optional<UserModel> userExist = repository.findOne(spec);
-
-            if (userExist.isEmpty())
-                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No existe el usuario con el email " + newUserData.getEmail());
-
-            String hashPass = BCrypt.hashpw(newUserData.getPassword(), BCrypt.gensalt());
-
-            userExist.get().setUsername(newUserData.getUsername());
-            userExist.get().setPassword(hashPass);
-
-            repository.save(userExist.get());
-
-            PublicUserDto publicUserDto = new PublicUserDto.Builder().build();
-            UserMapper.INSTANCE.toPublicUserFromEntity(userExist.get(), publicUserDto);
-            return publicUserDto;
-
-        } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        if (updatedUser.getPassword() != null) {
+            String hashedPassword = BCrypt.hashpw(updatedUser.getPassword(), BCrypt.gensalt());
+            user.setPassword(hashedPassword);
         }
-
-    }
-
-    public PublicUserDto loginUser(LoginDto loginData) {
-        UserModel userEntity;
-        if (!loginData.getEmail().isEmpty()) {
-            userEntity = repository.findByEmail(loginData.getEmail())
-                    .orElseThrow(() -> new ResponseStatusException(
-                            HttpStatus.NOT_FOUND,
-                            "No se encontró el usuario con ese email"
-                    ));
-        } else {
-            Specification<UserModel> spec = Specification
-                    .where(SpecificationFilter.<UserModel>isNotDeleted())
-                    .and(SpecificationFilter.fieldEquals("username", loginData.getUsername()));
-
-            userEntity = repository.findOne(spec)
-                    .orElseThrow(() -> new ResponseStatusException(
-                            HttpStatus.NOT_FOUND,
-                            "No se encontró el usuario con ese nombre de usuario"
-                    ));
-        }
-
-        if (!BCrypt.checkpw(loginData.getPassword(), userEntity.getPassword())) {
-            throw new RuntimeException("Credenciales inválidas");
-        }
+        user.setUsername(updatedUser.getUsername());
+        repository.save(user);
 
         PublicUserDto publicUserDto = new PublicUserDto.Builder().build();
-        UserMapper.INSTANCE.toPublicUserFromEntity(userEntity, publicUserDto);
-        return publicUserDto;
 
+        UserMapper mapper = UserMapper.INSTANCE;
+
+        mapper.toPublicUserFromEntity(user, publicUserDto);
+
+        return publicUserDto;
+    }
+
+
+    public List<UserModel> findAllUsers(boolean includeDeleted) {
+        try (Session session = entityManager.unwrap(Session.class)) {
+            Filter filter = session.enableFilter("deletedUserFilter");
+            filter.setParameter("isDeleted", includeDeleted);
+
+            List<UserModel> users = repository.findAll();
+
+            session.disableFilter("deletedUserFilter");
+            return users;
+        }
     }
 
 
     public UserModel getDetailUser(String email) {
-        try {
+        try (Session session = entityManager.unwrap(Session.class)) {
+            Filter filter = session.enableFilter("deletedUserFilter");
+            filter.setParameter("isDeleted", false);
 
-            Specification<UserModel> spec = Specification
-                    .where(SpecificationFilter.<UserModel>isNotDeleted())
-                    .and(SpecificationFilter.fieldEquals("email", email));
-
-
-            Optional<UserModel> userExist = repository.findOne(spec);
-            if (userExist.isEmpty()) {
-                throw new Exception("El usuairo no existe");
-            } else {
-                return userExist.get();
-            }
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+            return repository.findByEmail(email)
+                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "El usuario no existe"));
         }
     }
 

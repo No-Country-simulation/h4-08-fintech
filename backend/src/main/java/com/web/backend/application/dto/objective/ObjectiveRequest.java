@@ -3,7 +3,7 @@ package com.web.backend.application.dto.objective;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 public record ObjectiveRequest(
         @NotNull(message = "El cliente no puede ser null")
@@ -13,6 +13,6 @@ public record ObjectiveRequest(
         String description,
         Float targetAmount,
         Float currentAmount,
-        Date dueDate,
+        LocalDateTime dueDate,
         Long objectiveStatusId
 ) {}

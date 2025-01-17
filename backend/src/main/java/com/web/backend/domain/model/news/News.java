@@ -5,7 +5,7 @@ import lombok.*;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -24,7 +24,7 @@ public class News {
     private String content;
     private String author;
     @Column(name = "publish_date")
-    private LocalDate publishDate;
+    private LocalDateTime publishDate;
     @ManyToOne
     @JoinColumn(name = "news_source_id")
     private NewsSource source;

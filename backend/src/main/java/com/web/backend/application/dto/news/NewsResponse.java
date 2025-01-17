@@ -1,7 +1,6 @@
 package com.web.backend.application.dto.news;
 
-
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public record NewsResponse(
         Long id,
@@ -10,6 +9,6 @@ public record NewsResponse(
         String author,
         String title,
         String content,
-        LocalDate publishDate
+        LocalDateTime publishDate
 ) {
 }

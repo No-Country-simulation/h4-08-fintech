@@ -1,7 +1,7 @@
 package com.web.backend.application.dto.objective;
 
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 public record ObjectiveResponse(
         Long id,
@@ -9,7 +9,7 @@ public record ObjectiveResponse(
         String description,
         Float targetAmount,
         Float currentAmount,
-        Date dueDate,
+        LocalDateTime dueDate,
         ObjectiveStatusResponse objectiveStatus
 ) {
 }

@@ -6,8 +6,7 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 import org.springframework.data.annotation.CreatedDate;
 
-import java.time.Instant;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -27,12 +26,11 @@ public class Investment {
     @JoinColumn(name = "investment_type_id")
     private InvestmentType investmentType;
     private Float amount;
-    @Column(name = "investment_date")
+    @Column(name = "investment_date", updatable = false)
     @CreatedDate
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date investmentDate;
+    private LocalDateTime investmentDate;
     @Column(name = "maturity_date")
-    private Date maturityDate;
+    private LocalDateTime maturityDate;
     @Column(name = "current_value")
     private Float currentValue;
     private String status;

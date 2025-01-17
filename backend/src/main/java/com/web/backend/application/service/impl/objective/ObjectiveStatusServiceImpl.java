@@ -4,9 +4,12 @@ import com.web.backend.application.dto.objective.ObjectiveStatusRequest;
 import com.web.backend.application.dto.objective.ObjectiveStatusResponse;
 import com.web.backend.application.exception.objective.ObjectiveStatusNotFoundException;
 import com.web.backend.application.service.interfaces.objective.ObjectiveStatusService;
+import com.web.backend.domain.model.objective.Objective;
 import com.web.backend.domain.model.objective.ObjectiveStatus;
+import com.web.backend.domain.repository.objective.ObjectiveRepository;
 import com.web.backend.domain.repository.objective.ObjectiveStatusRepository;
 import com.web.backend.infrastructure.api.utils.objective.ObjectiveStatusMapper;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +21,7 @@ import java.util.stream.Collectors;
 public class ObjectiveStatusServiceImpl implements ObjectiveStatusService {
 
     private final ObjectiveStatusRepository objectiveStatusRepository;
+    private final ObjectiveRepository objectiveRepository;
     private final ObjectiveStatusMapper objectiveStatusMapper;
 
     @Override
@@ -51,9 +55,17 @@ public class ObjectiveStatusServiceImpl implements ObjectiveStatusService {
     }
 
     @Override
+    @Transactional
     public void deleteObjectiveStatus(Long id) {
         ObjectiveStatus status = objectiveStatusRepository.findById(id)
                 .orElseThrow(() -> new ObjectiveStatusNotFoundException("ObjectiveStatus not found with id: " + id));
+
+        List<Objective> objectives = objectiveRepository.findByObjectiveStatus(status);
+        for(Objective objective : objectives) {
+            objective.setObjectiveStatus(null);
+        }
+        objectiveRepository.saveAll(objectives);
+
         status.setDeleted(true);
         objectiveStatusRepository.save(status);
     }

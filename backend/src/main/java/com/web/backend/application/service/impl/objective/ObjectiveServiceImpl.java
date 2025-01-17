@@ -63,9 +63,8 @@ public class ObjectiveServiceImpl implements ObjectiveService {
 
     @Override
     public void deleteObjective(Long id) {
-        Objective objective = objectiveRepository.findById(id)
-                .orElseThrow(() -> new ObjectiveNotFoundException("Objective not found with id: " + id));
-        objective.setDeleted(true);
-        objectiveRepository.save(objective);
+        if(!objectiveRepository.existsById(id))
+                throw new ObjectiveNotFoundException("Objective not found with id: " + id);
+        objectiveRepository.deleteById(id);
     }
 }

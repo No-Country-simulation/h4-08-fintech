@@ -53,9 +53,8 @@ public class NewsCategoryServiceImpl implements NewsCategoryService {
 
     @Override
     public void deleteNewsCategory(Long id) {
-        NewsCategory category = newsCategoryRepository.findById(id)
-                .orElseThrow(() -> new NewsCategoryNotFoundException("NewsCategory not found with id: " + id));
-        category.setDeleted(true);
-        newsCategoryRepository.save(category);
+        if(!newsCategoryRepository.existsById(id))
+                throw new NewsCategoryNotFoundException("NewsCategory not found with id: " + id);
+        newsCategoryRepository.deleteById(id);
     }
 }

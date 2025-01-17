@@ -66,7 +66,6 @@ public class ObjectiveStatusServiceImpl implements ObjectiveStatusService {
         }
         objectiveRepository.saveAll(objectives);
 
-        status.setDeleted(true);
-        objectiveStatusRepository.save(status);
+        objectiveStatusRepository.deleteById(id);
     }
 }

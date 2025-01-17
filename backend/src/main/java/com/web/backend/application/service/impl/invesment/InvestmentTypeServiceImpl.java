@@ -67,7 +67,6 @@ public class InvestmentTypeServiceImpl implements InvestmentTypeService {
         }
         investmentRepository.saveAll(investments);
 
-        investmentType.setDeleted(true);
-        investmentTypeRepository.save(investmentType);
+        investmentTypeRepository.deleteById(id);;
     }
 }

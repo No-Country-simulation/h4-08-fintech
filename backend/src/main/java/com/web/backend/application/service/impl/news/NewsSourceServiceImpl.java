@@ -52,9 +52,8 @@ public class NewsSourceServiceImpl implements NewsSourceService {
 
     @Override
     public void deleteNewsSource(Long id) {
-        NewsSource source = newsSourceRepository.findById(id)
-                .orElseThrow(() -> new NewsSourceNotFoundException("NewsSource not found with id: " + id));
-        source.setDeleted(true);
-        newsSourceRepository.save(source);
+        if(!newsSourceRepository.existsById(id))
+                throw new NewsSourceNotFoundException("NewsSource not found with id: " + id);
+        newsSourceRepository.deleteById(id);
     }
 }

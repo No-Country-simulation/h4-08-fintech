@@ -76,9 +76,8 @@ public class NewsServiceImpl implements NewsService {
 
     @Override
     public void deleteNews(Long id) {
-        News news = newsRepository.findById(id)
-                .orElseThrow(() -> new NewsNotFoundException("News not found with id: " + id));
-        news.setDeleted(true);
-        newsRepository.save(news);
+        if(!newsRepository.existsById(id))
+                throw new NewsNotFoundException("News not found with id: " + id);
+        newsRepository.deleteById(id);
     }
 }

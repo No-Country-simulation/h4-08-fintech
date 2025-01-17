@@ -2,6 +2,7 @@ package com.web.backend.application.service.impl.objective;
 
 import com.web.backend.application.dto.objective.ObjectiveStatusRequest;
 import com.web.backend.application.dto.objective.ObjectiveStatusResponse;
+import com.web.backend.application.exception.objective.ObjectiveStatusNotFoundException;
 import com.web.backend.application.service.interfaces.objective.ObjectiveStatusService;
 import com.web.backend.domain.model.objective.ObjectiveStatus;
 import com.web.backend.domain.repository.objective.ObjectiveStatusRepository;
@@ -22,14 +23,14 @@ public class ObjectiveStatusServiceImpl implements ObjectiveStatusService {
     @Override
     public ObjectiveStatusResponse createObjectiveStatus(ObjectiveStatusRequest request) {
         ObjectiveStatus status = objectiveStatusMapper.toObjectiveStatus(request);
-        status = objectiveStatusRepository.save(status);
+        objectiveStatusRepository.save(status);
         return objectiveStatusMapper.toObjectiveStatusResponse(status);
     }
 
     @Override
     public ObjectiveStatusResponse getObjectiveStatusById(Long id) {
         ObjectiveStatus status = objectiveStatusRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("ObjectiveStatus not found"));
+                .orElseThrow(() -> new ObjectiveStatusNotFoundException("ObjectiveStatus not found with id: " + id));
         return objectiveStatusMapper.toObjectiveStatusResponse(status);
     }
 
@@ -43,7 +44,7 @@ public class ObjectiveStatusServiceImpl implements ObjectiveStatusService {
     @Override
     public ObjectiveStatusResponse updateObjectiveStatus(Long id, ObjectiveStatusRequest request) {
         ObjectiveStatus status = objectiveStatusRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("ObjectiveStatus not found"));
+                .orElseThrow(() -> new ObjectiveStatusNotFoundException("ObjectiveStatus not found with id: " + id));
         objectiveStatusMapper.updateObjectiveStatusFromRequest(request, status);
         objectiveStatusRepository.save(status);
         return objectiveStatusMapper.toObjectiveStatusResponse(status);
@@ -52,7 +53,7 @@ public class ObjectiveStatusServiceImpl implements ObjectiveStatusService {
     @Override
     public void deleteObjectiveStatus(Long id) {
         ObjectiveStatus status = objectiveStatusRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("ObjectiveStatus not found"));
+                .orElseThrow(() -> new ObjectiveStatusNotFoundException("ObjectiveStatus not found with id: " + id));
         status.setDeleted(true);
         objectiveStatusRepository.save(status);
     }

@@ -2,6 +2,8 @@ package com.web.backend.application.service.impl.objective;
 
 import com.web.backend.application.dto.objective.ObjectiveRequest;
 import com.web.backend.application.dto.objective.ObjectiveResponse;
+import com.web.backend.application.exception.objective.ObjectiveNotFoundException;
+import com.web.backend.application.exception.objective.ObjectiveStatusNotFoundException;
 import com.web.backend.application.service.interfaces.objective.ObjectiveService;
 import com.web.backend.domain.model.objective.Objective;
 import com.web.backend.domain.model.objective.ObjectiveStatus;
@@ -23,13 +25,17 @@ public class ObjectiveServiceImpl implements ObjectiveService {
     @Override
     public ObjectiveResponse createObjective(ObjectiveRequest objectiveRequest) {
         Objective objective = objectiveMapper.toObjective(objectiveRequest);
+        ObjectiveStatus status = objectiveStatusRepository.findById(objectiveRequest.objectiveStatusId())
+                        .orElseThrow(() -> new ObjectiveStatusNotFoundException("Objective status not found with id: " + objectiveRequest.objectiveStatusId()));
+        objective.setObjectiveStatus(status);
         objectiveRepository.save(objective);
         return objectiveMapper.toObjectiveResponse(objective);
     }
 
     @Override
     public ObjectiveResponse getObjectiveById(Long id) {
-        Objective objective = objectiveRepository.findById(id).orElseThrow();
+        Objective objective = objectiveRepository.findById(id)
+                .orElseThrow(() -> new ObjectiveNotFoundException("Objective not found with id: " + id));
         return objectiveMapper.toObjectiveResponse(objective);
     }
 
@@ -41,12 +47,13 @@ public class ObjectiveServiceImpl implements ObjectiveService {
 
     @Override
     public ObjectiveResponse updateObjective(Long id, ObjectiveRequest objectiveRequest) {
-        Objective existingObjective = objectiveRepository.findById(id).orElseThrow();
+        Objective existingObjective = objectiveRepository.findById(id)
+                .orElseThrow(() -> new ObjectiveNotFoundException("Objective not found with id: " + id));
 
         objectiveMapper.updateObjectiveFromRequest(objectiveRequest, existingObjective);
         if(objectiveRequest.objectiveStatusId() != null) {
-            ObjectiveStatus objectiveStatus = objectiveStatusRepository.
-                    findById(objectiveRequest.objectiveStatusId()).orElseThrow();
+            ObjectiveStatus objectiveStatus = objectiveStatusRepository.findById(objectiveRequest.objectiveStatusId())
+                    .orElseThrow(() -> new ObjectiveStatusNotFoundException("Objective status not found with id: " + id));
             existingObjective.setObjectiveStatus(objectiveStatus);
         }
 
@@ -56,7 +63,8 @@ public class ObjectiveServiceImpl implements ObjectiveService {
 
     @Override
     public void deleteObjective(Long id) {
-        Objective objective = objectiveRepository.findById(id).orElseThrow();
+        Objective objective = objectiveRepository.findById(id)
+                .orElseThrow(() -> new ObjectiveNotFoundException("Objective not found with id: " + id));
         objective.setDeleted(true);
         objectiveRepository.save(objective);
     }

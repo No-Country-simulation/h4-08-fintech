@@ -1,7 +1,7 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { ChevronLeft, Home, Plane, PiggyBank, TrendingUp, Wallet2, GraduationCap } from 'lucide-react'
 
-export default function FinancialGoals() {
+export const FinancialGoals = ({setAvailableToContinue}) => {
   const [selectedGoals, setSelectedGoals] = useState([])
 
   const goals = [
@@ -44,6 +44,12 @@ export default function FinancialGoals() {
       setSelectedGoals([...selectedGoals, goalId])
     }
   }
+
+  useEffect(() => {
+    if(selectedGoals.length >= 1 && selectedGoals.length <= 3){
+      setAvailableToContinue(true)
+    }
+  }, [selectedGoals])
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#E8F3FF] via-[#E3FFE7] to-[#DAFFDF] p-4">
@@ -93,16 +99,16 @@ export default function FinancialGoals() {
           Selecciona hasta 3 objetivos
         </div>
 
-        <div className="fixed bottom-0 left-0 right-0 p-4 bg-transparent">
+        {/* <div className="fixed bottom-0 left-0 right-0 p-4 bg-transparent">
           <div className="flex justify-center gap-[6px] mb-4">
             <div className="w-8 h-1.5 rounded-full bg-[#0051FF]" />
             <div className="w-8 h-1.5 rounded-full bg-gray-200" />
             <div className="w-8 h-1.5 rounded-full bg-gray-200" />
             <div className="w-8 h-1.5 rounded-full bg-gray-200" />
             <div className="w-8 h-1.5 rounded-full bg-gray-200" />
-          </div>
+          </div> */}
           
-          <button
+{/*           <button
             className={`w-full h-[52px] rounded-[14px] font-medium text-[15px] transition-colors ${
               selectedGoals.length > 0
                 ? 'bg-[#0051FF] text-white'
@@ -111,8 +117,8 @@ export default function FinancialGoals() {
             disabled={selectedGoals.length === 0}
           >
             Continuar
-          </button>
-        </div>
+          </button> */}
+        {/* </div> */}
       </div>
     </div>
   )

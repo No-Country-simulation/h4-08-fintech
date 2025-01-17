@@ -21,12 +21,15 @@ export const Onboarding = () => {
 
   return (
     <div className="flex flex-col items-center justify-center bg-gradient bg-center h-screen w-screen relative">
+     {
+      step > 1 ?
       <button
         onClick={handleBack}
         className="flex items-center justify-center w-[55px] h-[55px] bg-button border-2 border-gradient-stroke rounded-xl absolute top-5 left-5"
       >
         <img src={ArrowBack} className="w-[24px]" alt="flecha hacia atras" />
-      </button>
+      </button> : null
+     } 
       {step === 1 && <OnboardingStep1 onNext={handleNext} />}
       {step === 2 && <OnboardingCard onNext={handleNext} />}
 

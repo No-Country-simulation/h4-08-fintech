@@ -1,6 +1,5 @@
 package com.web.backend.application.dto.objective;
 
-import com.web.backend.domain.model.objective.ObjectiveStatus;
 
 import java.util.Date;
 
@@ -11,7 +10,7 @@ public record ObjectiveResponse(
         Float targetAmount,
         Float currentAmount,
         Date dueDate,
-        ObjectiveStatus objectiveStatus,
+        ObjectiveStatusResponse objectiveStatus,
         boolean isDeleted
 ) {
 }

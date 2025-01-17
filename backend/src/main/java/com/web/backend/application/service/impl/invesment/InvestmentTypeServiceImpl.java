@@ -41,8 +41,8 @@ public class InvestmentTypeServiceImpl implements InvestmentTypeService {
     }
 
     @Override
-    public List<InvestmentTypeResponse> getAllInvestmentTypes() {
-        List<InvestmentType> investmentTypes = investmentTypeRepository.findAll();
+    public List<InvestmentTypeResponse> getInvestmentTypesByDeleted(boolean deleted) {
+        List<InvestmentType> investmentTypes = investmentTypeRepository.findAllByIsDeleted(deleted);
         return investmentTypes.stream().map(investmentTypeMapper::toInvestmentTypeResponse).toList();
     }
 

@@ -8,7 +8,7 @@ import java.util.List;
 public interface NewsSourceService {
     NewsSourceResponse createNewsSource(NewsSourceRequest request);
     NewsSourceResponse getNewsSourceById(Long id);
-    List<NewsSourceResponse> getAllNewsSources();
+    List<NewsSourceResponse> getNewsSourcesByDeleted(boolean deleted);
     NewsSourceResponse updateNewsSource(Long id, NewsSourceRequest request);
     void deleteNewsSource(Long id);
 }

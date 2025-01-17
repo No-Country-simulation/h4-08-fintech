@@ -31,8 +31,10 @@ public class ObjectiveController {
     }
 
     @GetMapping
-    public ResponseEntity<List<ObjectiveResponse>> getALlObjectives() {
-        List<ObjectiveResponse> objectives = objectiveService.getAllObjectives();
+    public ResponseEntity<List<ObjectiveResponse>> getObjectivesByDeleted(
+            @RequestParam(name = "deleted", defaultValue = "false") boolean deleted
+    ) {
+        List<ObjectiveResponse> objectives = objectiveService.getObjectivesByDeleted(deleted);
         return ResponseEntity.ok(objectives);
     }
 

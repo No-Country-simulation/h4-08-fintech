@@ -28,8 +28,10 @@ public class ObjectiveStatusController {
     }
 
     @GetMapping
-    public ResponseEntity<List<ObjectiveStatusResponse>> getAllObjectiveStatuses() {
-        return ResponseEntity.ok(objectiveStatusService.getAllObjectiveStatuses());
+    public ResponseEntity<List<ObjectiveStatusResponse>> getObjectiveStatusesByDeleted(
+            @RequestParam(name = "deleted", defaultValue = "false") boolean deleted
+    ) {
+        return ResponseEntity.ok(objectiveStatusService.getObjectiveStatusesByDeleted(deleted));
     }
 
     @PutMapping("/{id}")

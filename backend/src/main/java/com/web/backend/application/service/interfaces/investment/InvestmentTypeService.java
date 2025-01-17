@@ -10,7 +10,7 @@ public interface InvestmentTypeService {
 
     InvestmentTypeResponse getInvestmentTypeById(Long id);
 
-    List<InvestmentTypeResponse> getAllInvestmentTypes();
+    List<InvestmentTypeResponse> getInvestmentTypesByDeleted(boolean deleted);
 
     InvestmentTypeResponse updateInvestmentType(Long id, InvestmentTypeRequest InvestmentTypeDTO);
 

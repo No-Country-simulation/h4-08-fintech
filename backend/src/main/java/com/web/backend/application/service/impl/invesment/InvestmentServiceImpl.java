@@ -43,8 +43,8 @@ public class InvestmentServiceImpl implements InvestmentService {
     }
 
     @Override
-    public List<InvestmentResponse> getAllInvestments() {
-        List<Investment> investments = investmentRepository.findAll();
+    public List<InvestmentResponse> getInvestmentsByDeleted(boolean deleted) {
+        List<Investment> investments = investmentRepository.findAllByIsDeleted(deleted);
         return investments.stream().map(investmentMapper::toInvestmentResponse).toList();
     }
 

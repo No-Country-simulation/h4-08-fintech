@@ -49,9 +49,9 @@ public class NewsServiceImpl implements NewsService {
     }
 
     @Override
-    public List<NewsResponse> getAllNews() {
-        return newsRepository.findAll().stream()
-                .map(newsMapper::toNewsResponse)
+    public List<NewsResponse> getNewsByDeleted(boolean deleted) {
+        List<News> news = newsRepository.findAllByIsDeleted(deleted);
+        return news.stream().map(newsMapper::toNewsResponse)
                 .collect(Collectors.toList());
     }
 

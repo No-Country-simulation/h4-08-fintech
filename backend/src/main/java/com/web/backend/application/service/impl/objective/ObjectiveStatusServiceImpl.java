@@ -39,9 +39,9 @@ public class ObjectiveStatusServiceImpl implements ObjectiveStatusService {
     }
 
     @Override
-    public List<ObjectiveStatusResponse> getAllObjectiveStatuses() {
-        return objectiveStatusRepository.findAll().stream()
-                .map(objectiveStatusMapper::toObjectiveStatusResponse)
+    public List<ObjectiveStatusResponse> getObjectiveStatusesByDeleted(boolean deleted) {
+        List<ObjectiveStatus> objectiveStatuses = objectiveStatusRepository.findAllByIsDeleted(deleted);
+        return objectiveStatuses.stream().map(objectiveStatusMapper::toObjectiveStatusResponse)
                 .collect(Collectors.toList());
     }
 

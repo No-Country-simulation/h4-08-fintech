@@ -28,8 +28,10 @@ public class NewsSourceController {
     }
 
     @GetMapping
-    public ResponseEntity<List<NewsSourceResponse>> getAllNewsSources() {
-        return ResponseEntity.ok(newsSourceService.getAllNewsSources());
+    public ResponseEntity<List<NewsSourceResponse>> getNewsSourcesByDeleted(
+            @RequestParam boolean deleted
+    ) {
+        return ResponseEntity.ok(newsSourceService.getNewsSourcesByDeleted(deleted));
     }
 
     @PutMapping("/{id}")

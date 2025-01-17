@@ -19,25 +19,27 @@ public class InvestmentTypeController {
     private final InvestmentTypeService investmentTypeService;
 
     @PostMapping
-    public ResponseEntity<InvestmentTypeResponse> createInvestment(@Valid @RequestBody InvestmentTypeRequest Investment) {
+    public ResponseEntity<InvestmentTypeResponse> createInvestmentType(@Valid @RequestBody InvestmentTypeRequest Investment) {
         InvestmentTypeResponse createdInvestmentType = investmentTypeService.createInvestmentType(Investment);
         return new ResponseEntity<>(createdInvestmentType, HttpStatus.CREATED);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<InvestmentTypeResponse> getInvestment(@PathVariable Long id) {
+    public ResponseEntity<InvestmentTypeResponse> getInvestmentType(@PathVariable Long id) {
         InvestmentTypeResponse investmentType = investmentTypeService.getInvestmentTypeById(id);
         return ResponseEntity.ok(investmentType);
     }
 
     @GetMapping
-    public ResponseEntity<List<InvestmentTypeResponse>> getAllInvestments(@RequestParam(name = "deleted", defaultValue = "false") boolean deleted) {
+    public ResponseEntity<List<InvestmentTypeResponse>> getInvestmentTypesByDeleted(
+            @RequestParam(name = "deleted", defaultValue = "false") boolean deleted
+    ) {
         List<InvestmentTypeResponse> investmentTypes = investmentTypeService.getInvestmentTypesByDeleted(deleted);
         return ResponseEntity.ok(investmentTypes);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<InvestmentTypeResponse> updateInvestment(@PathVariable Long id, @RequestBody InvestmentTypeRequest investmentType) {
+    public ResponseEntity<InvestmentTypeResponse> updateInvestmentType(@PathVariable Long id, @RequestBody InvestmentTypeRequest investmentType) {
         InvestmentTypeResponse updatedInvestmentType = investmentTypeService.updateInvestmentType(id, investmentType);
         return ResponseEntity.ok(updatedInvestmentType);
     }

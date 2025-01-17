@@ -35,9 +35,9 @@ public class NewsSourceServiceImpl implements NewsSourceService {
     }
 
     @Override
-    public List<NewsSourceResponse> getAllNewsSources() {
-        return newsSourceRepository.findAll().stream()
-                .map(newsSourceMapper::toNewsSourceResponse)
+    public List<NewsSourceResponse> getNewsSourcesByDeleted(boolean deleted) {
+        List<NewsSource> newsSources = newsSourceRepository.findAllByIsDeleted(deleted);
+        return newsSources.stream().map(newsSourceMapper::toNewsSourceResponse)
                 .collect(Collectors.toList());
     }
 

@@ -8,7 +8,7 @@ import java.util.List;
 public interface ObjectiveStatusService {
     ObjectiveStatusResponse createObjectiveStatus(ObjectiveStatusRequest request);
     ObjectiveStatusResponse getObjectiveStatusById(Long id);
-    List<ObjectiveStatusResponse> getAllObjectiveStatuses();
+    List<ObjectiveStatusResponse> getObjectiveStatusesByDeleted(boolean deleted);
     ObjectiveStatusResponse updateObjectiveStatus(Long id, ObjectiveStatusRequest request);
     void deleteObjectiveStatus(Long id);
 }

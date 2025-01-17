@@ -10,7 +10,7 @@ public interface ObjectiveService {
 
     ObjectiveResponse getObjectiveById(Long id);
 
-    List<ObjectiveResponse> getAllObjectives();
+    List<ObjectiveResponse> getObjectivesByDeleted(boolean deleted);
 
     ObjectiveResponse updateObjective(Long id, ObjectiveRequest objectiveRequest);
 

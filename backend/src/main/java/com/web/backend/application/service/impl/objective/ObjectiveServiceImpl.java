@@ -40,8 +40,8 @@ public class ObjectiveServiceImpl implements ObjectiveService {
     }
 
     @Override
-    public List<ObjectiveResponse> getAllObjectives() {
-        List<Objective> objectives = objectiveRepository.findAll();
+    public List<ObjectiveResponse> getObjectivesByDeleted(boolean deleted) {
+        List<Objective> objectives = objectiveRepository.findAllByIsDeleted(deleted);
         return objectives.stream().map(objectiveMapper::toObjectiveResponse).toList();
     }
 

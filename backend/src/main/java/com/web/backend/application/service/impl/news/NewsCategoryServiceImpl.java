@@ -36,9 +36,9 @@ public class NewsCategoryServiceImpl implements NewsCategoryService {
     }
 
     @Override
-    public List<NewsCategoryResponse> getAllNewsCategories() {
-        return newsCategoryRepository.findAll().stream()
-                .map(newsCategoryMapper::toNewsCategoryResponse)
+    public List<NewsCategoryResponse> getNewsCategoriesByDeleted(boolean deleted) {
+        List<NewsCategory> newsCategories = newsCategoryRepository.findAllByIsDeleted(deleted);
+        return newsCategories.stream().map(newsCategoryMapper::toNewsCategoryResponse)
                 .collect(Collectors.toList());
     }
 
@@ -47,7 +47,7 @@ public class NewsCategoryServiceImpl implements NewsCategoryService {
         NewsCategory category = newsCategoryRepository.findById(id)
                 .orElseThrow(() -> new NewsNotFoundException("NewsCategory not found with id: " + id));
         newsCategoryMapper.updateNewsCategoryFromRequest(request, category);
-        category = newsCategoryRepository.save(category);
+        newsCategoryRepository.save(category);
         return newsCategoryMapper.toNewsCategoryResponse(category);
     }
 

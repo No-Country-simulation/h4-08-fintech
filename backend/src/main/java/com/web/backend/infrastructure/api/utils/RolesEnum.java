@@ -1,4 +1,6 @@
 package com.web.backend.infrastructure.api.utils;
 
-public interface UserMapper {
+public enum RolesEnum {
+    USER,
+    ADMIN
 }

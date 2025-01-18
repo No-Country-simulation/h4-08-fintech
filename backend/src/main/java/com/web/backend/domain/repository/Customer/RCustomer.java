@@ -7,6 +7,6 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
 import java.util.Optional;
 
-public interface RCustomer extends JpaRepository<Customer, Long>, JpaSpecificationExecutor<Customer> {
+public interface RCustomer extends JpaRepository<Customer, Long>{
     Optional<Customer> findByPhoneNumber(String phoneNumber);
 }

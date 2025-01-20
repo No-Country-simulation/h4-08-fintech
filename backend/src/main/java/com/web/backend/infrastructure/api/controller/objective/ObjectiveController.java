@@ -27,8 +27,7 @@ public class ObjectiveController {
 
     @PostMapping
     @Operation(summary = "Create a new objective", description = "Creates a new objective based on the provided request")
-    @ApiResponse(responseCode = "201", description = "Objective created successfully", 
-                 content = @Content(schema = @Schema(implementation = ObjectiveResponse.class)))
+    @ApiResponse(responseCode = "201", description = "Objective created successfully")
     public ResponseEntity<ObjectiveResponse> createObjective(
             @Valid @RequestBody @Parameter(description = "Objective details", required = true) ObjectiveRequest objectiveRequest) {
         ObjectiveResponse createdObjective = objectiveService.createObjective(objectiveRequest);
@@ -37,8 +36,7 @@ public class ObjectiveController {
 
     @GetMapping("/{id}")
     @Operation(summary = "Get an objective by ID", description = "Retrieves an objective based on the provided ID")
-    @ApiResponse(responseCode = "200", description = "Objective found", 
-                 content = @Content(schema = @Schema(implementation = ObjectiveResponse.class)))
+    @ApiResponse(responseCode = "200", description = "Objective found")
     @ApiResponse(responseCode = "404", description = "Objective not found", content = @Content)
     public ResponseEntity<ObjectiveResponse> getObjective(
             @PathVariable @Parameter(description = "Objective ID", required = true) Long id) {
@@ -48,8 +46,7 @@ public class ObjectiveController {
 
     @GetMapping
     @Operation(summary = "Get objectives by deletion status", description = "Retrieves a list of objectives based on their deletion status")
-    @ApiResponse(responseCode = "200", description = "List of objectives", 
-                 content = @Content(schema = @Schema(implementation = ObjectiveResponse.class)))
+    @ApiResponse(responseCode = "200", description = "List of objectives")
     public ResponseEntity<List<ObjectiveResponse>> getObjectivesByDeleted(
             @RequestParam(name = "deleted", defaultValue = "false") 
             @Parameter(description = "Deletion status (true/false)", required = false) boolean deleted) {
@@ -59,8 +56,7 @@ public class ObjectiveController {
 
     @PutMapping("/{id}")
     @Operation(summary = "Update an objective", description = "Updates an existing objective based on the provided ID and request")
-    @ApiResponse(responseCode = "200", description = "Objective updated successfully", 
-                 content = @Content(schema = @Schema(implementation = ObjectiveResponse.class)))
+    @ApiResponse(responseCode = "200", description = "Objective updated successfully")
     @ApiResponse(responseCode = "404", description = "Objective not found", content = @Content)
     public ResponseEntity<ObjectiveResponse> updateObjective(
             @PathVariable @Parameter(description = "Objective ID", required = true) Long id,
@@ -72,7 +68,7 @@ public class ObjectiveController {
     @DeleteMapping("/{id}")
     @Operation(summary = "Delete an objective", description = "Deletes an objective based on the provided ID")
     @ApiResponse(responseCode = "204", description = "Objective deleted successfully")
-    @ApiResponse(responseCode = "404", description = "Objective not found", content = @Content)
+    @ApiResponse(responseCode = "404", description = "Objective not found")
     public ResponseEntity<Void> deleteObjective(
             @PathVariable @Parameter(description = "Objective ID", required = true) Long id) {
         objectiveService.deleteObjective(id);

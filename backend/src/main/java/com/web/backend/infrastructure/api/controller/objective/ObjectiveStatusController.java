@@ -26,8 +26,7 @@ public class ObjectiveStatusController {
 
     @PostMapping
     @Operation(summary = "Create a new objective status", description = "Creates a new objective status based on the provided request")
-    @ApiResponse(responseCode = "200", description = "Objective status created successfully", 
-                 content = @Content(schema = @Schema(implementation = ObjectiveStatusResponse.class)))
+    @ApiResponse(responseCode = "201", description = "Objective status created successfully")
     public ResponseEntity<ObjectiveStatusResponse> createObjectiveStatus(
             @Valid @RequestBody @Parameter(description = "Objective status details", required = true) ObjectiveStatusRequest request) {
         return ResponseEntity.ok(objectiveStatusService.createObjectiveStatus(request));
@@ -35,8 +34,7 @@ public class ObjectiveStatusController {
 
     @GetMapping("/{id}")
     @Operation(summary = "Get an objective status by ID", description = "Retrieves an objective status based on the provided ID")
-    @ApiResponse(responseCode = "200", description = "Objective status found", 
-                 content = @Content(schema = @Schema(implementation = ObjectiveStatusResponse.class)))
+    @ApiResponse(responseCode = "200", description = "Objective status found")
     @ApiResponse(responseCode = "404", description = "Objective status not found", content = @Content)
     public ResponseEntity<ObjectiveStatusResponse> getObjectiveStatus(
             @PathVariable @Parameter(description = "Objective status ID", required = true) Long id) {
@@ -45,8 +43,7 @@ public class ObjectiveStatusController {
 
     @GetMapping
     @Operation(summary = "Get objective statuses by deletion status", description = "Retrieves a list of objective statuses based on their deletion status")
-    @ApiResponse(responseCode = "200", description = "List of objective statuses", 
-                 content = @Content(schema = @Schema(implementation = ObjectiveStatusResponse.class)))
+    @ApiResponse(responseCode = "200", description = "List of objective statuses")
     public ResponseEntity<List<ObjectiveStatusResponse>> getObjectiveStatusesByDeleted(
             @RequestParam(name = "deleted", defaultValue = "false") 
             @Parameter(description = "Deletion status (true/false)", required = false) boolean deleted) {
@@ -55,8 +52,7 @@ public class ObjectiveStatusController {
 
     @PutMapping("/{id}")
     @Operation(summary = "Update an objective status", description = "Updates an existing objective status based on the provided ID and request")
-    @ApiResponse(responseCode = "200", description = "Objective status updated successfully", 
-                 content = @Content(schema = @Schema(implementation = ObjectiveStatusResponse.class)))
+    @ApiResponse(responseCode = "200", description = "Objective status updated successfully")
     @ApiResponse(responseCode = "404", description = "Objective status not found", content = @Content)
     public ResponseEntity<ObjectiveStatusResponse> updateObjectiveStatus(
             @PathVariable @Parameter(description = "Objective status ID", required = true) Long id,
@@ -67,7 +63,7 @@ public class ObjectiveStatusController {
     @DeleteMapping("/{id}")
     @Operation(summary = "Delete an objective status", description = "Deletes an objective status based on the provided ID")
     @ApiResponse(responseCode = "204", description = "Objective status deleted successfully")
-    @ApiResponse(responseCode = "404", description = "Objective status not found", content = @Content)
+    @ApiResponse(responseCode = "404", description = "Objective status not found")
     public ResponseEntity<Void> deleteObjectiveStatus(
             @PathVariable @Parameter(description = "Objective status ID", required = true) Long id) {
         objectiveStatusService.deleteObjectiveStatus(id);

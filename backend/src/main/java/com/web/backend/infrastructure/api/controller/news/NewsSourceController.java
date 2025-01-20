@@ -26,8 +26,7 @@ public class NewsSourceController {
 
     @PostMapping
     @Operation(summary = "Create a new news source", description = "Creates a new news source based on the provided request")
-    @ApiResponse(responseCode = "201", description = "News source created successfully",
-            content = @Content(schema = @Schema(implementation = NewsSourceResponse.class)))
+    @ApiResponse(responseCode = "201", description = "News source created successfully")
     public ResponseEntity<NewsSourceResponse> createNewsSource(
             @Valid @RequestBody @Parameter(description = "News source request payload") NewsSourceRequest request) {
         return ResponseEntity.status(HttpStatus.CREATED).body(newsSourceService.createNewsSource(request));
@@ -35,8 +34,7 @@ public class NewsSourceController {
 
     @GetMapping("/{id}")
     @Operation(summary = "Get news source by ID", description = "Retrieves a news source by its ID")
-    @ApiResponse(responseCode = "200", description = "News source retrieved successfully",
-            content = @Content(schema = @Schema(implementation = NewsSourceResponse.class)))
+    @ApiResponse(responseCode = "200", description = "News source retrieved successfully")
     @ApiResponse(responseCode = "404", description = "News source not found", content = @Content)
     public ResponseEntity<NewsSourceResponse> getNewsSource(
             @Parameter(description = "ID of the news source to be retrieved") @PathVariable Long id) {
@@ -45,8 +43,7 @@ public class NewsSourceController {
 
     @GetMapping
     @Operation(summary = "Get news sources by deleted status", description = "Retrieves a list of news sources based on their deleted status")
-    @ApiResponse(responseCode = "200", description = "News sources list retrieved successfully",
-            content = @Content(schema = @Schema(implementation = NewsSourceResponse.class)))
+    @ApiResponse(responseCode = "200", description = "News sources list retrieved successfully")
     public ResponseEntity<List<NewsSourceResponse>> getNewsSourcesByDeleted(
             @Parameter(description = "Filter news sources by deleted status") @RequestParam boolean deleted) {
         return ResponseEntity.ok(newsSourceService.getNewsSourcesByDeleted(deleted));
@@ -54,8 +51,7 @@ public class NewsSourceController {
 
     @PutMapping("/{id}")
     @Operation(summary = "Update news source", description = "Updates an existing news source and returns the updated details")
-    @ApiResponse(responseCode = "200", description = "News source updated successfully",
-            content = @Content(schema = @Schema(implementation = NewsSourceResponse.class)))
+    @ApiResponse(responseCode = "200", description = "News source updated successfully")
     @ApiResponse(responseCode = "404", description = "News source not found", content = @Content)
     public ResponseEntity<NewsSourceResponse> updateNewsSource(
             @Parameter(description = "ID of the news source to be updated") @PathVariable Long id,
@@ -66,7 +62,7 @@ public class NewsSourceController {
     @DeleteMapping("/{id}")
     @Operation(summary = "Delete news source", description = "Deletes a news source by its ID")
     @ApiResponse(responseCode = "204", description = "News source deleted successfully")
-    @ApiResponse(responseCode = "404", description = "News source not found", content = @Content)
+    @ApiResponse(responseCode = "404", description = "News source not found")
     public ResponseEntity<Void> deleteNewsSource(
             @Parameter(description = "ID of the news source to be deleted") @PathVariable Long id) {
         newsSourceService.deleteNewsSource(id);

@@ -27,8 +27,7 @@ public class InvestmentTypeController {
 
     @PostMapping
     @Operation(summary = "Create a new investment type", description = "Creates a new investment type based on the provided request")
-    @ApiResponse(responseCode = "201", description = "Investment type created successfully",
-            content = @Content(schema = @Schema(implementation = InvestmentTypeResponse.class)))
+    @ApiResponse(responseCode = "201", description = "Investment type created successfully")
     public ResponseEntity<InvestmentTypeResponse> createInvestmentType(
             @Valid @RequestBody @Parameter(description = "Investment type details", required = true) InvestmentTypeRequest investmentType) {
         InvestmentTypeResponse createdInvestmentType = investmentTypeService.createInvestmentType(investmentType);
@@ -37,8 +36,7 @@ public class InvestmentTypeController {
 
     @GetMapping("/{id}")
     @Operation(summary = "Get an investment type by ID", description = "Retrieves an investment type based on the provided ID")
-    @ApiResponse(responseCode = "200", description = "Investment type found",
-            content = @Content(schema = @Schema(implementation = InvestmentTypeResponse.class)))
+    @ApiResponse(responseCode = "200", description = "Investment type found")
     @ApiResponse(responseCode = "404", description = "Investment type not found", content = @Content)
     public ResponseEntity<InvestmentTypeResponse> getInvestmentType(
             @PathVariable @Parameter(description = "Investment type ID", required = true) Long id) {
@@ -48,8 +46,7 @@ public class InvestmentTypeController {
 
     @GetMapping
     @Operation(summary = "Get investment types by deletion status", description = "Retrieves a list of investment types based on their deletion status")
-    @ApiResponse(responseCode = "200", description = "List of investment types",
-            content = @Content(schema = @Schema(implementation = InvestmentTypeResponse.class)))
+    @ApiResponse(responseCode = "200", description = "List of investment types")
     public ResponseEntity<List<InvestmentTypeResponse>> getInvestmentTypesByDeleted(
             @RequestParam(name = "deleted", defaultValue = "false")
             @Parameter(description = "Deletion status (true/false)", required = false) boolean deleted) {
@@ -59,8 +56,7 @@ public class InvestmentTypeController {
 
     @PutMapping("/{id}")
     @Operation(summary = "Update an investment type", description = "Updates an existing investment type based on the provided ID and request")
-    @ApiResponse(responseCode = "200", description = "Investment type updated successfully",
-            content = @Content(schema = @Schema(implementation = InvestmentTypeResponse.class)))
+    @ApiResponse(responseCode = "200", description = "Investment type updated successfully")
     @ApiResponse(responseCode = "404", description = "Investment type not found", content = @Content)
     public ResponseEntity<InvestmentTypeResponse> updateInvestmentType(
             @PathVariable @Parameter(description = "Investment type ID", required = true) Long id,
@@ -72,7 +68,7 @@ public class InvestmentTypeController {
     @DeleteMapping("/{id}")
     @Operation(summary = "Delete an investment type", description = "Deletes an investment type based on the provided ID")
     @ApiResponse(responseCode = "204", description = "Investment type deleted successfully")
-    @ApiResponse(responseCode = "404", description = "Investment type not found", content = @Content)
+    @ApiResponse(responseCode = "404", description = "Investment type not found")
     public ResponseEntity<Void> deleteInvestmentType(
             @PathVariable @Parameter(description = "Investment type ID", required = true) Long id) {
         investmentTypeService.deleteInvestmentType(id);

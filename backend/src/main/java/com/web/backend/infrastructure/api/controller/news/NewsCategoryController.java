@@ -27,8 +27,7 @@ public class NewsCategoryController {
 
     @PostMapping
     @Operation(summary = "Create a new news category", description = "Creates a new news category based on the provided request")
-    @ApiResponse(responseCode = "201", description = "News category created successfully",
-            content = @Content(schema = @Schema(implementation = NewsCategoryResponse.class)))
+    @ApiResponse(responseCode = "201", description = "News category created successfully")
     public ResponseEntity<NewsCategoryResponse> createNewsCategory(
             @Valid @RequestBody @Parameter(description = "News category details", required = true) NewsCategoryRequest newsCategory) {
         NewsCategoryResponse createdNewsCategory = newsCategoryService.createNewsCategory(newsCategory);
@@ -37,9 +36,8 @@ public class NewsCategoryController {
 
     @GetMapping("/{id}")
     @Operation(summary = "Get a news category by ID", description = "Retrieves a news category based on the provided ID")
-    @ApiResponse(responseCode = "200", description = "News category found",
-            content = @Content(schema = @Schema(implementation = NewsCategoryResponse.class)))
-    @ApiResponse(responseCode = "404", description = "News category not found", content = @Content)
+    @ApiResponse(responseCode = "200", description = "News category found")
+    @ApiResponse(responseCode = "404", description = "News category not found")
     public ResponseEntity<NewsCategoryResponse> getNewsCategory(
             @PathVariable @Parameter(description = "News category ID", required = true) Long id) {
         NewsCategoryResponse newsCategory = newsCategoryService.getNewsCategoryById(id);
@@ -48,8 +46,7 @@ public class NewsCategoryController {
 
     @GetMapping
     @Operation(summary = "Get news categories by deletion status", description = "Retrieves a list of news categories based on their deletion status")
-    @ApiResponse(responseCode = "200", description = "List of news categories",
-            content = @Content(schema = @Schema(implementation = NewsCategoryResponse.class)))
+    @ApiResponse(responseCode = "200", description = "List of news categories")
     public ResponseEntity<List<NewsCategoryResponse>> getNewsCategoriesByDeleted(
             @RequestParam(name = "deleted", defaultValue = "false")
             @Parameter(description = "Deletion status (true/false)", required = false) boolean deleted) {
@@ -59,9 +56,8 @@ public class NewsCategoryController {
 
     @PutMapping("/{id}")
     @Operation(summary = "Update a news category", description = "Updates an existing news category based on the provided ID and request")
-    @ApiResponse(responseCode = "200", description = "News category updated successfully",
-            content = @Content(schema = @Schema(implementation = NewsCategoryResponse.class)))
-    @ApiResponse(responseCode = "404", description = "News category not found", content = @Content)
+    @ApiResponse(responseCode = "200", description = "News category updated successfully")
+    @ApiResponse(responseCode = "404", description = "News category not found")
     public ResponseEntity<NewsCategoryResponse> updateNewsCategory(
             @PathVariable @Parameter(description = "News category ID", required = true) Long id,
             @RequestBody @Parameter(description = "Updated news category details", required = true) NewsCategoryRequest newsCategory) {
@@ -72,7 +68,7 @@ public class NewsCategoryController {
     @DeleteMapping("/{id}")
     @Operation(summary = "Delete a news category", description = "Deletes a news category based on the provided ID")
     @ApiResponse(responseCode = "204", description = "News category deleted successfully")
-    @ApiResponse(responseCode = "404", description = "News category not found", content = @Content)
+    @ApiResponse(responseCode = "404", description = "News category not found")
     public ResponseEntity<Void> deleteNewsCategory(
             @PathVariable @Parameter(description = "News category ID", required = true) Long id) {
         newsCategoryService.deleteNewsCategory(id);

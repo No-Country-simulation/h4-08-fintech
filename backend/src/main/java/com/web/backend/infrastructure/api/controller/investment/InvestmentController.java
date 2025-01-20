@@ -27,8 +27,7 @@ public class InvestmentController {
 
     @PostMapping
     @Operation(summary = "Create a new investment", description = "Creates a new investment based on the provided request")
-    @ApiResponse(responseCode = "201", description = "Investment created successfully",
-                 content = @Content(schema = @Schema(implementation = InvestmentResponse.class)))
+    @ApiResponse(responseCode = "201", description = "Investment created successfully")
     public ResponseEntity<InvestmentResponse> createInvestment(
             @Valid @RequestBody @Parameter(description = "Investment details", required = true) InvestmentRequest investment) {
         InvestmentResponse createdInvestment = investmentService.createInvestment(investment);
@@ -37,8 +36,7 @@ public class InvestmentController {
 
     @GetMapping("/{id}")
     @Operation(summary = "Get an investment by ID", description = "Retrieves an investment based on the provided ID")
-    @ApiResponse(responseCode = "200", description = "Investment found",
-                 content = @Content(schema = @Schema(implementation = InvestmentResponse.class)))
+    @ApiResponse(responseCode = "200", description = "Investment found")
     @ApiResponse(responseCode = "404", description = "Investment not found", content = @Content)
     public ResponseEntity<InvestmentResponse> getInvestment(
             @PathVariable @Parameter(description = "Investment ID", required = true) Long id) {
@@ -48,8 +46,7 @@ public class InvestmentController {
 
     @GetMapping
     @Operation(summary = "Get investments by deletion status", description = "Retrieves a list of investments based on their deletion status")
-    @ApiResponse(responseCode = "200", description = "List of investments",
-                 content = @Content(schema = @Schema(implementation = InvestmentResponse.class)))
+    @ApiResponse(responseCode = "200", description = "List of investments")
     public ResponseEntity<List<InvestmentResponse>> getInvestmentsByDeleted(
             @RequestParam(name = "deleted", defaultValue = "false")
             @Parameter(description = "Deletion status (true/false)", required = false) boolean deleted) {
@@ -59,8 +56,7 @@ public class InvestmentController {
 
     @PutMapping("/{id}")
     @Operation(summary = "Update an investment", description = "Updates an existing investment based on the provided ID and request")
-    @ApiResponse(responseCode = "200", description = "Investment updated successfully",
-                 content = @Content(schema = @Schema(implementation = InvestmentResponse.class)))
+    @ApiResponse(responseCode = "200", description = "Investment updated successfully")
     @ApiResponse(responseCode = "404", description = "Investment not found", content = @Content)
     public ResponseEntity<InvestmentResponse> updateInvestment(
             @PathVariable @Parameter(description = "Investment ID", required = true) Long id,
@@ -72,7 +68,7 @@ public class InvestmentController {
     @DeleteMapping("/{id}")
     @Operation(summary = "Delete an investment", description = "Deletes an investment based on the provided ID")
     @ApiResponse(responseCode = "204", description = "Investment deleted successfully")
-    @ApiResponse(responseCode = "404", description = "Investment not found", content = @Content)
+    @ApiResponse(responseCode = "404", description = "Investment not found")
     public ResponseEntity<Void> deleteInvestment(
             @PathVariable @Parameter(description = "Investment ID", required = true) Long id) {
         investmentService.deleteInvestment(id);

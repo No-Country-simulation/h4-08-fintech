@@ -1,7 +1,6 @@
+import { useEffect, useState } from 'react'
 
-import { useState } from 'react'
-
-export default function OnboardingStep2() {
+export default function OnboardingStep2({setAvailableToContinue}) {
   const [selectedLevel, setSelectedLevel] = useState('')
 
   const levels = [
@@ -21,6 +20,12 @@ export default function OnboardingStep2() {
       description: 'Tengo experiencia en inversiones/finanzas'
     }
   ]
+
+  useEffect(() => {
+    if(selectedLevel !== ''){
+        setAvailableToContinue(true)
+    }
+  }, [selectedLevel])
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-blue-200 via-blue-100 to-green-200 p-4">
@@ -91,7 +96,7 @@ export default function OnboardingStep2() {
           ))}
         </div>
 
-        <div className="fixed bottom-0 left-0 right-0 p-4 bg-transparent">
+       {/*  <div className="fixed bottom-0 left-0 right-0 p-4 bg-transparent">
           <div className="flex justify-center gap-[6px] mb-4">
             <div className="w-8 h-1.5 rounded-full bg-[#0051FF]" />
             <div className="w-8 h-1.5 rounded-full bg-gray-200" />
@@ -111,7 +116,7 @@ export default function OnboardingStep2() {
             Continuar
           </button>
         </div>
-
+ */}
         <div className="text-center text-[13px] text-gray-500 mt-4">
           Selecciona 1 opción
         </div>

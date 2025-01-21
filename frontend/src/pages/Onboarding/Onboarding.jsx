@@ -6,7 +6,6 @@ import OnboardingStep2 from '../../components/Onboarding/OnboardingStep2';
 
 import { OnboardingStep5 } from '../../components/Onboarding/OnboardingStep5';
 import {FinancialGoals as OnboardingStep3} from '../../components/Onboarding/OnboardingStep3';
-import { use } from 'react';
 export const Onboarding = () => {
 const [step, SetStep] = useState(1);
 const [availableToContinue, setAvailableToContinue] = useState(true);

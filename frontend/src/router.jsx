@@ -2,7 +2,8 @@ import {BrowserRouter as Router, Routes, Route} from 'react-router-dom';
 import Login from './pages/Auth/Login';
 import { Onboarding } from '/src/pages/Onboarding/Onboarding.jsx';
 import Register from './pages/Auth/Register';
-import Home from './pages/Auth/Home'
+import Home from './pages/Home';
+
 export default function AppRouter() {
   return (
     <Router>

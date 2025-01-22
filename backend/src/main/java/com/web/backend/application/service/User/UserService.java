@@ -105,6 +105,7 @@ public class UserService {
             user.setPassword(hashedPassword);
         }
         user.setUsername(updatedUser.getUsername());
+
         repository.save(user);
 
         PublicUserDto publicUserDto = new PublicUserDto.Builder().build();

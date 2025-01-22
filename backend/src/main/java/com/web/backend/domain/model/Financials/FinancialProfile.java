@@ -19,14 +19,14 @@ public class FinancialProfile extends Auditable {
     private Long id;
 
     @OneToOne
-    @JoinColumn(name = "customer_id")
+    @JoinColumn(name = "customer_id", nullable = false, unique = true)
     private Customer customer;
 
-    private float main_goal;
+    private float mainGoal;
     private short tolerance;
-    private float estimated_income;
-    private float estimated_expenses;
-    private float savings_capacity;
+    private float estimatedIncome;
+    private float estimatedExpenses;
+    private float savingsCapacity;
     private boolean stepsCompleted;
 
     private boolean deleted;

@@ -26,11 +26,13 @@ public class AssetTemp extends Auditable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private String tikerSymbol;
     private String assetName;
     private String assetType;
     private String sector;
     private int riskLevel;
     private double currentPrice;
+    private float potentialReturns;
     private String currency;
 
     private boolean deleted = false;

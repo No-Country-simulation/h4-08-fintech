@@ -15,7 +15,18 @@ public class CreateCookie {
                 .secure(false)
                 .path("/")
                 .maxAge(10 * 60 * 60)
-                .sameSite("Strict")
+                .sameSite("Lax")
+                .build();
+    }
+    @Builder
+    public static ResponseCookie cookie(String name, String value){
+
+        return ResponseCookie.from(name, value)
+                .httpOnly(true)
+                .secure(false)
+                .path("/")
+                .maxAge(10 * 60 * 60)
+                .sameSite("Lax")
                 .build();
     }
 

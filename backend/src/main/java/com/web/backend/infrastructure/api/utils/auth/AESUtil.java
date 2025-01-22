@@ -1,6 +1,8 @@
 package com.web.backend.infrastructure.api.utils.auth;
 
 import com.web.backend.config.AppConfig;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -18,12 +20,10 @@ public class AESUtil {
     private String getSecretKey() {
         String key = appConfig.getProperty("SECRET_ENCRYPT");
         if (key == null || key.isEmpty()) {
-            System.out.println(key);
-            throw new IllegalStateException("La clave de cifrado (SERIAL_KEY) no está configurada correctamente.");
+            throw new IllegalStateException("La clave de cifrado (SECRET_ENCRYPT) no está configurada correctamente.");
         }
 
         if (key.length() != 16 && key.length() != 24 && key.length() != 32) {
-            System.out.println(key);
             throw new IllegalArgumentException("La clave debe tener una longitud de 16, 24 o 32 caracteres.");
         }
         return key;
@@ -42,21 +42,25 @@ public class AESUtil {
             throw new IllegalArgumentException("El texto cifrado no puede ser nulo o vacío.");
         }
 
-        // Validar si es Base64
         encryptedData = encryptedData.trim();
-        if (!isBase64(encryptedData)) {
-            System.out.println(encryptedData.trim());
+
+        // Verificación mejorada de Base64
+        if (encryptedData.length() % 4 != 0 || !isBase64(encryptedData)) {
             throw new IllegalArgumentException("El texto cifrado no es válido Base64.");
         }
 
-        // Obtener la clave secreta
         SecretKey key = new SecretKeySpec(getSecretKey().getBytes(), ALGORITHM);
 
-        Cipher cipher = Cipher.getInstance(ALGORITHM);
-        cipher.init(Cipher.DECRYPT_MODE, key);
+        try {
+            Cipher cipher = Cipher.getInstance(ALGORITHM);
+            cipher.init(Cipher.DECRYPT_MODE, key);
 
-        byte[] decodedData = Base64.getDecoder().decode(encryptedData);
-        return new String(cipher.doFinal(decodedData));
+            byte[] decodedData = Base64.getDecoder().decode(encryptedData);
+            return new String(cipher.doFinal(decodedData));
+        } catch (Exception e) {
+            System.err.println("Error al descifrar: " + e.getMessage());
+            throw new IllegalArgumentException("No se pudo descifrar el texto cifrado. Verifica los datos proporcionados.");
+        }
     }
 
     private boolean isBase64(String str) {
@@ -68,4 +72,15 @@ public class AESUtil {
         }
     }
 
+    public String getCookieValue(HttpServletRequest request, String cookieName) {
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals(cookieName)) {
+                    return cookie.getValue();
+                }
+            }
+        }
+        return null;
+    }
 }

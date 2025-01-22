@@ -1,7 +1,7 @@
 package com.web.backend.application.service.interfaces.objective;
 
-import com.web.backend.application.dto.objective.ObjectiveStatusRequest;
-import com.web.backend.application.dto.objective.ObjectiveStatusResponse;
+import com.web.backend.application.DTO.objective.ObjectiveStatusRequest;
+import com.web.backend.application.DTO.objective.ObjectiveStatusResponse;
 
 import java.util.List;
 

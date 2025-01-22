@@ -1,14 +1,14 @@
 package com.web.backend.application.service.impl.invesment;
 
-import com.web.backend.application.dto.investment.InvestmentRequest;
-import com.web.backend.application.dto.investment.InvestmentResponse;
+import com.web.backend.application.DTO.investment.InvestmentRequest;
+import com.web.backend.application.DTO.investment.InvestmentResponse;
+import com.web.backend.application.exception.asset.AssetNotFoundException;
 import com.web.backend.application.exception.investment.InvestmentNotFoundException;
-import com.web.backend.application.exception.investment.InvestmentTypeNotFoundException;
 import com.web.backend.application.service.interfaces.investment.InvestmentService;
+import com.web.backend.domain.model.asset.Asset;
 import com.web.backend.domain.model.investment.Investment;
-import com.web.backend.domain.model.investment.InvestmentType;
+import com.web.backend.domain.repository.asset.AssetRepository;
 import com.web.backend.domain.repository.investment.InvestmentRepository;
-import com.web.backend.domain.repository.investment.InvestmentTypeRepository;
 import com.web.backend.infrastructure.api.utils.investment.InvestmentMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -20,17 +20,15 @@ import java.util.List;
 public class InvestmentServiceImpl implements InvestmentService {
 
     private final InvestmentRepository investmentRepository;
+    private final AssetRepository assetRepository;
     private final InvestmentMapper investmentMapper;
-    private final InvestmentTypeRepository investmentTypeRepository;
 
     public InvestmentResponse createInvestment(InvestmentRequest investmentRequest) {
         Investment investment = investmentMapper.toInvestment(investmentRequest);
 
-        if (investmentRequest.investmentTypeId() != null) {
-            InvestmentType investmentType = investmentTypeRepository.findById(investmentRequest.investmentTypeId())
-                    .orElseThrow(() -> new InvestmentTypeNotFoundException("Investment Type not found with id: " + investmentRequest.investmentTypeId()));
-            investment.setInvestmentType(investmentType);
-        }
+        Asset asset = assetRepository.findById(investmentRequest.assetId())
+                        .orElseThrow(() -> new AssetNotFoundException("Asset not found with id: " + investmentRequest.assetId()));
+        investment.setAsset(asset);
 
         investmentRepository.save(investment);
         return investmentMapper.toInvestmentResponse(investment);
@@ -54,12 +52,6 @@ public class InvestmentServiceImpl implements InvestmentService {
                 .orElseThrow(() -> new InvestmentNotFoundException("Investment not found with id: " + id));
 
         investmentMapper.updateInvestmentFromRequest(investmentRequest, existingInvestment);
-
-        if (investmentRequest.investmentTypeId() != null) {
-            InvestmentType investmentType = investmentTypeRepository.findById(investmentRequest.investmentTypeId())
-                    .orElseThrow(() -> new InvestmentTypeNotFoundException("Investment Type not found with id: " + investmentRequest.investmentTypeId()));
-            existingInvestment.setInvestmentType(investmentType);
-        }
 
         investmentRepository.save(existingInvestment);
         return investmentMapper.toInvestmentResponse(existingInvestment);

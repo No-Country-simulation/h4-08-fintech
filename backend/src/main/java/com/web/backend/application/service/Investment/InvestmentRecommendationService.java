@@ -131,6 +131,7 @@ public class InvestmentRecommendationService implements ISInvestmentRecommendati
         return 0.0f;
     }
 
+//    LLENAR LA DB CON DATOS DE LA API
     public void populateAssetsFromApi(String keyword) {
         Map<String, Object> searchResults = alphaVantageClient.searchAssets(keyword);
         List<Map<String, Object>> matches = (List<Map<String, Object>>) searchResults.get("bestMatches");
@@ -141,21 +142,48 @@ public class InvestmentRecommendationService implements ISInvestmentRecommendati
             String currency = (String) match.get("8. currency");
 
             Map<String, Object> stockData = alphaVantageClient.getStockData(symbol);
-            float currentPrice = extractCurrentPrice(stockData);
+            double currentPrice = extractCurrentPrice(stockData);
+            float potentialReturns = calculatePotentialReturns(stockData);
+            String sector = stockData.containsKey("Sector") ? (String) stockData.get("Sector") : "Desconocido";
+            String assetType = determineAssetType(symbol);
 
             AssetTemp asset = AssetTemp.builder()
                     .assetName(name)
-                    .assetType("acciones")
+                    .tikerSymbol(symbol)
                     .currency(currency)
                     .currentPrice(currentPrice)
+                    .potentialReturns(potentialReturns)
+                    .sector(sector)
+                    .assetType(assetType)
                     .build();
 
             int riskLevel = riskLevelCalculatorService.calculateRiskLevel(asset, stockData);
             asset.setRiskLevel(riskLevel);
 
-            assetRepository.save(asset);
+            if (!assetRepository.existsByTikerSymbol(symbol)) {
+                assetRepository.save(asset);
+            }
         });
     }
 
+    private float calculatePotentialReturns(Map<String, Object> stockData) {
+        Map<String, Object> timeSeries = (Map<String, Object>) stockData.get("Time Series (Daily)");
+        if (timeSeries == null || timeSeries.size() < 2) return 0.0f;
+
+        List<Double> closingPrices = timeSeries.values().stream()
+                .map(entry -> Double.parseDouble(((Map<String, String>) entry).get("4. close")))
+                .toList();
+
+        double latestPrice = closingPrices.get(0);
+        double previousPrice = closingPrices.get(1); // Precio del día anterior.
+
+        return (float) ((latestPrice - previousPrice) / previousPrice);
+    }
+
+    private String determineAssetType(String symbol) {
+        if (symbol.endsWith(".AX")) return "acciones";
+        if (symbol.endsWith(".ETF")) return "ETF";
+        return "otros";
+    }
 
 }

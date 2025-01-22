@@ -13,16 +13,20 @@ public class RiskLevelCalculatorService {
         int riskFromSector = getRiskLevelFromSector(asset.getSector());
         int riskFromReturnsAndPrice = calculateRiskFromReturnsAndPrice(asset.getPotentialReturns(), asset.getCurrentPrice());
 
+        // Si no hay datos históricos, calcula solo con los factores disponibles
         if (stockData == null || stockData.isEmpty()) {
             return (riskFromSector + riskFromReturnsAndPrice) / 2;
         }
 
         int riskFromVolatility = calculateRiskLevelFromVolatility(stockData);
+        int riskFromAssetType = getRiskLevelFromAssetType(asset.getAssetType());
 
-
-        return (riskFromVolatility + riskFromSector + riskFromReturnsAndPrice) / 3;
+        return (riskFromVolatility + riskFromSector + riskFromReturnsAndPrice + riskFromAssetType) / 4;
     }
 
+    /**
+     * Calcula el riesgo basado en la volatilidad de los precios.
+     */
     private int calculateRiskLevelFromVolatility(Map<String, Object> stockData) {
         Map<String, Object> timeSeries = (Map<String, Object>) stockData.get("Time Series (Daily)");
         if (timeSeries == null || timeSeries.isEmpty()) {
@@ -40,26 +44,47 @@ public class RiskLevelCalculatorService {
                 .orElse(0.0));
 
         // Normaliza la desviación estándar (1-5)
-        if (standardDeviation < 1) return 1;
+        if (standardDeviation < 1) return 1; // Baja volatilidad
         if (standardDeviation < 2) return 2;
         if (standardDeviation < 3) return 3;
         if (standardDeviation < 4) return 4;
-        return 5;
+        return 5; // Alta volatilidad
     }
 
+    /**
+     * Devuelve el nivel de riesgo según el sector del activo.
+     */
     private int getRiskLevelFromSector(String sector) {
         if (sector == null) return 3;
         return switch (sector.toLowerCase()) {
             case "utilities", "consumer staples" -> 1; // Bajo riesgo
-            case "technology", "biotech" -> 5; // Alto riesgo
+            case "technology", "biotech", "financials" -> 5; // Alto riesgo
+            case "real estate", "energy" -> 4; // Riesgo alto-moderado
             default -> 3; // Riesgo medio
         };
     }
 
+    /**
+     * Calcula el nivel de riesgo basado en los retornos potenciales y el precio actual.
+     */
     private int calculateRiskFromReturnsAndPrice(float potentialReturns, double currentPrice) {
-        if (potentialReturns > 0.2 && currentPrice < 10) return 5; // Muy arriesgado
-        if (potentialReturns > 0.1) return 4; // Moderadamente arriesgado
+        if (potentialReturns > 0.25 && currentPrice < 5) return 5; // Muy arriesgado
+        if (potentialReturns > 0.15) return 4; // Moderadamente arriesgado
         if (potentialReturns > 0.05) return 3; // Riesgo medio
         return 1; // Bajo riesgo
+    }
+
+    /**
+     * Devuelve el nivel de riesgo según el tipo de activo.
+     */
+    private int getRiskLevelFromAssetType(String assetType) {
+        if (assetType == null) return 3;
+        return switch (assetType.toLowerCase()) {
+            case "acciones" -> 4; // Riesgo moderado-alto
+            case "etf" -> 2; // Riesgo bajo-moderado
+            case "cdars" -> 1; // Muy bajo riesgo
+            case "bonos", "fondos mutuos" -> 2; // Bajo riesgo
+            default -> 3; // Riesgo medio
+        };
     }
 }

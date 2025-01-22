@@ -9,4 +9,5 @@ import org.springframework.stereotype.Repository;
 public interface RAssentTemp extends JpaRepository<AssetTemp, Long> {
     @Query("SELECT MAX(a.potentialReturns) FROM AssetTemp a")
     Double findMaxPotentialReturns();
+    boolean existsByTikerSymbol(String symbol);
 }

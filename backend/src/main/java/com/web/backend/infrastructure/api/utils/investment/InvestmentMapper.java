@@ -11,6 +11,7 @@ public interface InvestmentMapper {
     @Mapping(target = "amount", defaultValue = "0.00f")
     Investment toInvestment(InvestmentRequest investmentRequest);
 
+
     InvestmentResponse toInvestmentResponse(Investment investment);
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)

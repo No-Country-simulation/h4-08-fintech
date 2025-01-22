@@ -1,5 +1,6 @@
 package com.web.backend.domain.model.investment;
 
+import com.web.backend.domain.model.asset.Asset;
 import com.web.backend.domain.model.asset.AssetType;
 import jakarta.persistence.*;
 import lombok.*;
@@ -24,6 +25,9 @@ public class Investment {
     private Long id;
 //    private Customer customer;
     private Float amount;
+    @ManyToOne
+    @JoinColumn(name = "asset_id")
+    private Asset asset;
     @Column(name = "investment_date", updatable = false)
     @CreatedDate
     private LocalDateTime investmentDate;

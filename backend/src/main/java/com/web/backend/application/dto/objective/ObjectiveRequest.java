@@ -1,4 +1,4 @@
-package com.web.backend.application.dto.objective;
+package com.web.backend.application.DTO.objective;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

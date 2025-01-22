@@ -1,4 +1,4 @@
-package com.web.backend.application.dto.investment;
+package com.web.backend.application.DTO.investment;
 
 import jakarta.validation.constraints.NotNull;
 

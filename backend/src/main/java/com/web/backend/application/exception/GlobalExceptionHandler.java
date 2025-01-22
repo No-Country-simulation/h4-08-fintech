@@ -1,7 +1,8 @@
 package com.web.backend.application.exception;
 
+import com.web.backend.application.exception.asset.AssetNotFoundException;
 import com.web.backend.application.exception.investment.InvestmentNotFoundException;
-import com.web.backend.application.exception.investment.InvestmentTypeNotFoundException;
+import com.web.backend.application.exception.asset.AssetTypeNotFoundException;
 import com.web.backend.application.exception.news.NewsCategoryNotFoundException;
 import com.web.backend.application.exception.news.NewsNotFoundException;
 import com.web.backend.application.exception.news.NewsSourceNotFoundException;
@@ -20,8 +21,13 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
     }
 
-    @ExceptionHandler(InvestmentTypeNotFoundException.class)
-    public ResponseEntity<String> handleInvestmentTypeNotFound(InvestmentTypeNotFoundException ex) {
+    @ExceptionHandler(AssetNotFoundException.class)
+    public ResponseEntity<String> handleAssetNotFound(AssetNotFoundException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+    }
+
+    @ExceptionHandler(AssetTypeNotFoundException.class)
+    public ResponseEntity<String> handleAssetTypeNotFound(AssetTypeNotFoundException ex) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
     }
 

@@ -1,5 +1,7 @@
 package com.web.backend.domain.model.investment;
 
+import com.web.backend.domain.model.asset.Asset;
+import com.web.backend.domain.model.asset.AssetType;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.SQLDelete;
@@ -22,10 +24,10 @@ public class Investment {
     @GeneratedValue
     private Long id;
 //    private Customer customer;
-    @ManyToOne
-    @JoinColumn(name = "investment_type_id")
-    private InvestmentType investmentType;
     private Float amount;
+    @ManyToOne
+    @JoinColumn(name = "asset_id")
+    private Asset asset;
     @Column(name = "investment_date", updatable = false)
     @CreatedDate
     private LocalDateTime investmentDate;

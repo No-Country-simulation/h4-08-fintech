@@ -1,7 +1,7 @@
 package com.web.backend.application.service.impl.objective;
 
-import com.web.backend.application.dto.objective.ObjectiveStatusRequest;
-import com.web.backend.application.dto.objective.ObjectiveStatusResponse;
+import com.web.backend.application.DTO.objective.ObjectiveStatusRequest;
+import com.web.backend.application.DTO.objective.ObjectiveStatusResponse;
 import com.web.backend.application.exception.objective.ObjectiveStatusNotFoundException;
 import com.web.backend.application.service.interfaces.objective.ObjectiveStatusService;
 import com.web.backend.domain.model.objective.Objective;

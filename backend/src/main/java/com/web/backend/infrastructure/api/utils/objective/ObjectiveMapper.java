@@ -1,7 +1,7 @@
 package com.web.backend.infrastructure.api.utils.objective;
 
-import com.web.backend.application.dto.objective.ObjectiveRequest;
-import com.web.backend.application.dto.objective.ObjectiveResponse;
+import com.web.backend.application.DTO.objective.ObjectiveRequest;
+import com.web.backend.application.DTO.objective.ObjectiveResponse;
 import com.web.backend.domain.model.objective.Objective;
 import org.mapstruct.BeanMapping;
 import org.mapstruct.Mapper;

@@ -1,13 +1,11 @@
-package com.web.backend.domain.model.investment;
+package com.web.backend.domain.model.asset;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import lombok.*;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
-import org.hibernate.annotations.SoftDelete;
 
 @Getter
 @Setter
@@ -16,9 +14,9 @@ import org.hibernate.annotations.SoftDelete;
 @NoArgsConstructor
 @ToString
 @Builder
-@SQLDelete(sql = "UPDATE investmentType SET deleted = true where id = ?")
+@SQLDelete(sql = "UPDATE assetType SET deleted = true where id = ?")
 @SQLRestriction("deleted=false")
-public class InvestmentType {
+public class AssetType {
     @Id
     @GeneratedValue
     private Long id;

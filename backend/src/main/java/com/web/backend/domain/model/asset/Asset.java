@@ -1,8 +1,6 @@
 package com.web.backend.domain.model.asset;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.SQLDelete;
 import org.springframework.data.annotation.CreatedDate;
@@ -25,6 +23,9 @@ public class Asset {
     private Float price;
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
+    @ManyToOne
+    @JoinColumn(name = "asset_type_id")
+    private AssetType assetType;
     @CreatedDate
     @Column(updatable = false, name = "created_at")
     private LocalDateTime createdAt;

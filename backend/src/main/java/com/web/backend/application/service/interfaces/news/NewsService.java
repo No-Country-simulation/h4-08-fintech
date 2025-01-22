@@ -1,7 +1,7 @@
 package com.web.backend.application.service.interfaces.news;
 
-import com.web.backend.application.dto.news.NewsRequest;
-import com.web.backend.application.dto.news.NewsResponse;
+import com.web.backend.application.DTO.news.NewsRequest;
+import com.web.backend.application.DTO.news.NewsResponse;
 
 import java.util.List;
 

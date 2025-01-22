@@ -8,9 +8,8 @@ import org.mapstruct.*;
 
 @Mapper(componentModel = "spring")
 public interface InvestmentMapper {
-    @Mapping(target = "amount", defaultValue = "0.00f")
+    @Mapping(target = "amount")
     Investment toInvestment(InvestmentRequest investmentRequest);
-
 
     InvestmentResponse toInvestmentResponse(Investment investment);
 

@@ -15,6 +15,7 @@ import java.util.List;
 public class AssetController {
 
     private final AssetService assetService;
+    private final String apikey = System.getenv("API_KEY");
 
     @GetMapping
     public ResponseEntity<List<AssetResponse>> getAssetsByDeleted(
@@ -26,7 +27,7 @@ public class AssetController {
 
     @PostMapping("/import/{ticker}")
     public ResponseEntity<AssetResponse> importAsset(@PathVariable String ticker)  {
-        AssetResponse assetResponse = assetService.importAsset(ticker);
+        AssetResponse assetResponse = assetService.importAsset("GLOBAL_QUOTE", ticker, apikey);
         return new ResponseEntity<>(assetResponse, HttpStatus.CREATED);
     }
 }

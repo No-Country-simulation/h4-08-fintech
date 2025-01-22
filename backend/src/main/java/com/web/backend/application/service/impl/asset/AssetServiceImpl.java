@@ -1,9 +1,12 @@
 package com.web.backend.application.service.impl.asset;
 
 import com.web.backend.application.DTO.AssetResponse;
+import com.web.backend.application.DTO.alphavantage.GlobalQuoteResponse;
+import com.web.backend.application.DTO.alphavantage.GlobalQuote;
 import com.web.backend.application.service.interfaces.asset.AssetService;
 import com.web.backend.domain.model.asset.Asset;
 import com.web.backend.domain.repository.asset.AssetRepository;
+import com.web.backend.infrastructure.api.external.AlphaVantageClient;
 import com.web.backend.infrastructure.api.utils.asset.AssetMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,6 +19,7 @@ public class AssetServiceImpl implements AssetService {
 
     private final AssetRepository assetRepository;
     private final AssetMapper assetMapper;
+    private final AlphaVantageClient alphavantageClient;
 
     @Override
     public List<AssetResponse> getAllAssetsByDeleted(boolean deleted) {
@@ -24,7 +28,17 @@ public class AssetServiceImpl implements AssetService {
     }
 
     @Override
-    public AssetResponse importAsset(String ticker) {
-        return null;
+    public AssetResponse importAsset(String function, String ticker, String apikey) {
+        GlobalQuoteResponse globalQuoteResponse = alphavantageClient.getGlobalQuote(function, ticker, apikey);
+        GlobalQuote globalQuote = globalQuoteResponse.globalQuote();
+
+        Asset asset = Asset.builder()
+                .ticker(globalQuote.symbol())
+                .price(globalQuote.price())
+                .updatedAt(globalQuote.latestTradingDay().atStartOfDay())
+                .build();
+        assetRepository.save(asset);
+
+        return assetMapper.toAssetResponse(asset);
     }
 }

@@ -8,5 +8,5 @@ public interface AssetService {
 
     List<AssetResponse> getAllAssetsByDeleted(boolean deleted);
 
-    AssetResponse importAsset(String ticker);
+    AssetResponse importAsset(String function,String ticker, String apikey);
 }

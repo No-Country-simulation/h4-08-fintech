@@ -28,4 +28,5 @@ public class Asset {
     @CreatedDate
     @Column(updatable = false, name = "created_at")
     private LocalDateTime createdAt;
+    private boolean deleted = false;
 }

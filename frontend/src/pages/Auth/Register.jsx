@@ -3,6 +3,7 @@ import { FcGoogle } from "react-icons/fc";
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import * as yup from "yup";
 import { useState } from "react";
+import { handleAuthGoogleLogin } from "../../services/api/auth/authGoogle";
 
 const Register = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -13,6 +14,10 @@ const Register = () => {
     email: "",
     password: "",
     repeatPassword: "",
+  }
+
+  const handleGoogleRegister = () => {
+    handleAuthGoogleLogin();
   }
 
   const validationSchema = yup.object({
@@ -149,7 +154,8 @@ const Register = () => {
         </div>
         <div></div>{" "}
         <button className="w-full my-2 flex items-center justify-center border border-blue-600 text-blue-600 font-semibold px-3 py-2 rounded-2xl hover:bg-blue-500 hover:text-white">
-          <FcGoogle className="text-2xl me-2" />
+          <FcGoogle className="text-2xl me-2" 
+          onClick={handleGoogleRegister}/>
           Continuar con Google
         </button>
         <button className="w-full my-2 flex items-center justify-center border border-blue-600 text-blue-600 font-semibold px-3 py-2 rounded-2xl hover:bg-blue-500 hover:text-white">

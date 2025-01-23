@@ -7,13 +7,14 @@ import OnboardingStep4 from "../../components/Onboarding/OnboardingStep4";
 
 import { OnboardingStep6 } from '../../components/Onboarding/OnboardingStep6';
 import {FinancialGoals as OnboardingStep3} from '../../components/Onboarding/OnboardingStep3';
+import OnboardingEnd from '../../components/Onboarding/OnboardingEnd';
 export const Onboarding = () => {
 const [step, SetStep] = useState(1);
 const [availableToContinue, setAvailableToContinue] = useState(true);
 
 const handleNext = () => {
     /* aca se pondran mas pasos */   
-    if (step < 6) {
+    if (step < 7) {
     SetStep((prevStep) => prevStep + 1);
     setAvailableToContinue(false);
     }
@@ -72,23 +73,29 @@ return (
         setAvailableToContinue={setAvailableToContinue}
     />
     )}
+        {step === 7 && (
+    <OnboardingEnd
+        onNext={handleNext}
+        setAvailableToContinue={setAvailableToContinue}
+    />
+    )}
 
     <div className="fixed bottom-1 w-full px-5">
-    {step > 1 && (
+    {step > 1  && step<7 && (
         <div className="flex justify-center gap-[6px] mb-4">
         {Array.from({ length: 5 }).map((_, index) => (
             <div
             key={index}
             className={`w-8 h-1.5 rounded-full ${
-                step === index + 1 ? "bg-blue-500" : "bg-white"
+                step === index + 1 ? "bg-blue-500" : "bg-white" 
             }`}
             />
         ))}
         </div>
     )}
     <EnableButton
-        content={step > 1 ? "Continuar" : "Comenzar"}
-        available={availableToContinue}
+        content={step === 7 ? "Ir al Dashboard" : step >1 ? 'Continuar' : 'Comenzar'}
+        available={availableToContinue || step === 7} 
         onClick={handleNext}
     />
     </div>

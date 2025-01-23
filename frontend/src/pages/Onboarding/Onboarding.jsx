@@ -4,16 +4,15 @@ import { EnableButton } from '../../components/common/EnableButton';
 import OnboardingStep1 from '../../components/Onboarding/OnboardingStep1';
 import OnboardingStep2 from '../../components/Onboarding/OnboardingStep2';
 
-import { OnboardingStep5 } from '../../components/Onboarding/OnboardingStep5';
+import { OnboardingStep6 } from '../../components/Onboarding/OnboardingStep6';
 import {FinancialGoals as OnboardingStep3} from '../../components/Onboarding/OnboardingStep3';
-import { use } from 'react';
 export const Onboarding = () => {
 const [step, SetStep] = useState(1);
 const [availableToContinue, setAvailableToContinue] = useState(true);
 
 const handleNext = () => {
     /* aca se pondran mas pasos */   
-    if (step < 5) {
+    if (step < 6) {
     SetStep((prevStep) => prevStep + 1);
     setAvailableToContinue(false);
     }
@@ -46,7 +45,8 @@ useEffect(() => {
         {step === 2 && <OnboardingStep2 onNext={handleNext} setAvailableToContinue={setAvailableToContinue} />}
         {step === 3 && <OnboardingStep3 onNext={handleNext} setAvailableToContinue={setAvailableToContinue}/>}
         {step === 4 && <OnboardingStep3 onNext={handleNext} setAvailableToContinue={setAvailableToContinue}/>}
-        {step === 5 && <OnboardingStep5 onNext={handleNext} setAvailableToContinue={setAvailableToContinue}/>} 
+        {step === 5 && <OnboardingStep3 onNext={handleNext} setAvailableToContinue={setAvailableToContinue}/>}
+        {step === 6 && <OnboardingStep6 onNext={handleNext} setAvailableToContinue={setAvailableToContinue}/>} 
 
         <div className="fixed bottom-1 w-full px-5">
             { step > 1 &&

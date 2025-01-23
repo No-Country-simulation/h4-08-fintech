@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import ArrowBack from '../../assets/icons/arrow-back.svg';
 import { EnableButton } from '../../components/common/EnableButton';
 import OnboardingStep1 from '../../components/Onboarding/OnboardingStep1';
@@ -6,12 +6,13 @@ import OnboardingStep2 from '../../components/Onboarding/OnboardingStep2';
 
 import { OnboardingStep5 } from '../../components/Onboarding/OnboardingStep5';
 import {FinancialGoals as OnboardingStep3} from '../../components/Onboarding/OnboardingStep3';
+import { use } from 'react';
 export const Onboarding = () => {
 const [step, SetStep] = useState(1);
 const [availableToContinue, setAvailableToContinue] = useState(true);
 
 const handleNext = () => {
-    /* aca se pondran mas pasos */
+    /* aca se pondran mas pasos */   
     if (step < 5) {
     SetStep((prevStep) => prevStep + 1);
     setAvailableToContinue(false);
@@ -23,6 +24,12 @@ const handleBack = () => {
     SetStep((prevStep) => prevStep - 1);
     }
 };
+
+useEffect(() => {
+    if (step === 1) {
+    setAvailableToContinue(true);
+    }
+},[step]);
 
     return (
     <div className="flex flex-col items-center justify-center bg-gradient bg-center h-screen w-screen relative px-5 font-jakarta">

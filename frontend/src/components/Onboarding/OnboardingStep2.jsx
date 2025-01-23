@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { OnboardingCard } from '../common/OnboardingCard'
 
 export default function OnboardingStep2({setAvailableToContinue}) {
   const [selectedLevel, setSelectedLevel] = useState('')
@@ -17,7 +18,7 @@ export default function OnboardingStep2({setAvailableToContinue}) {
     {
       id: 'advanced',
       title: 'Avanzado',
-      description: 'Tengo experiencia en inversiones/finanzas'
+      description: 'Tengo experiencia en inversiones /finanzas'
     }
   ]
 
@@ -28,38 +29,15 @@ export default function OnboardingStep2({setAvailableToContinue}) {
   }, [selectedLevel])
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-blue-200 via-blue-100 to-green-200 p-4">
-      <button className="w-10 h-10 rounded-full bg-white/90 shadow-[0_2px_8px_rgba(0,0,0,0.05)] flex items-center justify-center">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          strokeWidth={2}
-          stroke="currentColor"
-          className="w-5 h-5 text-gray-600"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="M15.75 19.5L8.25 12l7.5-7.5"
-          />
-        </svg>
-      </button>
-
-      <div className="mt-8 space-y-4">
-        <h1 className="text-[22px] font-semibold text-center px-8 text-gray-800">
-          ¿Cómo describirías tu nivel de conocimiento financiero?
-        </h1>
-        
-        <p className="text-center text-gray-500 text-[15px] px-8 leading-[1.4]">
-          Lorem ipsum dolor sit amet consectetur. Pulvinar augue vestibulum commodo lorem pharetra pretium eget velit quam.
-        </p>
-
-        <div className="space-y-3 mt-6">
+    <OnboardingCard 
+      title={"¿Cómo describirías tu nivel de conocimiento financiero?"}
+      content={"Lorem ipsum dolor sit amet consectetur. Pulvinar augue vestibulum commodo lorem pharetra pretium eget velit quam."}
+      >
+        <div className="space-y-3">
           {levels.map((level) => (
             <label
               key={level.id}
-              className={`block w-full p-4 rounded-[16px] border transition-all ${
+              className={`block w-full p-2 rounded-[16px] border transition-all ${
                 selectedLevel === level.id
                   ? 'border-[#0051FF] bg-[#F5F9FF] ring-1 ring-[#0051FF]'
                   : 'border-gray-200 bg-white'
@@ -78,8 +56,8 @@ export default function OnboardingStep2({setAvailableToContinue}) {
                   )}
                 </div>
                 <div>
-                  <div className="font-medium text-[15px] text-gray-800">{level.title}</div>
-                  <div className="text-[13px] text-gray-500">
+                  <div className="font-medium text-[15px] text-gray-800 text-start">{level.title}</div>
+                  <div className="w-full text-[13px] text-gray-500 text-start">
                     {level.description}
                   </div>
                 </div>
@@ -95,33 +73,10 @@ export default function OnboardingStep2({setAvailableToContinue}) {
             </label>
           ))}
         </div>
-
-       {/*  <div className="fixed bottom-0 left-0 right-0 p-4 bg-transparent">
-          <div className="flex justify-center gap-[6px] mb-4">
-            <div className="w-8 h-1.5 rounded-full bg-[#0051FF]" />
-            <div className="w-8 h-1.5 rounded-full bg-gray-200" />
-            <div className="w-8 h-1.5 rounded-full bg-gray-200" />
-            <div className="w-8 h-1.5 rounded-full bg-gray-200" />
-            <div className="w-8 h-1.5 rounded-full bg-gray-200" />
-          </div>
-          
-          <button
-            className={`w-full h-[52px] rounded-[14px] font-medium text-[15px] transition-colors ${
-              selectedLevel
-                ? 'bg-[#0051FF] text-white'
-                : 'bg-gray-100 text-gray-400'
-            }`}
-            disabled={!selectedLevel}
-          >
-            Continuar
-          </button>
-        </div>
- */}
-        <div className="text-center text-[13px] text-gray-500 mt-4">
+        <div className="w-full text-start text-[13px] text-gray-500 mt-3">
           Selecciona 1 opción
         </div>
-      </div>
-    </div>
+    </OnboardingCard>
   )
 }
 

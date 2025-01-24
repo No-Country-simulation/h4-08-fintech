@@ -9,6 +9,7 @@ import com.web.backend.application.DTO.alphavantage.GlobalQuote;
 import com.web.backend.application.DTO.asset.AssetResponse;
 import com.web.backend.application.exception.asset.AssetNotFoundException;
 import com.web.backend.application.exception.asset.AssetTypeNotFoundException;
+import com.web.backend.application.exception.asset.ExternalAPILimit;
 import com.web.backend.application.exception.asset.InvalidTickerException;
 import com.web.backend.application.service.interfaces.asset.AssetService;
 import com.web.backend.domain.model.asset.Asset;
@@ -92,6 +93,8 @@ public class AssetServiceImpl implements AssetService {
         GlobalQuoteResponse globalQuoteResponse = alphavantageClient.getGlobalQuote("GLOBAL_QUOTE", asset.getTicker(), apikey);
         GlobalQuote globalQuote = globalQuoteResponse.globalQuote();
 
+        if(globalQuote == null)
+            throw new ExternalAPILimit("Alpha Vantage API usage limit reached.");
         if(globalQuote.symbol() == null)
             throw new InvalidTickerException("Invalid ticker: " + asset.getTicker());
 

@@ -1,6 +1,7 @@
 package com.web.backend.application.exception;
 
 import com.web.backend.application.exception.asset.AssetNotFoundException;
+import com.web.backend.application.exception.asset.ExternalAPILimit;
 import com.web.backend.application.exception.asset.InvalidTickerException;
 import com.web.backend.application.exception.investment.InvestmentNotFoundException;
 import com.web.backend.application.exception.asset.AssetTypeNotFoundException;
@@ -35,6 +36,11 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(InvalidTickerException.class)
     public ResponseEntity<String> handleInvalidTicker(InvalidTickerException ex) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+    }
+
+    @ExceptionHandler(ExternalAPILimit.class)
+    public ResponseEntity<String> handleExternalAPILimit(ExternalAPILimit ex) {
+        return ResponseEntity.status(HttpStatus.TOO_MANY_REQUESTS).body(ex.getMessage());
     }
 
     @ExceptionHandler(NewsNotFoundException.class)

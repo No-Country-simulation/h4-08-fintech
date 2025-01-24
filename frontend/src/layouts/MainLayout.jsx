@@ -5,7 +5,7 @@ export const MainLayout = () => {
     return (
         <div className="bg-gradient h-screen w-screen font-jakarta">
             <Header />
-            <main>
+            <main className="p-5">
                 <Outlet />    
             </main>
         </div>

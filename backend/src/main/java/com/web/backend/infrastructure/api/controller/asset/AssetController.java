@@ -1,19 +1,19 @@
 package com.web.backend.infrastructure.api.controller.asset;
 
-import com.web.backend.application.DTO.asset.AssetRequest;
+import com.web.backend.application.DTO.asset.AssetCreateRequest;
+import com.web.backend.application.DTO.asset.AssetUpdateRequest;
 import com.web.backend.application.DTO.asset.AssetResponse;
 import com.web.backend.application.service.interfaces.asset.AssetService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -24,7 +24,6 @@ import java.util.List;
 public class AssetController {
 
     private final AssetService assetService;
-    private final String apikey = System.getenv("API_KEY");
 
     @GetMapping
     @Operation(summary = "Get all assets by deleted status", description = "Retrieves a list of all assets based on their deleted status")
@@ -57,7 +56,7 @@ public class AssetController {
             @Parameter(description = "Ticker symbol of the asset to update")
             @PathVariable String ticker,
             @Parameter(description = "Updated asset information")
-            @Valid @RequestBody AssetRequest assetRequest
+            @Valid @RequestBody AssetUpdateRequest assetRequest
     ) {
         AssetResponse updatedAsset = assetService.updateAsset(ticker, assetRequest);
         return ResponseEntity.ok(updatedAsset);
@@ -75,15 +74,25 @@ public class AssetController {
         return ResponseEntity.noContent().build();
     }
 
+    @PostMapping
+    @Operation(summary = "Create a new asset", description = "Creates a new asset with the provided information")
+    @ApiResponse(responseCode = "200", description = "Asset successfully created")
+    @ApiResponse(responseCode = "400", description = "Invalid input")
+    public ResponseEntity<AssetResponse> createAssets(
+            @Parameter(description = "Asset information for creation", required = true)
+            @Valid @RequestBody AssetCreateRequest assetRequest) {
+        AssetResponse createdAsset = assetService.createAsset(assetRequest);
+        return ResponseEntity.ok(createdAsset);
+    }
 
-    @PostMapping("/import/{ticker}")
-    @Operation(summary = "Import an asset", description = "Imports an asset from external API using the provided ticker")
-    @ApiResponse(responseCode = "201", description = "Asset successfully imported")
-    public ResponseEntity<AssetResponse> importAsset(
-            @Parameter(description = "Ticker symbol of the asset to import") 
-            @PathVariable String ticker
-    ) {
-        AssetResponse assetResponse = assetService.importAsset("GLOBAL_QUOTE", ticker, apikey);
-        return new ResponseEntity<>(assetResponse, HttpStatus.CREATED);
+    @PostMapping("/file")
+    @Operation(summary = "Create multiple assets from CSV", description = "Creates multiple assets from a CSV file")
+    @ApiResponse(responseCode = "200", description = "Assets successfully created")
+    @ApiResponse(responseCode = "400", description = "Invalid input or file format")
+    public ResponseEntity<List<AssetResponse>> createAssetsWithCsv(
+            @Parameter(description = "CSV file containing asset information", required = true)
+            @RequestPart(name = "assetsFile") MultipartFile file) {
+        List<AssetResponse> createdAssets = assetService.createAssetsWithCsv(file);
+        return ResponseEntity.ok(createdAssets);
     }
 }

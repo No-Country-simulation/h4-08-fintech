@@ -9,6 +9,7 @@ import com.web.backend.application.DTO.alphavantage.GlobalQuote;
 import com.web.backend.application.DTO.asset.AssetResponse;
 import com.web.backend.application.exception.asset.AssetNotFoundException;
 import com.web.backend.application.exception.asset.AssetTypeNotFoundException;
+import com.web.backend.application.exception.asset.InvalidTickerException;
 import com.web.backend.application.service.interfaces.asset.AssetService;
 import com.web.backend.domain.model.asset.Asset;
 import com.web.backend.domain.model.asset.AssetType;
@@ -90,6 +91,9 @@ public class AssetServiceImpl implements AssetService {
     private void importAssetData(Asset asset) {
         GlobalQuoteResponse globalQuoteResponse = alphavantageClient.getGlobalQuote("GLOBAL_QUOTE", asset.getTicker(), apikey);
         GlobalQuote globalQuote = globalQuoteResponse.globalQuote();
+
+        if(globalQuote.symbol() == null)
+            throw new InvalidTickerException("Invalid ticker: " + asset.getTicker());
 
         asset.setPrice(globalQuote.price());
         asset.setUpdatedAt(globalQuote.latestTradingDay().atStartOfDay());

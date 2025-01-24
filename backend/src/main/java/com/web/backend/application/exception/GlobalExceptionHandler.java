@@ -1,6 +1,7 @@
 package com.web.backend.application.exception;
 
 import com.web.backend.application.exception.asset.AssetNotFoundException;
+import com.web.backend.application.exception.asset.InvalidTickerException;
 import com.web.backend.application.exception.investment.InvestmentNotFoundException;
 import com.web.backend.application.exception.asset.AssetTypeNotFoundException;
 import com.web.backend.application.exception.news.NewsCategoryNotFoundException;
@@ -28,6 +29,11 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(AssetTypeNotFoundException.class)
     public ResponseEntity<String> handleAssetTypeNotFound(AssetTypeNotFoundException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+    }
+
+    @ExceptionHandler(InvalidTickerException.class)
+    public ResponseEntity<String> handleInvalidTicker(InvalidTickerException ex) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
     }
 

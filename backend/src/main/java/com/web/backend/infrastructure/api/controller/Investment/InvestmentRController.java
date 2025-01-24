@@ -20,6 +20,25 @@ public class InvestmentRController {
     private final InvestmentRecommendationService recommendationService;
     private final RFinancialProfile rFinancialProfile;
 
+    @GetMapping("/recommended")
+    public ResponseEntity<?> getRecommendedAssets(
+            @RequestParam Long customerId) {
+        try {
+            Optional<FinancialProfile> profileOpt = rFinancialProfile.findByCustomerId(customerId);
+            if (profileOpt.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body("Financial profile not found for customer ID: " + customerId);
+            }
+
+            List<AssetRecommendation> recommendations = recommendationService.getRecommendations(customerId);
+            return ResponseEntity.ok(recommendations);
+
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Unexpected error: " + e.getMessage());
+        }
+    }
+
     @GetMapping("/external/{keyword}")
     public ResponseEntity<?> getExternalAssets(
             @PathVariable String keyword,
@@ -41,10 +60,22 @@ public class InvestmentRController {
     }
 
     @PostMapping("/populate")
-    public ResponseEntity<String> populateAssets(@RequestParam String keyword,@RequestParam Integer limit) {
+    public ResponseEntity<String> populateAssetsByKeyword(@RequestParam String keyword, @RequestParam Integer limit) {
         try {
             int assetLimit = limit != null ? limit : 10;
-            recommendationService.populateAssetsFromApi(keyword,assetLimit);
+            recommendationService.populateAssetsByKeywordFromApi(keyword, assetLimit);
+            return ResponseEntity.ok("Assets populated successfully from Alpha Vantage API.");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Error populating assets: " + e.getMessage());
+        }
+    }
+
+    @PostMapping("/populate-risk")
+    public ResponseEntity<String> populateAssetsByRiskLvl(@RequestParam short risklvl, @RequestParam Integer limit) {
+        try {
+            int assetLimit = limit != null ? limit : 10;
+            recommendationService.populateAssetsByRiskLevel(risklvl, assetLimit);
             return ResponseEntity.ok("Assets populated successfully from Alpha Vantage API.");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)

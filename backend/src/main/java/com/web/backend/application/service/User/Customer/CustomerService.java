@@ -1,10 +1,9 @@
-package com.web.backend.application.service.Customer;
+package com.web.backend.application.service.User.Customer;
 
 import com.web.backend.application.service.User.UserService;
 import com.web.backend.domain.model.Customer.Customer;
 import com.web.backend.domain.model.user.UserModel;
 import com.web.backend.domain.repository.Customer.RCustomer;
-import com.web.backend.domain.repository.User.RUser;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 

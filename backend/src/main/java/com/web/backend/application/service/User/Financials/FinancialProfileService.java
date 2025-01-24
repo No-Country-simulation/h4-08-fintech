@@ -1,4 +1,4 @@
-package com.web.backend.application.service.Financials;
+package com.web.backend.application.service.User.Financials;
 
 import com.web.backend.domain.model.Customer.Customer;
 import com.web.backend.domain.model.Financials.FinancialProfile;

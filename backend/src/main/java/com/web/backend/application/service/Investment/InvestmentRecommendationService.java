@@ -31,7 +31,6 @@ public class InvestmentRecommendationService implements ISInvestmentRecommendati
                 .map(asset -> {
                     Map<String, Object> stockData = alphaVantageClient.getStockData(asset.getAssetName());
                     int riskLevel = riskLevelCalculatorService.calculateRiskLevel(asset, stockData);
-                    asset.setRiskLevel(riskLevel);
                     return calculateRecommendationScore(asset, profile.get());
                 })
                 .sorted(Comparator.comparingDouble(AssetRecommendation::getScore).reversed())
@@ -72,7 +71,6 @@ public class InvestmentRecommendationService implements ISInvestmentRecommendati
     public List<AssetRecommendation> getExternalRecommendations(String keyword, FinancialProfile profile) {
         // Hacer la búsqueda en la API
         Map<String, Object> searchResults = alphaVantageClient.searchAssets(keyword);
-        System.out.println("GETEXTERNALLLLLLLLLLLLLLLLLLLLLLLLL");
 
         // Verificar si la API ha alcanzado el límite de llamadas
         if (searchResults.containsKey("Note")) {
@@ -132,7 +130,7 @@ public class InvestmentRecommendationService implements ISInvestmentRecommendati
     }
 
     //    LLENAR LA DB CON DATOS DE LA API
-    public void populateAssetsFromApi(String keyword, int limit) {
+    public void populateAssetsByKeywordFromApi(String keyword, int limit) {
         Map<String, Object> searchResults = alphaVantageClient.searchAssets(keyword);
 
         if (searchResults == null || !searchResults.containsKey("bestMatches")) {
@@ -180,7 +178,6 @@ public class InvestmentRecommendationService implements ISInvestmentRecommendati
                     .assetType(assetType)
                     .build();
 
-            // Cálculo del nivel de riesgo
             int riskLevel = riskLevelCalculatorService.calculateRiskLevel(asset, stockData);
             asset.setRiskLevel(riskLevel);
 
@@ -189,6 +186,94 @@ public class InvestmentRecommendationService implements ISInvestmentRecommendati
                 assetRepository.save(asset);
             }
         }
+    }
+
+    public void populateAssetsByRiskLevel(short riskLevelParam, int limit) {
+        List<String> matchingSectors = getSectorsByRiskLevel(riskLevelParam);
+
+        if (matchingSectors.isEmpty()) {
+            System.out.println("No hay sectores asociados al nivel de riesgo: " + riskLevelParam);
+            throw new RuntimeException("No hay sectores asociados al nivel de riesgo: " + riskLevelParam);
+        }
+
+        System.out.println("Buscando activos en los sectores: " + matchingSectors);
+
+        int processedAssets = 0;
+
+        for (String sector : matchingSectors) {
+            if (processedAssets >= limit) break;
+
+            Map<String, Object> searchResults = alphaVantageClient.searchAssets(sector);
+
+            if (searchResults == null || !searchResults.containsKey("bestMatches")) {
+                System.out.println("No se encontraron activos para el sector: " + sector);
+                continue;
+            }
+
+            List<Map<String, Object>> matches = (List<Map<String, Object>>) searchResults.get("bestMatches");
+
+            if (matches == null || matches.isEmpty()) {
+                System.out.println("No se encontraron activos para el sector: " + sector);
+                continue;
+            }
+
+            for (Map<String, Object> match : matches) {
+                if (processedAssets >= limit) break;
+
+                String symbol = (String) match.get("1. symbol");
+                String name = (String) match.get("2. name");
+                String currency = (String) match.get("8. currency");
+
+                Map<String, Object> stockData = alphaVantageClient.getStockData(symbol);
+
+                // OVERVIEW
+                Map<String, Object> overviewData = alphaVantageClient.getOverviewData(symbol);
+                String assetSector = (overviewData != null && overviewData.containsKey("Sector"))
+                        ? (String) overviewData.get("Sector")
+                        : "Desconocido";
+
+                String assetType = (overviewData != null && overviewData.containsKey("AssetType"))
+                        ? (String) overviewData.get("AssetType")
+                        : "Desconocido";
+
+                double currentPrice = extractCurrentPrice(stockData);
+                float potentialReturns = calculatePotentialReturns(stockData);
+
+                AssetTemp asset = AssetTemp.builder()
+                        .assetName(name)
+                        .tikerSymbol(symbol)
+                        .currency(currency)
+                        .currentPrice(currentPrice)
+                        .potentialReturns(potentialReturns)
+                        .sector(assetSector)
+                        .assetType(assetType)
+                        .build();
+
+                int riskLevel = riskLevelCalculatorService.calculateRiskLevel(asset, stockData);
+
+                if (riskLevel != riskLevelParam) {
+                    continue;
+                }
+
+                asset.setRiskLevel(riskLevel);
+
+                if (!assetRepository.existsByTikerSymbol(symbol)) {
+                    assetRepository.save(asset);
+                    processedAssets++;
+                }
+            }
+        }
+    }
+
+    private List<String> getSectorsByRiskLevel(int riskLevel) {
+        return switch (riskLevel) {
+            case 1 -> List.of("cdars");
+            case 2 -> List.of("etf", "bonos", "fondos mutuos");
+            case 3 -> List.of("financial_markets", "economy_fiscal", "economy_monetary", "economy_macro", "manufacturing", "retail_wholesale", "finance");
+            case 4 -> List.of("earnings", "mergers_and_acquisitions", "energy_transportation", "life_sciences", "real_estate");
+            case 5 -> List.of("blockchain", "ipo", "technology");
+            default -> List.of();
+        };
     }
 
     private float calculatePotentialReturns(Map<String, Object> stockData) {
@@ -200,7 +285,7 @@ public class InvestmentRecommendationService implements ISInvestmentRecommendati
                 .toList();
 
         double latestPrice = closingPrices.get(0);
-        double previousPrice = closingPrices.get(1); // Precio del día anterior.
+        double previousPrice = closingPrices.get(1);
 
         return (float) ((latestPrice - previousPrice) / previousPrice);
     }

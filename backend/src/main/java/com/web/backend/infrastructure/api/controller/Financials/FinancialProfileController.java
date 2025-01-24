@@ -1,6 +1,6 @@
 package com.web.backend.infrastructure.api.controller.Financials;
 
-import com.web.backend.application.service.Financials.FinancialProfileService;
+import com.web.backend.application.service.User.Financials.FinancialProfileService;
 import com.web.backend.domain.model.Financials.FinancialProfile;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

@@ -1,7 +1,7 @@
 package com.web.backend.infrastructure.api.controller.Customer;
 
 import com.web.backend.application.DTO.Customer.CustomerUserRequest;
-import com.web.backend.application.service.Customer.CustomerService;
+import com.web.backend.application.service.User.Customer.CustomerService;
 import com.web.backend.domain.model.Customer.Customer;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;

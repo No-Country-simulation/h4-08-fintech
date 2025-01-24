@@ -57,13 +57,22 @@ public class RiskLevelCalculatorService {
     private int getRiskLevelFromSector(String sector) {
         if (sector == null) return 3;
         return switch (sector.toLowerCase()) {
-            case "utilities", "consumer staples" -> 1; // Bajo riesgo
-            case "technology", "biotech", "financials" -> 5; // Alto riesgo
-            case "real estate", "energy" -> 4; // Riesgo alto-moderado
+            case "blockchain" -> 5; // Alto riesgo
+            case "earnings" -> 4; // Riesgo alto-moderado
+            case "ipo" -> 5; // Alto riesgo
+            case "mergers_and_acquisitions" -> 4; // Riesgo alto-moderado
+            case "financial_markets" -> 3; // Riesgo medio
+            case "economy_fiscal", "economy_monetary", "economy_macro" -> 3; // Riesgo medio
+            case "energy_transportation" -> 4; // Riesgo alto-moderado
+            case "finance" -> 3; // Riesgo medio
+            case "life_sciences" -> 4; // Riesgo alto-moderado
+            case "manufacturing" -> 3; // Riesgo medio
+            case "real_estate" -> 4; // Riesgo alto-moderado
+            case "retail_wholesale" -> 3; // Riesgo medio
+            case "technology" -> 5; // Alto riesgo
             default -> 3; // Riesgo medio
         };
     }
-
     /**
      * Calcula el nivel de riesgo basado en los retornos potenciales y el precio actual.
      */

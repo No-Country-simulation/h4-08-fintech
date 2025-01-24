@@ -1,4 +1,4 @@
-package com.web.backend.application.service.Customer;
+package com.web.backend.application.service.User.Customer;
 
 import com.web.backend.domain.model.Customer.Customer;
 

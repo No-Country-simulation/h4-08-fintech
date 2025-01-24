@@ -58,6 +58,7 @@ public class AuthFilter extends OncePerRequestFilter {
         if (cookies != null) {
             for (Cookie cookie : cookies) {
                 if ("jwt".equals(cookie.getName())) {
+                    System.out.println("cookie : " + cookie.getValue());
                     return cookie.getValue();
                 }
             }
@@ -68,8 +69,10 @@ public class AuthFilter extends OncePerRequestFilter {
 
     private boolean requiresAuthentication(HttpServletRequest request) {
         String path = request.getRequestURI();
-        return !path.startsWith("/auth")
-                && !path.startsWith("/public")
+        return !path.startsWith("/public")
+                && !path.startsWith("/auth/register")
+                && !path.startsWith("/auth/login")
+                && !path.startsWith("/swagger-ui")
                 && !path.startsWith("/oauth2");
     }
 }

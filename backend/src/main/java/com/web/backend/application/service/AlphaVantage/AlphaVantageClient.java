@@ -1,9 +1,7 @@
 package com.web.backend.application.service.AlphaVantage;
 
 import com.web.backend.config.AppConfig;
-import com.web.backend.domain.repository.AssetTemp.RAssentTemp;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -20,19 +18,30 @@ public class AlphaVantageClient {
 
     public Map<String, Object> getStockData(String symbol) {
 
-        String baseUrl = appConfig.getProperty("ALPHAVANTAGE_URL")+"/query";
+        String baseUrl = appConfig.getProperty("ALPHAVANTAGE_URL") + "/query";
 
         String url = UriComponentsBuilder.fromUri(URI.create(baseUrl))
                 .queryParam("function", "TIME_SERIES_DAILY")
                 .queryParam("symbol", symbol)
                 .queryParam("apikey", appConfig.getProperty("ALPHA_KEY"))
                 .toUriString();
-        return (Map<String, Object>)restTemplate.getForObject(url, Map.class);
+        return (Map<String, Object>) restTemplate.getForObject(url, Map.class);
+    }
+
+    public Map<String, Object> getOverviewData(String symbol) {
+        String baseUrl = appConfig.getProperty("ALPHAVANTAGE_URL") + "/query";
+
+        String url = UriComponentsBuilder.fromUri(URI.create(baseUrl))
+                .queryParam("function", "OVERVIEW")
+                .queryParam("symbol", symbol)
+                .queryParam("apikey", appConfig.getProperty("ALPHA_KEY"))
+                .toUriString();
+        return (Map<String, Object>) restTemplate.getForObject(url, Map.class);
     }
 
     public Map<String, Object> searchAssets(String keyword) {
 
-        String baseUrl = appConfig.getProperty("ALPHAVANTAGE_URL")+"/query";
+        String baseUrl = appConfig.getProperty("ALPHAVANTAGE_URL") + "/query";
 
         System.out.println(baseUrl);
 

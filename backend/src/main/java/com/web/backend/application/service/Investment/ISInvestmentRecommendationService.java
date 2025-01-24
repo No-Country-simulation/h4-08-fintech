@@ -30,5 +30,5 @@ public interface ISInvestmentRecommendationService {
      *
      * @param keyword Palabra clave para buscar activos en la API externa.
      */
-    void populateAssetsFromApi(String keyword);
+    void populateAssetsFromApi(String keyword, int limit) ;
 }

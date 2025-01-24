@@ -131,21 +131,44 @@ public class InvestmentRecommendationService implements ISInvestmentRecommendati
         return 0.0f;
     }
 
-//    LLENAR LA DB CON DATOS DE LA API
-    public void populateAssetsFromApi(String keyword) {
+    //    LLENAR LA DB CON DATOS DE LA API
+    public void populateAssetsFromApi(String keyword, int limit) {
         Map<String, Object> searchResults = alphaVantageClient.searchAssets(keyword);
+
+        if (searchResults == null || !searchResults.containsKey("bestMatches")) {
+            System.out.println("No se encontraron coincidencias para la palabra clave: " + keyword);
+            throw new RuntimeException("No se encontraron coincidencias para la palabra clave: " + keyword);
+        }
+
         List<Map<String, Object>> matches = (List<Map<String, Object>>) searchResults.get("bestMatches");
 
-        matches.forEach(match -> {
+        if (matches == null || matches.isEmpty()) {
+            System.out.println("No se encontraron activos para el keyword: " + keyword);
+            throw new RuntimeException("No se encontraron activos para el keyword: " + keyword);
+        }
+
+        int limitCount = Math.min(matches.size(), limit);
+
+        for (int i = 0; i < limitCount; i++) {
+            Map<String, Object> match = matches.get(i);
             String symbol = (String) match.get("1. symbol");
             String name = (String) match.get("2. name");
             String currency = (String) match.get("8. currency");
 
             Map<String, Object> stockData = alphaVantageClient.getStockData(symbol);
+
+            // OVERVIEW
+            Map<String, Object> overviewData = alphaVantageClient.getOverviewData(symbol);
+            String sector = (overviewData != null && overviewData.containsKey("Sector"))
+                    ? (String) overviewData.get("Sector")
+                    : "Desconocido";
+
+            String assetType = (overviewData != null && overviewData.containsKey("AssetType"))
+                    ? (String) overviewData.get("AssetType")
+                    : "Desconocido";
+
             double currentPrice = extractCurrentPrice(stockData);
             float potentialReturns = calculatePotentialReturns(stockData);
-            String sector = stockData.containsKey("Sector") ? (String) stockData.get("Sector") : "Desconocido";
-            String assetType = determineAssetType(symbol);
 
             AssetTemp asset = AssetTemp.builder()
                     .assetName(name)
@@ -157,13 +180,15 @@ public class InvestmentRecommendationService implements ISInvestmentRecommendati
                     .assetType(assetType)
                     .build();
 
+            // Cálculo del nivel de riesgo
             int riskLevel = riskLevelCalculatorService.calculateRiskLevel(asset, stockData);
             asset.setRiskLevel(riskLevel);
 
+            // Verificar si el activo esta en la db
             if (!assetRepository.existsByTikerSymbol(symbol)) {
                 assetRepository.save(asset);
             }
-        });
+        }
     }
 
     private float calculatePotentialReturns(Map<String, Object> stockData) {

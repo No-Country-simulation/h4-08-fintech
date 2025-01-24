@@ -1,6 +1,5 @@
 package com.web.backend.infrastructure.api.controller.Auth;
 
-import com.web.backend.application.DTO.Auth.LoginDto;
 import com.web.backend.application.DTO.User.PublicUserDto;
 import com.web.backend.application.service.User.UserService;
 import com.web.backend.config.AppConfig;
@@ -10,7 +9,6 @@ import com.web.backend.infrastructure.api.utils.auth.CreateCookie;
 import com.web.backend.infrastructure.api.utils.auth.LoginType;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,7 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
 
 @RestController
 @RequestMapping("/oauth2")
@@ -29,6 +26,7 @@ public class AuthGoogleController {
     private final UserService userService;
     private final AppConfig appConfig;
 
+    //    Email y name vienen encriptados
     @GetMapping("/success")
     public ResponseEntity<?> success(@RequestParam String token, @RequestParam String email, @RequestParam String name) throws Exception {
         System.out.println("Token recibido en el controlador de callback: " + token);

@@ -41,9 +41,10 @@ public class InvestmentRController {
     }
 
     @PostMapping("/populate")
-    public ResponseEntity<String> populateAssets(@RequestParam String keyword) {
+    public ResponseEntity<String> populateAssets(@RequestParam String keyword,@RequestParam Integer limit) {
         try {
-            recommendationService.populateAssetsFromApi(keyword);
+            int assetLimit = limit != null ? limit : 10;
+            recommendationService.populateAssetsFromApi(keyword,assetLimit);
             return ResponseEntity.ok("Assets populated successfully from Alpha Vantage API.");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)

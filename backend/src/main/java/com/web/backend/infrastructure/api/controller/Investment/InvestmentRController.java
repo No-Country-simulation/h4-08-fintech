@@ -72,10 +72,13 @@ public class InvestmentRController {
     }
 
     @PostMapping("/populate-risk")
-    public ResponseEntity<String> populateAssetsByRiskLvl(@RequestParam short risklvl, @RequestParam Integer limit) {
+    public ResponseEntity<String> populateAssetsByRiskLvl(
+            @RequestParam short risklvl,
+            @RequestParam Integer limit,
+            @RequestBody List<String> predefinedSymbols) {
         try {
             int assetLimit = limit != null ? limit : 10;
-            recommendationService.populateAssetsByRiskLevel(risklvl, assetLimit);
+            recommendationService.populateAssetsByRiskLevel(risklvl, assetLimit, predefinedSymbols);
             return ResponseEntity.ok("Assets populated successfully from Alpha Vantage API.");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)

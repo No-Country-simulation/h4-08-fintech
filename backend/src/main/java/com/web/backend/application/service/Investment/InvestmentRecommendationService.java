@@ -188,82 +188,90 @@ public class InvestmentRecommendationService implements ISInvestmentRecommendati
         }
     }
 
-    public void populateAssetsByRiskLevel(short riskLevelParam, int limit) {
+    public void populateAssetsByRiskLevel(short riskLevelParam, int limit, List<String> predefinedSymbols) {
         List<String> matchingSectors = getSectorsByRiskLevel(riskLevelParam);
+        List<String> topSymbolsOfTheDay = getTopGainersSymbols();
 
-        if (matchingSectors.isEmpty()) {
-            System.out.println("No hay sectores asociados al nivel de riesgo: " + riskLevelParam);
-            throw new RuntimeException("No hay sectores asociados al nivel de riesgo: " + riskLevelParam);
+        if (matchingSectors.isEmpty() && topSymbolsOfTheDay.isEmpty() && (predefinedSymbols == null || predefinedSymbols.isEmpty())) {
+            throw new RuntimeException("No hay sectores, símbolos predefinidos o mejores opciones disponibles para procesar.");
         }
 
-        System.out.println("Buscando activos en los sectores: " + matchingSectors);
+        System.out.println("Buscando activos...");
 
         int processedAssets = 0;
 
-        for (String sector : matchingSectors) {
+        // Procesar primero las mejores opciones del día
+        for (String symbol : topSymbolsOfTheDay) {
             if (processedAssets >= limit) break;
+            processedAssets += processAsset(symbol, riskLevelParam);
+        }
 
-            Map<String, Object> searchResults = alphaVantageClient.searchAssets(sector);
-
-            if (searchResults == null || !searchResults.containsKey("bestMatches")) {
-                System.out.println("No se encontraron activos para el sector: " + sector);
-                continue;
-            }
-
-            List<Map<String, Object>> matches = (List<Map<String, Object>>) searchResults.get("bestMatches");
-
-            if (matches == null || matches.isEmpty()) {
-                System.out.println("No se encontraron activos para el sector: " + sector);
-                continue;
-            }
-
-            for (Map<String, Object> match : matches) {
+        // Procesar símbolos predefinidos
+        if (predefinedSymbols != null) {
+            for (String symbol : predefinedSymbols) {
                 if (processedAssets >= limit) break;
-
-                String symbol = (String) match.get("1. symbol");
-                String name = (String) match.get("2. name");
-                String currency = (String) match.get("8. currency");
-
-                Map<String, Object> stockData = alphaVantageClient.getStockData(symbol);
-
-                // OVERVIEW
-                Map<String, Object> overviewData = alphaVantageClient.getOverviewData(symbol);
-                String assetSector = (overviewData != null && overviewData.containsKey("Sector"))
-                        ? (String) overviewData.get("Sector")
-                        : "Desconocido";
-
-                String assetType = (overviewData != null && overviewData.containsKey("AssetType"))
-                        ? (String) overviewData.get("AssetType")
-                        : "Desconocido";
-
-                double currentPrice = extractCurrentPrice(stockData);
-                float potentialReturns = calculatePotentialReturns(stockData);
-
-                AssetTemp asset = AssetTemp.builder()
-                        .assetName(name)
-                        .tikerSymbol(symbol)
-                        .currency(currency)
-                        .currentPrice(currentPrice)
-                        .potentialReturns(potentialReturns)
-                        .sector(assetSector)
-                        .assetType(assetType)
-                        .build();
-
-                int riskLevel = riskLevelCalculatorService.calculateRiskLevel(asset, stockData);
-
-                if (riskLevel != riskLevelParam) {
-                    continue;
-                }
-
-                asset.setRiskLevel(riskLevel);
-
-                if (!assetRepository.existsByTikerSymbol(symbol)) {
-                    assetRepository.save(asset);
-                    processedAssets++;
-                }
+                processedAssets += processAsset(symbol, riskLevelParam);
             }
         }
     }
+
+    private List<String> getTopGainersSymbols() {
+        Map<String, Object> gainersData = alphaVantageClient.getTopGainers();
+        if (gainersData == null || !gainersData.containsKey("top_gainers")) {
+            System.out.println("No se encontraron las mejores opciones del día.");
+            return List.of();
+        }
+
+        List<Map<String, Object>> topGainers = (List<Map<String, Object>>) gainersData.get("top_gainers");
+        return topGainers.stream()
+                .map(entry -> (String) entry.get("ticker"))
+                .toList();
+    }
+
+    private int processAsset(String symbol, short riskLevelParam) {
+        if (assetRepository.existsByTikerSymbol(symbol)) {
+            return 0;
+        }
+
+        Map<String, Object> stockData = alphaVantageClient.getStockData(symbol);
+        Map<String, Object> overviewData = alphaVantageClient.getOverviewData(symbol);
+
+        if (stockData == null || overviewData == null) {
+            System.out.println("Datos incompletos para el símbolo: " + symbol);
+            return 0;
+        }
+
+        String name = (String) overviewData.getOrDefault("Name", "Desconocido");
+        String currency = (String) overviewData.getOrDefault("Currency", "USD");
+        String assetSector = (String) overviewData.getOrDefault("Sector", "Desconocido");
+        String assetType = (String) overviewData.getOrDefault("AssetType", "Desconocido");
+        System.out.println(name);
+        double currentPrice = extractCurrentPrice(stockData);
+        float potentialReturns = calculatePotentialReturns(stockData);
+
+        AssetTemp asset = AssetTemp.builder()
+                .assetName(name)
+                .tikerSymbol(symbol)
+                .currency(currency)
+                .currentPrice(currentPrice)
+                .potentialReturns(potentialReturns)
+                .sector(assetSector)
+                .assetType(assetType)
+                .build();
+
+        int riskLevel = riskLevelCalculatorService.calculateRiskLevel(asset, stockData);
+
+        if (riskLevel != riskLevelParam) {
+            return 0;
+        }
+
+        asset.setRiskLevel(riskLevel);
+        assetRepository.save(asset);
+
+        System.out.println("Activo procesado y guardado: " + asset);
+        return 1; // Activo procesado
+    }
+
 
     private List<String> getSectorsByRiskLevel(int riskLevel) {
         return switch (riskLevel) {

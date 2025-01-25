@@ -8,6 +8,7 @@ import OnboardingStep4 from "../../components/Onboarding/OnboardingStep4";
 import { OnboardingStep6 } from '../../components/Onboarding/OnboardingStep6';
 import {FinancialGoals as OnboardingStep3} from '../../components/Onboarding/OnboardingStep3';
 import OnboardingEnd from '../../components/Onboarding/OnboardingEnd';
+import { Button } from '../../components/common/Button';
 export const Onboarding = () => {
 const [step, SetStep] = useState(1);
 const [availableToContinue, setAvailableToContinue] = useState(true);
@@ -35,13 +36,8 @@ if (step === 1) {
 return (
 <div className="flex flex-col items-center justify-center bg-gradient bg-center h-screen w-screen relative px-5 font-jakarta">
     {step > 1 ? (
-    <button
-        onClick={handleBack}
-        className="flex items-center justify-center w-[55px] h-[55px] bg-blur border-2 border-gradient-stroke rounded-xl absolute top-5 left-5"
-    >
-        <img src={ArrowBack} className="w-[24px]" alt="flecha hacia atras" />
-    </button>
-    ) : null}
+    <Button icon={ArrowBack} altText='flecha hacia atras' onClick={handleBack} style={"absolute top-5 left-5"}/>
+    ) : null }
     {step === 1 && <OnboardingStep1 onNext={handleNext} />}
     {step === 2 && (
     <OnboardingStep2

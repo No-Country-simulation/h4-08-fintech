@@ -2,8 +2,6 @@ import { Link } from "react-router-dom";
 import logo from "../assets/logo-completo.png";
 
 const Home = () => {
-
-
   return (
     <div>
           <div className="h-screen flex flex-col justify-center items-center">

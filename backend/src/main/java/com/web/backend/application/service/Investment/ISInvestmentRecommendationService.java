@@ -1,12 +1,15 @@
 package com.web.backend.application.service.Investment;
 
 import com.web.backend.application.DTO.Recommendation.AssetRecommendation;
+import com.web.backend.domain.model.AssetTemp.AssetTemp;
 import com.web.backend.domain.model.Financials.FinancialProfile;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 public interface ISInvestmentRecommendationService {
+
     /**
      * Obtiene recomendaciones de inversión basadas en el perfil financiero del cliente y los activos disponibles en la base de datos.
      *
@@ -30,5 +33,17 @@ public interface ISInvestmentRecommendationService {
      *
      * @param keyword Palabra clave para buscar activos en la API externa.
      */
-    void populateAssetsByKeywordFromApi(String keyword, int limit) ;
+    void populateAssetsByKeywordFromApi(String keyword, int limit);
+
+    /**
+     * Método que coloca una inversión realizada por un cliente en un activo.
+     *
+     * @param customerId ID del cliente.
+     * @param assetId ID del activo.
+     * @param amount Monto a invertir.
+     * @return Mensaje de éxito o error.
+     */
+    String placeInvestment(Long customerId, Long assetId, Double amount);
+
+    String withdrawInvestment(Long investmentId);
 }

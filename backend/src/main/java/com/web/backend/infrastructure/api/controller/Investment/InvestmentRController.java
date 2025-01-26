@@ -85,4 +85,36 @@ public class InvestmentRController {
                     .body("Error populating assets: " + e.getMessage());
         }
     }
+
+    @PostMapping
+    public ResponseEntity<?> placeInvestment(
+            @RequestParam Long customerId,
+            @RequestParam Long assetId,
+            @RequestParam Double amount) {
+        try {
+            String result = recommendationService.placeInvestment(customerId, assetId, amount);
+            return ResponseEntity.ok(result);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Unexpected error: " + e.getMessage());
+        }
+    }
+    @PostMapping("/withdraw")
+    public ResponseEntity<?> withdrawInvestment(
+            @RequestParam Long investmentId) {
+        try {
+            String result = recommendationService.withdrawCurrentDataInvestment(investmentId);
+            return ResponseEntity.ok(result);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Unexpected error: " + e.getMessage());
+        }
+    }
+
 }

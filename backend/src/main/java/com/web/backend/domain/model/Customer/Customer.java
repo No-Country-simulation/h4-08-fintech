@@ -1,6 +1,7 @@
 package com.web.backend.domain.model.Customer;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.web.backend.domain.model.investment.Investment;
 import com.web.backend.domain.model.user.UserModel;
 import com.web.backend.domain.utils.Auditable;
 import com.web.backend.infrastructure.api.utils.AccountType;
@@ -12,12 +13,13 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Getter
 @Setter
-@ToString
 @RequiredArgsConstructor
 public class Customer extends Auditable {
     @Id
@@ -28,9 +30,12 @@ public class Customer extends Auditable {
     @JoinColumn(name = "user_model_id", nullable = false)
     private UserModel userModel;
 
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Investment> investments = new ArrayList<>();
+
     @NotBlank
     private String fullName;
-    private float balance;
+    private Double balance;
     @NotNull
     private AccountType accountType;
     @NotNull

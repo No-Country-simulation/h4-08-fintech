@@ -1,5 +1,7 @@
 package com.web.backend.domain.model.investment;
 
+import com.web.backend.domain.model.AssetTemp.AssetTemp;
+import com.web.backend.domain.model.Customer.Customer;
 import com.web.backend.domain.model.asset.Asset;
 import com.web.backend.domain.model.asset.AssetType;
 import jakarta.persistence.*;
@@ -23,18 +25,19 @@ public class Investment {
     @Id
     @GeneratedValue
     private Long id;
-//    private Customer customer;
-    private Float amount;
+    @ManyToOne
+    private Customer customer;
+    private Double amount;
     @ManyToOne
     @JoinColumn(name = "asset_id")
-    private Asset asset;
+    private AssetTemp asset;
     @Column(name = "investment_date", updatable = false)
     @CreatedDate
     private LocalDateTime investmentDate;
     @Column(name = "maturity_date")
     private LocalDateTime maturityDate;
     @Column(name = "current_value")
-    private Float currentValue;
+    private Double currentValue;
     private String status;
     private boolean deleted = false;
 }

@@ -28,7 +28,7 @@ public class InvestmentServiceImpl implements InvestmentService {
 
         Asset asset = assetRepository.findById(investmentRequest.assetId())
                         .orElseThrow(() -> new AssetNotFoundException("Asset not found with id: " + investmentRequest.assetId()));
-        investment.setAsset(asset);
+//        investment.setAsset(asset);
 
         investmentRepository.save(investment);
         return investmentMapper.toInvestmentResponse(investment);

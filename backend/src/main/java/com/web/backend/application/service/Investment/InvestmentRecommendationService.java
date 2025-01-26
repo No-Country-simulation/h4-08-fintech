@@ -3,12 +3,17 @@ package com.web.backend.application.service.Investment;
 import com.web.backend.application.DTO.Recommendation.AssetRecommendation;
 import com.web.backend.application.service.AlphaVantage.AlphaVantageClient;
 import com.web.backend.domain.model.AssetTemp.AssetTemp;
+import com.web.backend.domain.model.Customer.Customer;
 import com.web.backend.domain.model.Financials.FinancialProfile;
+import com.web.backend.domain.model.investment.Investment;
 import com.web.backend.domain.repository.AssetTemp.RAssentTemp;
+import com.web.backend.domain.repository.Customer.RCustomer;
 import com.web.backend.domain.repository.Financials.RFinancialProfile;
+import com.web.backend.domain.repository.investment.InvestmentRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -16,10 +21,12 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class InvestmentRecommendationService implements ISInvestmentRecommendationService {
 
-    private RAssentTemp assetRepository;
-    private AlphaVantageClient alphaVantageClient;
-    private RFinancialProfile financialProfileRepository;
-    private RiskLevelCalculatorService riskLevelCalculatorService;
+    private final RAssentTemp assetRepository;
+    private final AlphaVantageClient alphaVantageClient;
+    private final RFinancialProfile financialProfileRepository;
+    private final RiskLevelCalculatorService riskLevelCalculatorService;
+    private final RCustomer customerRepository;
+    private final InvestmentRepository investmentRepository;
 
     public List<AssetRecommendation> getRecommendations(Long customerId) {
         Optional<FinancialProfile> profile = financialProfileRepository.findByCustomerId(customerId);
@@ -189,29 +196,35 @@ public class InvestmentRecommendationService implements ISInvestmentRecommendati
     }
 
     public void populateAssetsByRiskLevel(short riskLevelParam, int limit, List<String> predefinedSymbols) {
-        List<String> matchingSectors = getSectorsByRiskLevel(riskLevelParam);
-        List<String> topSymbolsOfTheDay = getTopGainersSymbols();
+        try {
 
-        if (matchingSectors.isEmpty() && topSymbolsOfTheDay.isEmpty() && (predefinedSymbols == null || predefinedSymbols.isEmpty())) {
-            throw new RuntimeException("No hay sectores, símbolos predefinidos o mejores opciones disponibles para procesar.");
-        }
+            List<String> matchingSectors = getSectorsByRiskLevel(riskLevelParam);
+            List<String> topSymbolsOfTheDay = getTopGainersSymbols();
 
-        System.out.println("Buscando activos...");
+            if (matchingSectors.isEmpty() && topSymbolsOfTheDay.isEmpty() && (predefinedSymbols == null || predefinedSymbols.isEmpty())) {
+                throw new RuntimeException("No hay sectores, símbolos predefinidos o mejores opciones disponibles para procesar.");
+            }
 
-        int processedAssets = 0;
+            System.out.println("Buscando activos...");
 
-        // Procesar primero las mejores opciones del día
-        for (String symbol : topSymbolsOfTheDay) {
-            if (processedAssets >= limit) break;
-            processedAssets += processAsset(symbol, riskLevelParam);
-        }
+            int processedAssets = 0;
 
-        // Procesar símbolos predefinidos
-        if (predefinedSymbols != null) {
-            for (String symbol : predefinedSymbols) {
+            // Procesar primero las mejores opciones del día
+            for (String symbol : topSymbolsOfTheDay) {
                 if (processedAssets >= limit) break;
                 processedAssets += processAsset(symbol, riskLevelParam);
             }
+
+            // Procesar símbolos predefinidos
+            if (predefinedSymbols != null) {
+                for (String symbol : predefinedSymbols) {
+                    if (processedAssets >= limit) break;
+                    processedAssets += processAsset(symbol, riskLevelParam);
+                }
+            }
+
+        } catch (RuntimeException e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -245,7 +258,10 @@ public class InvestmentRecommendationService implements ISInvestmentRecommendati
         String currency = (String) overviewData.getOrDefault("Currency", "USD");
         String assetSector = (String) overviewData.getOrDefault("Sector", "Desconocido");
         String assetType = (String) overviewData.getOrDefault("AssetType", "Desconocido");
-        System.out.println(name);
+
+        if (Objects.equals(name, "Desconocido") || Objects.equals(assetSector, "Desconocido"))
+            throw new RuntimeException("No se recibieron datos de la api");
+
         double currentPrice = extractCurrentPrice(stockData);
         float potentialReturns = calculatePotentialReturns(stockData);
 
@@ -277,8 +293,10 @@ public class InvestmentRecommendationService implements ISInvestmentRecommendati
         return switch (riskLevel) {
             case 1 -> List.of("cdars");
             case 2 -> List.of("etf", "bonos", "fondos mutuos");
-            case 3 -> List.of("financial_markets", "economy_fiscal", "economy_monetary", "economy_macro", "manufacturing", "retail_wholesale", "finance");
-            case 4 -> List.of("earnings", "mergers_and_acquisitions", "energy_transportation", "life_sciences", "real_estate");
+            case 3 ->
+                    List.of("financial_markets", "economy_fiscal", "economy_monetary", "economy_macro", "manufacturing", "retail_wholesale", "finance");
+            case 4 ->
+                    List.of("earnings", "mergers_and_acquisitions", "energy_transportation", "life_sciences", "real_estate");
             case 5 -> List.of("blockchain", "ipo", "technology");
             default -> List.of();
         };
@@ -298,10 +316,114 @@ public class InvestmentRecommendationService implements ISInvestmentRecommendati
         return (float) ((latestPrice - previousPrice) / previousPrice);
     }
 
-    private String determineAssetType(String symbol) {
-        if (symbol.endsWith(".AX")) return "acciones";
-        if (symbol.endsWith(".ETF")) return "ETF";
-        return "otros";
+    public String placeInvestment(Long customerId, Long assetId, Double amount) {
+        Customer customer = customerRepository.findById(customerId)
+                .orElseThrow(() -> new IllegalArgumentException("Customer not found with ID: " + customerId));
+
+        AssetTemp asset = assetRepository.findById(assetId)
+                .orElseThrow(() -> new IllegalArgumentException("Asset not found with ID: " + assetId));
+        System.out.println(asset.getAssetName());
+        if (customer.getBalance() < amount) {
+            throw new IllegalArgumentException("Insufficient balance for this investment.");
+        }
+        Investment investment = Investment.builder()
+                .customer(customer)
+                .asset(asset)
+                .amount(amount)
+                .investmentDate(LocalDateTime.now())
+                .currentValue(amount)
+                .status("ACTIVE")
+                .build();
+        customer.setBalance(customer.getBalance() - amount);
+
+        investmentRepository.save(investment);
+        customerRepository.save(customer);
+
+        return "Investment placed successfully for asset: " + asset.getAssetName();
+    }
+
+    public String withdrawCurrentDataInvestment(Long investmentId) {
+        Investment investment = investmentRepository.findById(investmentId)
+                .orElseThrow(() -> new IllegalArgumentException("Investment not found with ID: " + investmentId));
+
+        if (investment.getStatus().equalsIgnoreCase("WITHDRAWN")) {
+            throw new IllegalArgumentException("This investment has already been withdrawn.");
+        }
+
+        AssetTemp asset = investment.getAsset();
+        double currentPrice = asset.getCurrentPrice();
+
+        if (currentPrice <= 0) {
+            throw new IllegalStateException("Current asset price is zero or negative. Cannot calculate investment value.");
+        }
+
+        System.out.println("Current Asset Price: " + currentPrice);
+        System.out.println("Investment Amount: " + investment.getAmount());
+
+        Double currentValue = investment.getAmount() * currentPrice / asset.getCurrentPrice();
+
+        Double profitOrLoss = currentValue - investment.getAmount();
+
+        System.out.println("Calculated Current Value: " + currentValue);
+        System.out.println("Profit or Loss: " + profitOrLoss);
+
+        Customer customer = investment.getCustomer();
+        if (profitOrLoss < 0) {
+            System.out.println("Customer balance before: " + customer.getBalance());
+            customer.setBalance(customer.getBalance() + currentValue);
+            System.out.println("Customer balance after: " + customer.getBalance());
+        } else {
+            customer.setBalance(customer.getBalance() + currentValue);
+        }
+
+        investment.setCurrentValue(currentValue);
+        investment.setStatus("WITHDRAWN");
+        investment.setMaturityDate(LocalDateTime.now());
+
+        investmentRepository.save(investment);
+        customerRepository.save(customer);
+
+        if (profitOrLoss < 0) {
+            return String.format(
+                    "Investment withdrawn with a loss of %.2f. Amount credited to balance: %.2f",
+                    profitOrLoss, currentValue);
+        } else {
+            return String.format(
+                    "Investment withdrawn with a profit of %.2f. Amount credited to balance: %.2f",
+                    profitOrLoss, currentValue);
+        }
+    }
+
+
+    public String withdrawInvestment(Long investmentId) {
+        Investment investment = investmentRepository.findById(investmentId)
+                .orElseThrow(() -> new IllegalArgumentException("Investment not found with ID: " + investmentId));
+
+        if (investment.getStatus().equalsIgnoreCase("WITHDRAWN")) {
+            throw new IllegalArgumentException("This investment has already been withdrawn.");
+        }
+
+        AssetTemp asset = investment.getAsset();
+        Map<String, Object> stockData = alphaVantageClient.getStockData(asset.getTikerSymbol());
+        double currentPrice = extractCurrentPrice(stockData);
+
+        Double currentValue = (investment.getAmount() * currentPrice / asset.getCurrentPrice());
+
+        Double profitOrLoss = currentValue - investment.getAmount();
+
+        Customer customer = investment.getCustomer();
+        customer.setBalance(customer.getBalance() + currentValue);
+
+        investment.setCurrentValue(currentValue);
+        investment.setStatus("WITHDRAWN");
+        investment.setMaturityDate(LocalDateTime.now());
+
+        investmentRepository.save(investment);
+        customerRepository.save(customer);
+
+        return String.format(
+                "Investment withdrawn successfully. Profit/Loss: %.2f. Amount credited to balance: %.2f",
+                profitOrLoss, currentValue);
     }
 
 }

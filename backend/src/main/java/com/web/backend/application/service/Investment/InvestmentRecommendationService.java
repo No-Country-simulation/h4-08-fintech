@@ -162,7 +162,6 @@ public class InvestmentRecommendationService implements ISInvestmentRecommendati
 
             Map<String, Object> stockData = alphaVantageClient.getStockData(symbol);
 
-            // OVERVIEW
             Map<String, Object> overviewData = alphaVantageClient.getOverviewData(symbol);
             String sector = (overviewData != null && overviewData.containsKey("Sector"))
                     ? (String) overviewData.get("Sector")
@@ -188,7 +187,6 @@ public class InvestmentRecommendationService implements ISInvestmentRecommendati
             int riskLevel = riskLevelCalculatorService.calculateRiskLevel(asset, stockData);
             asset.setRiskLevel(riskLevel);
 
-            // Verificar si el activo esta en la db
             if (!assetRepository.existsByTikerSymbol(symbol)) {
                 assetRepository.save(asset);
             }
@@ -209,13 +207,11 @@ public class InvestmentRecommendationService implements ISInvestmentRecommendati
 
             int processedAssets = 0;
 
-            // Procesar primero las mejores opciones del día
             for (String symbol : topSymbolsOfTheDay) {
                 if (processedAssets >= limit) break;
                 processedAssets += processAsset(symbol, riskLevelParam);
             }
 
-            // Procesar símbolos predefinidos
             if (predefinedSymbols != null) {
                 for (String symbol : predefinedSymbols) {
                     if (processedAssets >= limit) break;

@@ -76,10 +76,8 @@ public class InvestmentRecommendationService implements ISInvestmentRecommendati
 
 
     public List<AssetRecommendation> getExternalRecommendations(String keyword, FinancialProfile profile) {
-        // Hacer la búsqueda en la API
         Map<String, Object> searchResults = alphaVantageClient.searchAssets(keyword);
 
-        // Verificar si la API ha alcanzado el límite de llamadas
         if (searchResults.containsKey("Note")) {
             System.out.println("Límite de llamadas de la API alcanzado: " + searchResults.get("Note"));
         }

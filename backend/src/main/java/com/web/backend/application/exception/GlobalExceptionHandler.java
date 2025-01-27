@@ -3,6 +3,7 @@ package com.web.backend.application.exception;
 import com.web.backend.application.exception.asset.AssetNotFoundException;
 import com.web.backend.application.exception.asset.ExternalAPILimit;
 import com.web.backend.application.exception.asset.InvalidTickerException;
+import com.web.backend.application.exception.customer.CustomerNotFoundException;
 import com.web.backend.application.exception.investment.InvestmentNotFoundException;
 import com.web.backend.application.exception.asset.AssetTypeNotFoundException;
 import com.web.backend.application.exception.news.NewsCategoryNotFoundException;
@@ -65,6 +66,11 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(ObjectiveStatusNotFoundException.class)
     public ResponseEntity<String> handleObjectiveStatusNotFound(ObjectiveStatusNotFoundException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+    }
+
+    @ExceptionHandler(CustomerNotFoundException.class)
+    public ResponseEntity<String> handleCustomerNotFound(CustomerNotFoundException ex) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
     }
 }

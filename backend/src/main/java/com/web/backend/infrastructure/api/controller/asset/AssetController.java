@@ -26,13 +26,15 @@ public class AssetController {
     private final AssetService assetService;
 
     @GetMapping
-    @Operation(summary = "Get all assets by deleted status", description = "Retrieves a list of all assets based on their deleted status")
+    @Operation(summary = "Get assets", description = "Retrieves a list of assets, optionally filtered by name or ticker and deleted status")
     @ApiResponse(responseCode = "200", description = "Successfully retrieved assets")
-    public ResponseEntity<List<AssetResponse>> getAssetsByDeleted(
-            @Parameter(description = "Deleted status of assets to retrieve") 
+    public ResponseEntity<List<AssetResponse>> getAssets(
+            @Parameter(description = "Name or ticker to search for")
+            @RequestParam(required = false) String keyword,
+            @Parameter(description = "Deleted status of assets to retrieve")
             @RequestParam(name = "deleted", defaultValue = "false") boolean deleted
     ) {
-        List<AssetResponse> assetResponses = assetService.getAllAssetsByDeleted(deleted);
+        List<AssetResponse> assetResponses = assetService.getAssets(deleted, keyword);
         return ResponseEntity.ok(assetResponses);
     }
 

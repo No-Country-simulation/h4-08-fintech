@@ -26,6 +26,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -38,8 +39,9 @@ public class AssetServiceImpl implements AssetService {
     private final String apikey = System.getenv("API_KEY");
 
     @Override
-    public List<AssetResponse> getAllAssetsByDeleted(boolean deleted) {
-        List<Asset> assets = assetRepository.findAssetsByDeleted(deleted);
+    public List<AssetResponse> getAssets(boolean deleted, String keyword) {
+        List<Asset> assets = assetRepository.searchByDeletedAndKeyword(deleted, keyword);
+
         return assets.stream().map(assetMapper::toAssetResponse).toList();
     }
 
@@ -116,7 +118,7 @@ public class AssetServiceImpl implements AssetService {
 
         if(assetRequest.assetTypeId() != null) {
             assetTypeRepository.findById(assetRequest.assetTypeId())
-                    .orElseThrow(() -> new AssetNotFoundException("Asset type not found with id: " + assetRequest.assetTypeId()));
+                    .orElseThrow(() -> new AssetTypeNotFoundException("Asset type not found with id: " + assetRequest.assetTypeId()));
         }
         assetMapper.updateAssetFromRequest(assetRequest, asset);
         Asset updatedAsset = assetRepository.save(asset);

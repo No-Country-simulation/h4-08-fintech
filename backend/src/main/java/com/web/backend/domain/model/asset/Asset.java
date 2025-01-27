@@ -20,6 +20,7 @@ public class Asset {
 
     @Id
     private String ticker;
+    private String name;
     private Float price;
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;

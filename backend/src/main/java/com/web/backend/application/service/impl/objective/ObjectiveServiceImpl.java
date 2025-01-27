@@ -62,6 +62,13 @@ public class ObjectiveServiceImpl implements ObjectiveService {
                 .orElseThrow(() -> new ObjectiveNotFoundException("Objective not found with id: " + id));
 
         objectiveMapper.updateObjectiveFromRequest(objectiveRequest, existingObjective);
+
+        if(objectiveRequest.customerId()!= null) {
+            Customer customer = customerRepository.findById(objectiveRequest.customerId())
+                   .orElseThrow(() -> new CustomerNotFoundException("Customer not found with id: " + objectiveRequest.customerId()));
+            existingObjective.setCustomer(customer);
+        }
+
         if(objectiveRequest.objectiveStatusId() != null) {
             ObjectiveStatus objectiveStatus = objectiveStatusRepository.findById(objectiveRequest.objectiveStatusId())
                     .orElseThrow(() -> new ObjectiveStatusNotFoundException("Objective status not found with id: " + id));

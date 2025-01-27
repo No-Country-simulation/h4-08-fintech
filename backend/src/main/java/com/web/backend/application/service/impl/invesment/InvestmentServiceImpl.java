@@ -65,6 +65,12 @@ public class InvestmentServiceImpl implements InvestmentService {
 
         investmentMapper.updateInvestmentFromRequest(investmentRequest, existingInvestment);
 
+        if(investmentRequest.customerId()!= null) {
+            Customer customer = customerRepository.findById(investmentRequest.customerId())
+                    .orElseThrow(() -> new CustomerNotFoundException("Customer not found with id: " + investmentRequest.customerId()));
+            existingInvestment.setCustomer(customer);
+        }
+
         investmentRepository.save(existingInvestment);
         return investmentMapper.toInvestmentResponse(existingInvestment);
     }

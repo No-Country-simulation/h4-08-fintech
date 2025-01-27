@@ -26,6 +26,7 @@ public class Investment {
     @GeneratedValue
     private Long id;
     @ManyToOne
+    @JoinColumn(name = "customer_id")
     private Customer customer;
     private Double amount;
     @ManyToOne

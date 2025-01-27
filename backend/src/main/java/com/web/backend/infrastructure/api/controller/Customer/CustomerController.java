@@ -15,9 +15,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/customer")
+@RequestMapping("/customers")
 @AllArgsConstructor
 public class CustomerController {
+
     private final CustomerService customerService;
     private final OnboardingService onboardingService;
 
@@ -29,7 +30,7 @@ public class CustomerController {
         return  ResponseEntity.ok(createCustomer);
     }
 
-    @PostMapping
+    @PostMapping("/onboarding")
     public ResponseEntity<Map<String, Object>> onboardCustomer(
             @RequestParam String email,
             @Valid @RequestBody OnboardingRequest request) {
@@ -43,9 +44,7 @@ public class CustomerController {
             response.put("status", "error");
             response.put("message", e.getMessage());
         }
-
         return ResponseEntity.ok(response);
     }
-
 
 }

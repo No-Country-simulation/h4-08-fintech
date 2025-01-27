@@ -6,5 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
 
-public interface RFinancialSnapshot extends JpaRepository<FinancialSnapshot, Long>, JpaSpecificationExecutor<FinancialSnapshot> {
+public interface RFinancialSnapshot extends JpaRepository<FinancialSnapshot, Long> {
 }

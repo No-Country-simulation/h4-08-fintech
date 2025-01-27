@@ -5,5 +5,5 @@ import com.web.backend.domain.model.user.UserModel;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
-public interface RAddresses extends JpaRepository<Addresses, Long>, JpaSpecificationExecutor<Addresses> {
+public interface RAddresses extends JpaRepository<Addresses, Long> {
 }

@@ -4,53 +4,65 @@ import com.web.backend.application.service.Auth.CustomOAuth2UserService;
 import com.web.backend.config.filter.AuthFilter;
 import com.web.backend.infrastructure.api.utils.auth.AESUtil;
 import com.web.backend.infrastructure.api.utils.auth.JwtTokenUtil;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
 
+import java.io.IOException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 
 @Configuration
-@EnableWebSecurity
 @AllArgsConstructor
 public class SecurityConfig {
 
     private final JwtTokenUtil jwtUtil;
     private final AESUtil aesUtil;
+    private final  AppConfig appConfig;
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
+        System.out.println("AuthenticationManager initialized");
         return authenticationConfiguration.getAuthenticationManager();
     }
 
     @Bean
     public CustomOAuth2UserService customOAuth2UserService() {
-        System.out.println("Inicializando CustomOAuth2UserService con JwtTokenUtil: " + jwtUtil);
+        System.out.println("Initializing CustomOAuth2UserService with JwtTokenUtil: " + jwtUtil);
         return new CustomOAuth2UserService(jwtUtil);
     }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http, AuthFilter jwtAuthenticationFilter) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.NEVER))
+                .cors(httpSecurityCorsConfigurer -> httpSecurityCorsConfigurer.configurationSource(corsConfigurationSource()))
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(
                                 "/api/v*/registration/**",
-                                "/auth/register*",
-                                "/auth/login",
                                 "/actuator/**",
-                                "/oauth2/**"
+                                "/oauth2/**",
+                                "/auth/register",
+                                "/auth/login",
+                                "/swagger-ui/**"
                         ).permitAll()
                         .anyRequest().authenticated()
                 )
@@ -65,7 +77,6 @@ public class SecurityConfig {
                                 .baseUri("/oauth2/callback/*")
                         )
                         .successHandler((request, response, authentication) -> {
-
                             try {
                                 DefaultOAuth2User oauthUser = (DefaultOAuth2User) authentication.getPrincipal();
                                 String email = oauthUser.getAttribute("email");
@@ -78,21 +89,15 @@ public class SecurityConfig {
                                 String encryptedToken = URLEncoder.encode(aesUtil.encrypt(token), StandardCharsets.UTF_8);
                                 String encryptedName = URLEncoder.encode(aesUtil.encrypt(name), StandardCharsets.UTF_8);
 
-                                System.out.println("Email encriptado: " + encryptedEmail);
-                                System.out.println("Token encriptado: " + encryptedToken);
-
-                                // Redirige con los datos encriptados
-                                response.sendRedirect("/oauth2/success?token=" + encryptedToken + "&email=" + encryptedEmail+"&name=" + encryptedName);
-
+                                response.sendRedirect("/oauth2/success?token=" + encryptedToken + "&email=" + encryptedEmail + "&name=" + encryptedName);
                             } catch (Exception e) {
-                                throw new RuntimeException(e);
+                                response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Authentication failed");
                             }
-
-
                         })
-
                         .failureHandler((request, response, exception) -> {
-                            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Login failed");
+                            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                            response.getWriter().write("{\"error\": \"Login failed\", \"message\": \"" + exception.getMessage() + "\"}");
+                            response.getWriter().flush();
                         })
                 )
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
@@ -100,4 +105,45 @@ public class SecurityConfig {
         return http.build();
     }
 
+
+    private void handleOAuth2Success(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
+        try {
+            DefaultOAuth2User oauthUser = (DefaultOAuth2User) authentication.getPrincipal();
+            String email = oauthUser.getAttribute("email");
+            String name = oauthUser.getAttribute("name");
+            String token = jwtUtil.generateToken(email);
+
+            if (email == null || token == null || name == null) {
+                throw new IllegalArgumentException("Missing required attributes in OAuth2 response");
+            }
+
+            String encryptedEmail = URLEncoder.encode(aesUtil.encrypt(email), StandardCharsets.UTF_8);
+            String encryptedToken = URLEncoder.encode(aesUtil.encrypt(token), StandardCharsets.UTF_8);
+            String encryptedName = URLEncoder.encode(aesUtil.encrypt(name), StandardCharsets.UTF_8);
+
+            response.sendRedirect("/oauth2/success?token=" + encryptedToken + "&email=" + encryptedEmail + "&name=" + encryptedName);
+
+        } catch (Exception e) {
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            try {
+                response.getWriter().write("Error processing OAuth2 login");
+            } catch (IOException ioException) {
+                System.out.println("Error writing error response"+ ioException);
+            }
+        }
+    }
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration corsConfiguration = new CorsConfiguration();
+        //Make the below setting as * to allow connection from any hos
+        corsConfiguration.setAllowedOrigins(List.of(appConfig.getProperty("CLIENT_ORIGIN")));
+        corsConfiguration.setAllowedMethods(List.of("GET", "POST"));
+        corsConfiguration.setAllowCredentials(true);
+        corsConfiguration.setAllowedHeaders(List.of("*"));
+        corsConfiguration.setMaxAge(3600L);
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", corsConfiguration);
+        return source;
+    }
 }
+

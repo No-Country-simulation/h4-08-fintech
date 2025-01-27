@@ -9,6 +9,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.hibernate.annotations.SQLDelete;
 
 import java.util.Date;
 
@@ -17,6 +18,8 @@ import java.util.Date;
 @ToString
 @RequiredArgsConstructor
 @Entity
+@SQLDelete(sql = "UPDATE customer SET deleted = true WHERE id = ?")
+@SQLDelete(sql = "deleted=true")
 public class Customer extends Auditable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

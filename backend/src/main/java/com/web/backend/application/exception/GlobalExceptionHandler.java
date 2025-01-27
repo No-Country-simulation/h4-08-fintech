@@ -12,6 +12,7 @@ import com.web.backend.application.exception.news.NewsNotFoundException;
 import com.web.backend.application.exception.news.NewsSourceNotFoundException;
 import com.web.backend.application.exception.objective.ObjectiveNotFoundException;
 import com.web.backend.application.exception.objective.ObjectiveStatusNotFoundException;
+import com.web.backend.application.exception.user.UserNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -77,6 +78,11 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(InsufficientBalanceException.class)
     public ResponseEntity<String> handleInsufficientBalance(InsufficientBalanceException ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
+    }
+
+    @ExceptionHandler(UserNotFoundException.class)
+    public ResponseEntity<String> handleUserNotFound(UserNotFoundException ex) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
     }
 }

@@ -2,6 +2,7 @@ package com.web.backend.domain.repository.objective;
 
 import com.web.backend.domain.model.objective.Objective;
 import com.web.backend.domain.model.objective.ObjectiveStatus;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -14,4 +15,7 @@ public interface ObjectiveRepository extends JpaRepository<Objective, Long> {
 
     @Query(value = "SELECT * FROM objective i WHERE i.deleted = :deleted", nativeQuery = true)
     List<Objective> findAllByIsDeleted(@Param("deleted") boolean deleted);
+
+    List<Objective> findByCustomerId(Long customerId, Sort sort);
+
 }

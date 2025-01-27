@@ -7,6 +7,7 @@ import OnboardingStep1 from "./components/Onboarding/OnboardingStep1";
 import OnboardingStep2 from "./components/Onboarding/OnboardingStep2";
 import OnboardingStep3 from "./components/Onboarding/OnboardingStep3";
 import OnboardingStep4 from "./components/Onboarding/OnboardingStep4";
+import OnboardingStep5 from "./components/Onboarding/OnboardingStep5";
 export default function AppRouter() {
   return (
     <Router>
@@ -20,6 +21,7 @@ export default function AppRouter() {
         <Route path="/onboarding2" element={<OnboardingStep2 />} />
         <Route path="/onboarding3" element={<OnboardingStep3 />} />
         <Route path="/onboarding4" element={<OnboardingStep4 />} />
+        <Route path="/onboarding5" element={<OnboardingStep5 />} />
       </Routes>
     </Router>
   );

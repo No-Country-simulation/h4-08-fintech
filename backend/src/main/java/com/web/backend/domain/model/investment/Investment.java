@@ -1,5 +1,6 @@
 package com.web.backend.domain.model.investment;
 
+import com.web.backend.domain.model.Customer.Customer;
 import com.web.backend.domain.model.asset.Asset;
 import com.web.backend.domain.model.asset.AssetType;
 import jakarta.persistence.*;
@@ -23,7 +24,9 @@ public class Investment {
     @Id
     @GeneratedValue
     private Long id;
-//    private Customer customer;
+    @ManyToOne
+    @JoinColumn(name = "customer_id")
+    private Customer customer;
     private Float amount;
     @ManyToOne
     @JoinColumn(name = "asset_id")
@@ -37,4 +40,6 @@ public class Investment {
     private Float currentValue;
     private String status;
     private boolean deleted = false;
+    @Column(updatable = false, name = "created_at")
+    private LocalDateTime createdAt;
 }

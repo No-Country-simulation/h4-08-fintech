@@ -174,7 +174,7 @@ public class InvestmentRecommendationService implements ISInvestmentRecommendati
 
             AssetTemp asset = AssetTemp.builder()
                     .assetName(name)
-                    .tikerSymbol(symbol)
+                    .tickerSymbol(symbol)
                     .currency(currency)
                     .currentPrice(currentPrice)
                     .potentialReturns(potentialReturns)
@@ -185,7 +185,7 @@ public class InvestmentRecommendationService implements ISInvestmentRecommendati
             int riskLevel = riskLevelCalculatorService.calculateRiskLevel(asset, stockData);
             asset.setRiskLevel(riskLevel);
 
-            if (!assetRepository.existsByTikerSymbol(symbol)) {
+            if (!assetRepository.existsByTickerSymbol(symbol)) {
                 assetRepository.save(asset);
             }
         }
@@ -236,7 +236,7 @@ public class InvestmentRecommendationService implements ISInvestmentRecommendati
     }
 
     private int processAsset(String symbol, short riskLevelParam) {
-        if (assetRepository.existsByTikerSymbol(symbol)) {
+        if (assetRepository.existsByTickerSymbol(symbol)) {
             return 0;
         }
 
@@ -261,7 +261,7 @@ public class InvestmentRecommendationService implements ISInvestmentRecommendati
 
         AssetTemp asset = AssetTemp.builder()
                 .assetName(name)
-                .tikerSymbol(symbol)
+                .tickerSymbol(symbol)
                 .currency(currency)
                 .currentPrice(currentPrice)
                 .potentialReturns(potentialReturns)
@@ -310,7 +310,7 @@ public class InvestmentRecommendationService implements ISInvestmentRecommendati
         return (float) ((latestPrice - previousPrice) / previousPrice);
     }
 
-    public String placeInvestment(Long customerId, Long assetId, Double amount) {
+    public String placeInvestment(Long customerId, String assetId, Double amount) {
         Customer customer = customerRepository.findById(customerId)
                 .orElseThrow(() -> new IllegalArgumentException("Customer not found with ID: " + customerId));
 
@@ -397,7 +397,7 @@ public class InvestmentRecommendationService implements ISInvestmentRecommendati
         }
 
         AssetTemp asset = investment.getAsset();
-        Map<String, Object> stockData = alphaVantageClient.getStockData(asset.getTikerSymbol());
+        Map<String, Object> stockData = alphaVantageClient.getStockData(asset.getTickerSymbol());
         double currentPrice = extractCurrentPrice(stockData);
 
         Double currentValue = (investment.getAmount() * currentPrice / asset.getCurrentPrice());

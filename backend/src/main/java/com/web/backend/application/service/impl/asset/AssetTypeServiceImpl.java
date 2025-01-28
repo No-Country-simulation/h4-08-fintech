@@ -4,9 +4,9 @@ import com.web.backend.application.DTO.asset.AssetTypeRequest;
 import com.web.backend.application.DTO.asset.AssetTypeResponse;
 import com.web.backend.application.exception.asset.AssetTypeNotFoundException;
 import com.web.backend.application.service.interfaces.asset.AssetTypeService;
-import com.web.backend.domain.model.asset.Asset;
+import com.web.backend.domain.model.AssetTemp.AssetTemp;
 import com.web.backend.domain.model.asset.AssetType;
-import com.web.backend.domain.repository.asset.AssetRepository;
+import com.web.backend.domain.repository.AssetTemp.RAssentTemp;
 import com.web.backend.domain.repository.asset.AssetTypeRepository;
 import com.web.backend.infrastructure.api.utils.asset.AssetTypeMapper;
 import jakarta.transaction.Transactional;
@@ -20,7 +20,7 @@ import java.util.List;
 public class AssetTypeServiceImpl implements AssetTypeService {
     
     private final AssetTypeRepository assetTypeRepository;
-    private final AssetRepository assetRepository;
+    private final RAssentTemp assetRepository;
     private final AssetTypeMapper assetTypeMapper;
 
     @Override
@@ -62,8 +62,8 @@ public class AssetTypeServiceImpl implements AssetTypeService {
         AssetType assetType = assetTypeRepository.findById(id)
                 .orElseThrow(() -> new AssetTypeNotFoundException("Asset Type not found with id: " + id));
 
-        List<Asset> assets = assetRepository.findAllByAssetType(assetType);
-        for(Asset asset: assets) {
+        List<AssetTemp> assets = assetRepository.findAllByAssetType(assetType);
+        for(AssetTemp asset: assets) {
             asset.setAssetType(null);
         }
         assetRepository.saveAll(assets);

@@ -1,4 +1,4 @@
-package com.web.backend.infrastructure.api.controller.Investment;
+package com.web.backend.infrastructure.api.controller.investment;
 
 import com.web.backend.application.DTO.Recommendation.AssetRecommendation;
 import com.web.backend.application.service.Investment.InvestmentRecommendationService;
@@ -89,7 +89,7 @@ public class InvestmentRController {
     @PostMapping
     public ResponseEntity<?> placeInvestment(
             @RequestParam Long customerId,
-            @RequestParam Long assetId,
+            @RequestParam String assetId,
             @RequestParam Double amount) {
         try {
             String result = recommendationService.placeInvestment(customerId, assetId, amount);

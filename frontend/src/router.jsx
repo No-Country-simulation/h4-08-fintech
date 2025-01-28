@@ -6,7 +6,8 @@ import { Onboarding } from "./pages/Onboarding/Onboarding";
 import OnboardingStep2 from "./components/Onboarding/OnboardingStep2";
 import OnboardingStep3 from "./components/Onboarding/OnboardingStep3";
 import OnboardingStep4 from "./components/Onboarding/OnboardingStep4";
-import OnboardingStep5 from "./components/Onboarding/OnboardingStep5"; */
+import OnboardingStep5 from "./components/Onboarding/OnboardingStep5"; 
+import { OnboardingStep6 } from "./components/Onboarding/OnboardingStep6";*/
 
 import { Dashboard } from "./pages/Dashboard/Dashboard";
 import { Investments } from "./pages/Dashboard/Investments";
@@ -16,6 +17,7 @@ import { Notifications } from "./pages/Dashboard/Notifications"
 import { Home } from "./pages/Home";
 import AuthHome from "./pages/Auth/AuthHome";
 import { HomeLayout } from "./layouts/HomeLayout";
+
 
 export default function AppRouter() {
   return (
@@ -32,7 +34,8 @@ export default function AppRouter() {
         <Route path="/onboarding2" element={<OnboardingStep2 />} />
         <Route path="/onboarding3" element={<OnboardingStep3 />} />
         <Route path="/onboarding4" element={<OnboardingStep4 />} />
-        <Route path="/onboarding5" element={<OnboardingStep5 />} /> */}
+        <Route path="/onboarding5" element={<OnboardingStep5 />} /> 
+        <Route path="/onboarding6" element={<OnboardingStep6 />} />*/}
 
         <Route path="/dashboard" element={<MainLayout/>}>
           <Route index element={<Dashboard />} />

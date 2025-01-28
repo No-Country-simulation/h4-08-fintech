@@ -1,5 +1,4 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Home from "./pages/Home";
 import Login from "./pages/Auth/Login";
 import Register from "./pages/Auth/Register";
 import { Onboarding } from "./pages/Onboarding/Onboarding";
@@ -14,12 +13,17 @@ import { Investments } from "./pages/Dashboard/Investments";
 import { MainLayout } from "./layouts/MainLayout";
 import { Error404 } from "./pages/Error404";
 import { Notifications } from "./pages/Dashboard/Notifications"
+import { Home } from "./pages/Home";
+import AuthHome from "./pages/Auth/AuthHome";
 
 export default function AppRouter() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route path="/" element={<MainLayout/>}>
+          <Route index element={<Home />} />
+        </Route>
+        <Route path="/auth" element={<AuthHome />} />
         <Route path="/login" element={<Login />} />
         <Route path="/registro" element={<Register />} />
         <Route path="/onboarding" element={<Onboarding />} />

@@ -133,8 +133,10 @@ export const Dashboard = () => {
 
     return (
         <main>
-            <h1 className="text-3xl font-semibold text-gray-900">Bienvenido {user.name}!</h1>
-            <section className="relative px-3 py-3 border-2 shadow-lg mt-7 bg-blur rounded-2xl border-gradient-stroke">
+            <h1 className="text-3xl font-semibold text-gray-900" data-aos="zoom-in"
+        data-aos-duration="500">Bienvenido {user.name}!</h1>
+            <section className="relative px-3 py-3 border-2 shadow-lg mt-7 bg-blur rounded-2xl border-gradient-stroke" data-aos="fade-up"
+        data-aos-duration="500">
                 <span className="px-2 py-1 text-xs font-medium text-white bg-blue-500 rounded-full">Importante</span>
                 <h2 className="mt-2 text-xl font-semibold tracking-tight text-gray-900">Termina de completar tu perfil</h2>
                 <p className="text-xs font-normal text-gray-700 tracking-tigh">Nos ayudará a mejorar nuestras recomendaciones</p>
@@ -160,7 +162,8 @@ export const Dashboard = () => {
                 </div>
             </section>
 
-            <section className="relative px-3 py-3 border-2 shadow-lg mt-7 bg-blur rounded-2xl border-gradient-stroke">
+            <section className="relative px-3 py-3 border-2 shadow-lg mt-7 bg-blur rounded-2xl border-gradient-stroke" data-aos="fade-up"
+        data-aos-duration="500">
                 <p className="text-xs font-normal text-gray-700 tracking-tigh">Balance (ARS)</p>
                 <div className="flex items-center my-4">
                     <span className="text-4xl font-semibold text-gray-900">${parseInt(user.balance).toLocaleString("es-AR")}</span>
@@ -186,7 +189,10 @@ export const Dashboard = () => {
                 <Button icon={Maximize} style={'absolute top-3 right-3'} />
             </section>
 
-            <section className="relative px-3 py-3 border-2 shadow-lg mt-7 bg-blur rounded-2xl border-gradient-stroke">
+            <section 
+            className="relative px-3 py-3 border-2 shadow-lg mt-7 bg-blur rounded-2xl border-gradient-stroke"
+            data-aos="fade-up"
+            data-aos-duration="500">
                 <p className="text-2xl font-bold text-black tracking-tigh">Accesos directos</p>
                 <div className="flex items-center justify-between mt-3">
                     <div className="flex flex-col items-center justify-center">
@@ -211,8 +217,10 @@ export const Dashboard = () => {
                 </div>
             </section>
 
-            <h2 className="mt-5 text-2xl font-bold text-black">Radiografía financiera</h2>
-            <section className="relative flex items-center justify-between w-full px-3 py-3 mt-4 border-2 shadow-lg bg-blur rounded-2xl border-gradient-stroke">
+            <h2 className="mt-5 text-2xl font-bold text-black" data-aos="fade-up"
+        data-aos-duration="500">Radiografía financiera</h2>
+            <section className="relative flex items-center justify-between w-full px-3 py-3 mt-4 border-2 shadow-lg bg-blur rounded-2xl border-gradient-stroke" data-aos="fade-up"
+        data-aos-duration="500">
                 <div className="w-1/2 h-auto">
                     <Doughnut data={data} options={options} />
                 </div>
@@ -232,14 +240,16 @@ export const Dashboard = () => {
                 </div>
             </section>
 
-            <div className="flex items-center mt-7">
+            <div className="flex items-center mt-7" data-aos="fade-up"
+        data-aos-duration="500">
                 <h2 className="text-2xl font-bold text-black">Objetivos de ahorro</h2>
                 <span className="w-6 h-6 ml-2"><img src={Info} alt="informacion" /></span>
             </div>
             {user.objetives.length > 0? 
                 user.objetives.map((objetive, i) => {
                 return (
-                    <section key={i} className="relative flex flex-col w-full px-3 py-3 mt-4 border-2 shadow-lg col bg-blur rounded-2xl border-gradient-stroke" >
+                    <section key={i} className="relative flex flex-col w-full px-3 py-3 mt-4 border-2 shadow-lg col bg-blur rounded-2xl border-gradient-stroke" data-aos="fade-up"
+                    data-aos-duration="500">
                         <div className="flex">
                             <span className="w-[48px] h-[48px] bg-white rounded-full flex justify-center items-center"><img src={Plain}/></span>
                             <div className="ml-2">
@@ -272,15 +282,18 @@ export const Dashboard = () => {
                 :
                 <h2>No hay objetivos</h2>
             }
-            <div className="flex justify-end w-full mt-4">
+            <div className="flex justify-end w-full mt-4" data-aos="fade-up"
+        data-aos-duration="500">
                 <span className="w-full text-base font-semibold text-right text-blue-600">Ver todos</span>
             </div>
                 
-            <h2 className="mt-5 text-2xl font-bold text-black">Inversiones recomendadas</h2>
+            <h2 className="mt-5 text-2xl font-bold text-black" data-aos="fade-up"
+            data-aos-duration="500">Inversiones recomendadas</h2>
             {
                 recommendedInvestments.map((investment, i) => {
                     return(
-                        <section key={i} className="relative flex items-center justify-between w-full px-3 py-3 mt-4 border-2 shadow-lg bg-blur rounded-2xl border-gradient-stroke">
+                        <section key={i} className="relative flex items-center justify-between w-full px-3 py-3 mt-4 border-2 shadow-lg bg-blur rounded-2xl border-gradient-stroke" data-aos="fade-up"
+                        data-aos-duration="500">
                                 <div className="flex items-center">
                                     <span className="w-[48px] h-[48px] bg-white rounded-full flex justify-center items-center"><img src={Apple}/></span>
                                     <div className="flex flex-col justify-center ml-2">
@@ -302,7 +315,7 @@ export const Dashboard = () => {
                     )
                 })
             }
-            <div className="flex justify-end w-full mt-4">
+            <div className="flex justify-end w-full mt-4" >
                     <span className="w-full text-base font-semibold text-right text-blue-600">Ver todas</span>
             </div>
         </main>

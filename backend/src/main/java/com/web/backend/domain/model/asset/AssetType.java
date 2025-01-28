@@ -1,5 +1,6 @@
 package com.web.backend.domain.model.asset;
 
+import com.web.backend.domain.utils.Auditable;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -16,7 +17,7 @@ import org.hibernate.annotations.SQLRestriction;
 @Builder
 @SQLDelete(sql = "UPDATE assetType SET deleted = true where id = ?")
 @SQLRestriction("deleted=false")
-public class AssetType {
+public class AssetType extends Auditable {
     @Id
     @GeneratedValue
     private Long id;

@@ -1,6 +1,7 @@
 package com.web.backend.domain.model.objective;
 
 import com.web.backend.domain.model.Customer.Customer;
+import com.web.backend.domain.utils.Auditable;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.SQLDelete;
@@ -18,7 +19,7 @@ import java.util.Date;
 @Builder
 @SQLDelete(sql = "UPDATE objective SET deleted = true where id = ?")
 @SQLRestriction("deleted=false")
-public class Objective {
+public class Objective extends Auditable {
     @Id
     @GeneratedValue
     private Long id;
@@ -38,6 +39,4 @@ public class Objective {
     @JoinColumn(name = "objective_status_id")
     private ObjectiveStatus objectiveStatus;
     private boolean deleted = false;
-    @Column(updatable = false, name = "created_at")
-    private LocalDateTime createdAt;
 }

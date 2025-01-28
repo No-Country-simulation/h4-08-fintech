@@ -18,6 +18,7 @@ import { Link } from "react-router-dom"
 import { BenefitCard } from "../components/Landing/BenefitCard"
 import { StepCard } from "../components/Landing/StepCard"
 import Marquee from "react-fast-marquee"
+import { LandingPage2 } from "./LandingPage/LandingPage2"
 
 export const Home = () => {
 
@@ -140,6 +141,7 @@ export const Home = () => {
                     )})
                 }
             </section>
+            <LandingPage2></LandingPage2>
         </main>
     )
 }

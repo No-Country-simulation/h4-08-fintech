@@ -60,8 +60,8 @@ export const LandingPage2 = () => {
       },
   ];
   return (
-    <div className="bg-gradient">
-      <img src={imgLanding} alt="" className="mx-auto py-5" />
+    <div  data-aos="fade-up" data-aos-duration="600">
+      <img src={imgLanding} alt="" className="mx-auto py-5"  />
       <HeaderLandingP
         title="SEGURIDAD"
         subtitle="Protegemos tu dinero en cada paso "
@@ -69,7 +69,8 @@ export const LandingPage2 = () => {
           es nuestra prioridad. Tu dinero está protegido con tecnología avanzada
           que incluye:"
       />
-      <div className="bg-white rounded-md mx-5 py-8 border-none">
+      <div className="bg-white rounded-md mx-5 py-8 border-none" data-aos="fade-up"
+      data-aos-duration="600">
         {feature.map((item, index) => (
           <div key={index} className="m-5">
             <div
@@ -90,7 +91,8 @@ export const LandingPage2 = () => {
       />
 {
     testimonials.map((item, index)=>(
-      <div className="bg-white rounded-md mx-5 p-8 border-none mt-8 py-8 " key={index}>
+      <div className="bg-white rounded-md mx-5 p-8 border-none mt-8 py-8 " key={index} data-aos="fade-up"
+      data-aos-duration="600">
         <div>⭐⭐⭐⭐⭐</div>
         <p className="my-5">
          {item.comment}
@@ -108,19 +110,32 @@ export const LandingPage2 = () => {
 
     ))
 }
-<div className="mt-8">
-<div className="rounded-md mx-5 pb-5" style={{ backgroundImage: `url(${imgLanding2})` }}>
-<h2 className="font-semibold text-center text-3xl text-white my-4 p-4">¿Listo para dar el siguiente paso y hacer crecer tu dinero?</h2>
-<p className="text-white text-center  px-4">
-Comenzá con iUPi hoy mismo. Simple, seguro y pensado para vos. Diseñado para ayudarte a invertir y manejar tus finanzas sin complicaciones. ¿Qué esperás? Tu próxima meta financiera está al alcance de tus manos.
-</p>
-<p className=" font-semibold mt-4 text-white text-center  px-4">
-Regístrate ahora y descubrí cómo podés empezar a ganar con tu dinero.
-</p>
-<button className="w-80 mx-auto mt-5 bg-blue-500 border-blue-500  flex items-center justify-center border text-white font-semibold p-3 rounded-2xl">
-Comenzar</button>
+<div className="my-8"  data-aos="fade-up"
+  data-aos-duration="800">
+  <div
+    className="rounded-lg mx-5"
+    style={{
+      backgroundImage: `url(${imgLanding2})`,
+      backgroundRepeat: 'no-repeat',
+      backgroundSize: 'cover',
+      paddingBottom: '2rem', 
+    }}
+  >
+    <h2 className="font-semibold text-center text-3xl text-white my-5 pt-5">
+      ¿Listo para dar el siguiente paso y hacer crecer tu dinero?
+    </h2>
+    <p className="text-white text-center px-4">
+      Comenzá con iUPi hoy mismo. Simple, seguro y pensado para vos. Diseñado para ayudarte a invertir y manejar tus finanzas sin complicaciones. ¿Qué esperás? Tu próxima meta financiera está al alcance de tus manos.
+    </p>
+    <p className="font-semibold mt-4 text-white text-center px-4">
+      Regístrate ahora y descubrí cómo podés empezar a ganar con tu dinero.
+    </p>
+    <button className="w-80 mx-auto my-5 bg-blue-500 border-blue-500 flex items-center justify-center border text-white font-semibold p-3 rounded-2xl">
+      Comenzar
+    </button>
+  </div>
 </div>
-</div>
+
     </div>
   );
 };

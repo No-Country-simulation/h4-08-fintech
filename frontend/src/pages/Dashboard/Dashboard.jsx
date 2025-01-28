@@ -6,6 +6,8 @@ import Clock from "../../assets/icons/clock.svg"
 import EyeOpen from "../../assets/icons/eye-open.svg"
 import Info from "../../assets/icons/info.svg"
 import Plain from "../../assets/emojis/plain.svg"
+import Apple from "../../assets/icons/investments/apple.svg"
+import Up from "../../assets/icons/investments/up.svg"
 
 import Goals from "../../assets/icons/directAccess/goals.svg"
 import Historial from "../../assets/icons/directAccess/historial.svg"
@@ -15,9 +17,7 @@ import { ButtonAccess } from "../../components/common/ButtonAccess"
 import { Doughnut } from "react-chartjs-2"
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 
-
 export const Dashboard = () => {
-    
     ChartJS.register(ArcElement, Tooltip, Legend);
     const user = {
         name: 'Juan',
@@ -32,11 +32,47 @@ export const Dashboard = () => {
                 name: "Vacaciones",
                 dueDate: '2025-02-07',
                 savePerMonth: 0,
-                goal: 0,
-                balance: 0
+                goal: 1000,
+                current: 20
             }
         ]
     }
+    const perfilCompleted = 25
+
+    const recommendedInvestments = [
+        {
+            company: "Apple Inc.",
+            name: 'APPL',
+            costARS: 13350,
+            costUSD: 225.59,
+            state: 0.94,
+            icon: {Apple}
+        },
+        {
+            company: "Apple Inc.",
+            name: 'APPL',
+            costARS: 13350,
+            costUSD: 225.59,
+            state: 0.94,
+            icon: {Apple}
+        },
+        {
+            company: "Apple Inc.",
+            name: 'APPL',
+            costARS: 13350,
+            costUSD: 225.59,
+            state: 0.94,
+            icon: {Apple}
+        },
+        {
+            company: "Apple Inc.",
+            name: 'APPL',
+            costARS: 13350,
+            costUSD: 225.59,
+            state: 0.94,
+            icon: {Apple}
+        }
+    ]
 
     const financialRadiograph = [
         {name: "Ingresos", value: user.incomes, color: '#0058CC'},
@@ -76,11 +112,14 @@ export const Dashboard = () => {
         },
     };
     
-    const perfilCompleted = 25
 
     const formatCardNumber = (card) => {
         const masked = card.slice(0, 12).replace(/\d/g, "*") + card.slice(12);
         return masked.match(/.{1,4}/g).join(" ");
+    }
+    
+    const getPercentageOfSave = (goal, current) => {
+        return current * 100 / goal
     }
 
     const daysUntil = (targetDate) => {
@@ -177,7 +216,7 @@ export const Dashboard = () => {
                 <div className="w-1/2 h-auto">
                     <Doughnut data={data} options={options} />
                 </div>
-                <div>
+                <div className="pt-5">
                     { financialRadiograph.map((data, i) => {
                         return(
                             <div key={i} className="flex items-start mb-2">
@@ -200,7 +239,7 @@ export const Dashboard = () => {
             {user.objetives.length > 0? 
                 user.objetives.map((objetive, i) => {
                 return (
-                    <section key={i} className="relative flex items-center justify-between w-full px-3 py-3 mt-4 border-2 shadow-lg bg-blur rounded-2xl border-gradient-stroke" >
+                    <section key={i} className="relative flex flex-col w-full px-3 py-3 mt-4 border-2 shadow-lg col bg-blur rounded-2xl border-gradient-stroke" >
                         <div className="flex">
                             <span className="w-[48px] h-[48px] bg-white rounded-full flex justify-center items-center"><img src={Plain}/></span>
                             <div className="ml-2">
@@ -217,7 +256,17 @@ export const Dashboard = () => {
                                 </div>
                             </div>
                         </div>
-                        
+                        <div className="flex items-center justify-between mt-2">
+                            <div className="relative w-full max-w-md mx-auto">
+                            <div
+                                className="absolute left-0 w-full h-4 transform -translate-y-1/2 rounded-full top-1/2 bg-blur">
+                            </div>
+                            <div className={`absolute top-1/2 left-0 h-4 transform -translate-y-1/2 rounded-full bg-blue-500`}
+                                style={{ width: `${getPercentageOfSave(objetive.goal, objetive.current) <=10? 10 : getPercentageOfSave(objetive.goal, objetive.current) }%` }}
+                                ></div>
+                            </div>
+                            <span className="pl-2 text-3xl font-bold text-blue-900">{getPercentageOfSave(objetive.goal, objetive.current)}%</span>
+                        </div>
                     </section>
                 )})
                 :
@@ -228,11 +277,34 @@ export const Dashboard = () => {
             </div>
                 
             <h2 className="mt-5 text-2xl font-bold text-black">Inversiones recomendadas</h2>
-            <section className="relative flex items-center justify-between w-full px-3 py-3 mt-4 border-2 shadow-lg bg-blur rounded-2xl border-gradient-stroke">
-                <div className="flex justify-end w-full mt-4">
+            {
+                recommendedInvestments.map((investment, i) => {
+                    return(
+                        <section key={i} className="relative flex items-center justify-between w-full px-3 py-3 mt-4 border-2 shadow-lg bg-blur rounded-2xl border-gradient-stroke">
+                                <div className="flex items-center">
+                                    <span className="w-[48px] h-[48px] bg-white rounded-full flex justify-center items-center"><img src={Apple}/></span>
+                                    <div className="flex flex-col justify-center ml-2">
+                                        <span className="text-xs text-gray-600">{investment.company}</span>
+                                        <p className="text-xl font-bold">{investment.name}</p>
+                                    </div>
+                                </div>
+                                <div className="flex flex-col items-end">
+                                    <span className="text-sm text-gray-900">ARS ${parseFloat(investment.costARS).toLocaleString("es-AR", {minimumFractionDigits: 2, maximumFractionDigits: 2,})}</span>
+                                    <span className="text-sm text-gray-900">USD ${parseFloat(investment.costUSD).toLocaleString("es-AR", {minimumFractionDigits: 2, maximumFractionDigits: 2,})}</span>
+                                    {
+                                        investment.state >=0?
+                                        <span className="text-[#339900] text-sm flex"><img src={Up} alt="Incrementa valor" />{investment.state}%</span>
+                                        :
+                                        <span className="text-[#EE5E37] text-sm"><img src={Up} alt="Disminuye valor" />{investment.state}%</span>
+                                    }
+                                </div>
+                        </section>
+                    )
+                })
+            }
+            <div className="flex justify-end w-full mt-4">
                     <span className="w-full text-base font-semibold text-right text-blue-600">Ver todas</span>
-                </div>
-            </section>
+            </div>
         </main>
     )
 }

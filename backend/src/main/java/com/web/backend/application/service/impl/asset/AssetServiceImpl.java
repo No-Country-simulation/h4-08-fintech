@@ -25,6 +25,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -37,10 +38,20 @@ public class AssetServiceImpl implements AssetService {
     private final String apikey = System.getenv("API_KEY");
 
     @Override
-    public List<AssetResponse> getAssets(boolean deleted, String keyword) {
-        List<AssetTemp> assets = assetRepository.searchByDeletedAndKeyword(deleted, keyword);
+    public List<AssetResponse> getAssets(boolean deleted, String keyword, String sector) {
+        List<AssetTemp> assets;
 
-        return assets.stream().map(assetMapper::toAssetResponse).toList();
+        if (keyword != null) {
+            assets = assetRepository.findByDeletedAndKeyword(deleted, keyword);
+        } else if (sector != null) {
+            assets = assetRepository.findByDeletedAndSector(deleted, sector);
+        } else {
+            assets = assetRepository.findByDeleted(deleted);
+        }
+
+        return assets.stream()
+                .map(assetMapper::toAssetResponse)
+                .collect(Collectors.toList());
     }
 
     @Override

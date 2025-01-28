@@ -17,7 +17,12 @@ public interface RAssentTemp extends JpaRepository<AssetTemp, String> {
 
     List<AssetTemp> findAllByAssetType(AssetType assetType);
 
-    @Query(value = "SELECT * FROM asset_Temp a WHERE a.deleted = :deleted AND (LOWER(a.asset_name) LIKE LOWER(CONCAT('%', :keyword, '%')) OR LOWER(a.ticker_symbol) LIKE LOWER(CONCAT('%', :keyword, '%')))", nativeQuery = true)
-    List<AssetTemp> searchByDeletedAndKeyword(@Param("deleted") boolean deleted, @Param("keyword") String keyword);
+    @Query(value = "SELECT * FROM asset_Temp a WHERE a.deleted = :deleted", nativeQuery = true)
+    List<AssetTemp> findByDeleted(@Param("deleted") boolean deleted);
 
+    @Query(value = "SELECT * FROM asset_Temp a WHERE a.deleted = :deleted AND (LOWER(a.asset_name) LIKE LOWER(CONCAT('%', :keyword, '%')) OR LOWER(a.ticker_symbol) LIKE LOWER(CONCAT('%', :keyword, '%')))", nativeQuery = true)
+    List<AssetTemp> findByDeletedAndKeyword(@Param("deleted") boolean deleted, @Param("keyword") String keyword);
+
+    @Query(value = "SELECT * FROM asset_Temp a WHERE a.deleted = :deleted AND a.sector LIKE :sector", nativeQuery = true)
+    List<AssetTemp> findByDeletedAndSector(@Param("deleted") boolean deleted, @Param("keyword") String sector);
 }

@@ -119,7 +119,7 @@ Fomentar una cultura de ahorro e inversión responsable, proporcionando herramie
 | Agustina    | Mena       | Frontend    | [LinkedIn](#) | [GitHub](#) |
 | Ivan        | Belasich   | Frontend    | [LinkedIn](#) | [GitHub](#) |
 | Lucas       | Eroles     | UX/UI       | [LinkedIn](#) | [GitHub](#) |
-| Valentina   | Junca      | UX/UI       | [LinkedIn](#) | [GitHub](#) |
+| Valentina   | Junca      | UX/UI       | [LinkedIn](https://www.linkedin.com/in/valentinajunca/) | [GitHub](https://github.com/valentinajunca) |
 | Matías      | Quirico    | Frontend    | [LinkedIn](#) | [GitHub](#) |
 
 ---

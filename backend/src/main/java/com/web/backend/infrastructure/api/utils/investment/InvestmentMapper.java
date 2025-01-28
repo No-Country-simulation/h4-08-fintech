@@ -1,6 +1,7 @@
 package com.web.backend.infrastructure.api.utils.investment;
 
 
+import com.web.backend.application.DTO.asset.AssetTypeResponse;
 import com.web.backend.application.DTO.investment.InvestmentRequest;
 import com.web.backend.application.DTO.investment.InvestmentResponse;
 import com.web.backend.domain.model.investment.Investment;
@@ -12,6 +13,7 @@ public interface InvestmentMapper {
     Investment toInvestment(InvestmentRequest investmentRequest);
 
     InvestmentResponse toInvestmentResponse(Investment investment);
+    AssetTypeResponse map(String value);
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     void updateInvestmentFromRequest(InvestmentRequest investmentRequest, @MappingTarget Investment investment);

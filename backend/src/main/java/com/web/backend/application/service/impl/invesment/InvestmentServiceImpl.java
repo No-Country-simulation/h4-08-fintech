@@ -33,7 +33,7 @@ public class InvestmentServiceImpl implements InvestmentService {
 
         Asset asset = assetRepository.findById(investmentRequest.assetId())
                         .orElseThrow(() -> new AssetNotFoundException("Asset not found with id: " + investmentRequest.assetId()));
-        investment.setAsset(asset);
+//        investment.setAsset(asset);
 
         Customer customer = customerRepository.findById(investmentRequest.customerId())
                 .orElseThrow(() -> new CustomerNotFoundException("Customer not found with id: " + investmentRequest.customerId()));

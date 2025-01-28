@@ -1,0 +1,72 @@
+package com.web.backend.application.service.impl.invesment;
+
+import com.web.backend.application.DTO.asset.AssetTypeRequest;
+import com.web.backend.application.DTO.asset.AssetTypeResponse;
+import com.web.backend.application.exception.asset.AssetTypeNotFoundException;
+import com.web.backend.application.service.interfaces.investment.InvestmentTypeService;
+import com.web.backend.domain.model.asset.AssetType;
+import com.web.backend.domain.model.investment.Investment;
+import com.web.backend.domain.repository.investment.InvestmentRepository;
+import com.web.backend.domain.repository.asset.AssetTypeRepository;
+import com.web.backend.infrastructure.api.utils.asset.AssetTypeMapper;
+import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Service
+@RequiredArgsConstructor
+public class InvestmentTypeServiceImpl implements InvestmentTypeService {
+    
+    private final AssetTypeRepository assetTypeRepository;
+    private final InvestmentRepository investmentRepository;
+    private final AssetTypeMapper assetTypeMapper;
+
+    @Override
+    public AssetTypeResponse createInvestmentType(AssetTypeRequest assetTypeRequest) {
+        AssetType assetType = assetTypeMapper.toAssetType(assetTypeRequest);
+        assetTypeRepository.save(assetType);
+        return assetTypeMapper.toAssetTypeResponse(assetType);
+    }
+
+    @Override
+    public AssetTypeResponse getInvestmentTypeById(Long id) {
+        AssetType assetType = assetTypeRepository.findById(id)
+                .orElseThrow(() -> new AssetTypeNotFoundException("Investment Type not found with id: " + id));
+        if (assetType.isDeleted()) {
+            throw new IllegalStateException("The investment type with id: " + id + " has been deleted.");
+        }
+        return assetTypeMapper.toAssetTypeResponse(assetType);
+    }
+
+    @Override
+    public List<AssetTypeResponse> getInvestmentTypesByDeleted(boolean deleted) {
+        List<AssetType> assetTypes = assetTypeRepository.findAllByIsDeleted(deleted);
+        return assetTypes.stream().map(assetTypeMapper::toAssetTypeResponse).toList();
+    }
+
+    @Override
+    public AssetTypeResponse updateInvestmentType(Long id, AssetTypeRequest assetTypeRequest) {
+        AssetType assetType = assetTypeRepository.findById(id)
+                .orElseThrow(() -> new AssetTypeNotFoundException("Investment Type not found with id: " + id));
+        assetTypeMapper.updateAssetTypeFromRequest(assetTypeRequest, assetType);
+        assetTypeRepository.save(assetType);
+        return assetTypeMapper.toAssetTypeResponse(assetType);
+    }
+
+    @Override
+    @Transactional
+    public void deleteInvestmentType(Long id) {
+        AssetType assetType = assetTypeRepository.findById(id)
+                .orElseThrow(() -> new AssetTypeNotFoundException("Investment Type not found with id: " + id));
+
+        List<Investment> investments = investmentRepository.findByInvestmentType(assetType);
+        for (Investment investment : investments) {
+            investment.setAssetType(null);
+        }
+        investmentRepository.saveAll(investments);
+
+        assetTypeRepository.deleteById(id);;
+    }
+}

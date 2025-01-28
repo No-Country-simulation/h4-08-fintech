@@ -14,6 +14,7 @@ import { MainLayout } from "./layouts/MainLayout";
 import { Error404 } from "./pages/Error404";
 import { Notifications } from "./pages/Dashboard/Notifications"
 import { OnboardingStep6 } from "./components/Onboarding/OnboardingStep6";
+import { LandingPage2 } from "./pages/LandingPage/LandingPage2";
 
 export default function AppRouter() {
   return (
@@ -34,6 +35,7 @@ export default function AppRouter() {
           <Route path="notificaciones" element={<Notifications />}/>
           <Route path="inversiones" element={<Investments />} /> 
         </Route>
+        <Route path="/landing" element={<LandingPage2/>} />
         <Route path="*" element={<Error404 />} />
       </Routes>
     </Router>

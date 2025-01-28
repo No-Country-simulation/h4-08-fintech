@@ -72,8 +72,7 @@ Fomentar una cultura de ahorro e inversión responsable, proporcionando herramie
 - Java JDK 17  
 - Node.js (v16 o superior)  
 - npm (v8 o superior)  
-- PostgreSQL (v14 o superior)  
-- Docker (opcional, para contenerización)  
+- PostgreSQL (v14 o superior)   
 
 ### Pasos para Ejecutar el Proyecto  
 

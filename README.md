@@ -116,7 +116,7 @@ Fomentar una cultura de ahorro e inversión responsable, proporcionando herramie
 | Chenhao     | Hu         | Backend     | [LinkedIn](#) | [GitHub](#) |
 | Juan José   | Giraldo    | Frontend    | [LinkedIn](#) | [GitHub](#) |
 | Fernanda    | Sivila     | Frontend    | [LinkedIn](https://www.linkedin.com/in/fernanda-sivila/) | [GitHub](https://github.com/fernandasivila) |
-| Agustina    | Mena       | Frontend    | [LinkedIn](#) | [GitHub](#) |
+| Agustina    | Mena       | Frontend    | [LinkedIn](https://www.linkedin.com/in/agustina-mena-169298204/) | [GitHub](https://github.com/Agusme) |
 | Ivan        | Belasich   | Frontend    | [LinkedIn](#) | [GitHub](#) |
 | Lucas       | Eroles     | UX/UI       | [LinkedIn](#) | [GitHub](#) |
 | Valentina   | Junca      | UX/UI       | [LinkedIn](https://www.linkedin.com/in/valentinajunca/) | [GitHub](https://github.com/valentinajunca) |

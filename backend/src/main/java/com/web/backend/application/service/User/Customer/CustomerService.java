@@ -34,5 +34,8 @@ public class CustomerService implements ICustomerService {
 
         return repository.save(newCustomer);
     }
+    public Optional<Customer> findByPhoneNumber(String phone){
+        return repository.findByPhoneNumber(phone);
+    }
 }
 

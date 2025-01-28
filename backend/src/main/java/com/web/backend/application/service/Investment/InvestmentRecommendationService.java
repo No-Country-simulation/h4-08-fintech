@@ -324,7 +324,6 @@ public class InvestmentRecommendationService implements ISInvestmentRecommendati
                 .customer(customer)
                 .asset(asset)
                 .amount(amount)
-                .investmentDate(LocalDateTime.now())
                 .currentValue(amount)
                 .status("ACTIVE")
                 .build();

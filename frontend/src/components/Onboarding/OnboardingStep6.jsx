@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { OnboardingCard } from "../common/OnboardingCard"
 
-export const OnboardingStep5 = ({setAvailableToContinue}) => {
+export const OnboardingStep6 = ({setAvailableToContinue}) => {
     const min = 100000;
     const max = 1000000;
     const [investmentBalance, setInvestmentValue] = useState(min);

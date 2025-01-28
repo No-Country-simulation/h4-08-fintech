@@ -4,8 +4,7 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['Nunito', 'ui-sans-serif', 'system-ui'],
-        jakarta: ["Plus Jakarta Sans", "serif"],
+        jakarta: ["Plus Jakarta Sans", 'ui-sans-serif'],
       },
       backgroundImage: {
         'gradient': 'url(./src/assets/bg-gradient.svg)',
@@ -16,8 +15,13 @@ export default {
       colors: {
         blue: {
           500: '#0058CC',
-          700: '#003E91'
+          700: '#003E91',
+          900: '#002556'
         },
+        gray: {
+          700: '#494C4F',
+          900: '#2B2D2F'
+        }
       },
     },
   },

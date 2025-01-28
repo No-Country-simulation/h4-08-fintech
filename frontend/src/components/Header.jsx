@@ -34,8 +34,8 @@ export const Header = () => {
             }
             {  
                 isHome?
-                    <div className="flex justify-center w-full">
-                        <img src={LogoLanding} alt="logo"/>
+                    <div className="flex items-center justify-center w-full h-full">
+                        <img src={Logo} alt="logo" className="w-[38px] mr-4"/>
                     </div>
                     :
                     <></>

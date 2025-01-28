@@ -12,6 +12,8 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.SQLRestriction;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -21,6 +23,8 @@ import java.util.List;
 @Getter
 @Setter
 @RequiredArgsConstructor
+@SQLDelete(sql = "UPDATE customer SET deleted = true where id = ?")
+@SQLRestriction("deleted=false")
 public class Customer extends Auditable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

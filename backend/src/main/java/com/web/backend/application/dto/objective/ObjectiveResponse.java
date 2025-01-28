@@ -8,6 +8,7 @@ public record ObjectiveResponse(
         String title,
         String description,
         Float targetAmount,
+        int progress,
         Float currentAmount,
         LocalDateTime dueDate,
         ObjectiveStatusResponse objectiveStatus

@@ -8,7 +8,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 public interface AssetService {
-    List<AssetResponse> getAllAssetsByDeleted(boolean deleted);
+    List<AssetResponse> getAssets(boolean deleted, String keyword, String sector);
 
     AssetResponse createAsset(AssetCreateRequest request);
 

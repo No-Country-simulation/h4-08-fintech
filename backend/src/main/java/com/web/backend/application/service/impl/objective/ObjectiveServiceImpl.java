@@ -2,11 +2,14 @@ package com.web.backend.application.service.impl.objective;
 
 import com.web.backend.application.DTO.objective.ObjectiveRequest;
 import com.web.backend.application.DTO.objective.ObjectiveResponse;
+import com.web.backend.application.exception.customer.CustomerNotFoundException;
 import com.web.backend.application.exception.objective.ObjectiveNotFoundException;
 import com.web.backend.application.exception.objective.ObjectiveStatusNotFoundException;
 import com.web.backend.application.service.interfaces.objective.ObjectiveService;
+import com.web.backend.domain.model.Customer.Customer;
 import com.web.backend.domain.model.objective.Objective;
 import com.web.backend.domain.model.objective.ObjectiveStatus;
+import com.web.backend.domain.repository.Customer.RCustomer;
 import com.web.backend.domain.repository.objective.ObjectiveRepository;
 import com.web.backend.domain.repository.objective.ObjectiveStatusRepository;
 import com.web.backend.infrastructure.api.utils.objective.ObjectiveMapper;
@@ -20,6 +23,7 @@ import java.util.List;
 public class ObjectiveServiceImpl implements ObjectiveService {
     private final ObjectiveRepository objectiveRepository;
     private final ObjectiveStatusRepository objectiveStatusRepository;
+    private final RCustomer customerRepository;
     private final ObjectiveMapper objectiveMapper;
 
     @Override
@@ -28,6 +32,13 @@ public class ObjectiveServiceImpl implements ObjectiveService {
         ObjectiveStatus status = objectiveStatusRepository.findById(objectiveRequest.objectiveStatusId())
                         .orElseThrow(() -> new ObjectiveStatusNotFoundException("Objective status not found with id: " + objectiveRequest.objectiveStatusId()));
         objective.setObjectiveStatus(status);
+
+        Customer customer = customerRepository.findById(objectiveRequest.customerId())
+                .orElseThrow(() -> new CustomerNotFoundException("Customer not found with id: " + objectiveRequest.customerId()));
+        objective.setCustomer(customer);
+
+        objective.setProgress((int)((objective.getCurrentAmount() / objective.getTargetAmount()) * 100));
+
         objectiveRepository.save(objective);
         return objectiveMapper.toObjectiveResponse(objective);
     }
@@ -51,6 +62,13 @@ public class ObjectiveServiceImpl implements ObjectiveService {
                 .orElseThrow(() -> new ObjectiveNotFoundException("Objective not found with id: " + id));
 
         objectiveMapper.updateObjectiveFromRequest(objectiveRequest, existingObjective);
+
+        if(objectiveRequest.customerId()!= null) {
+            Customer customer = customerRepository.findById(objectiveRequest.customerId())
+                   .orElseThrow(() -> new CustomerNotFoundException("Customer not found with id: " + objectiveRequest.customerId()));
+            existingObjective.setCustomer(customer);
+        }
+
         if(objectiveRequest.objectiveStatusId() != null) {
             ObjectiveStatus objectiveStatus = objectiveStatusRepository.findById(objectiveRequest.objectiveStatusId())
                     .orElseThrow(() -> new ObjectiveStatusNotFoundException("Objective status not found with id: " + id));

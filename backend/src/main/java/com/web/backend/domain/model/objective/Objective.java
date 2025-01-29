@@ -1,13 +1,12 @@
 package com.web.backend.domain.model.objective;
 
-import com.web.backend.domain.model.Customer.Customer;
+import com.web.backend.domain.model.customer.Customer;
 import com.web.backend.domain.utils.Auditable;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 
-import java.time.LocalDateTime;
 import java.util.Date;
 
 @Getter

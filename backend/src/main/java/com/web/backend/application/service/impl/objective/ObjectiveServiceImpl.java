@@ -1,15 +1,15 @@
 package com.web.backend.application.service.impl.objective;
 
-import com.web.backend.application.DTO.objective.ObjectiveRequest;
-import com.web.backend.application.DTO.objective.ObjectiveResponse;
+import com.web.backend.application.dto.objective.ObjectiveRequest;
+import com.web.backend.application.dto.objective.ObjectiveResponse;
 import com.web.backend.application.exception.customer.CustomerNotFoundException;
 import com.web.backend.application.exception.objective.ObjectiveNotFoundException;
 import com.web.backend.application.exception.objective.ObjectiveStatusNotFoundException;
 import com.web.backend.application.service.interfaces.objective.ObjectiveService;
-import com.web.backend.domain.model.Customer.Customer;
+import com.web.backend.domain.model.customer.Customer;
 import com.web.backend.domain.model.objective.Objective;
 import com.web.backend.domain.model.objective.ObjectiveStatus;
-import com.web.backend.domain.repository.Customer.RCustomer;
+import com.web.backend.domain.repository.customer.RCustomer;
 import com.web.backend.domain.repository.objective.ObjectiveRepository;
 import com.web.backend.domain.repository.objective.ObjectiveStatusRepository;
 import com.web.backend.infrastructure.api.utils.objective.ObjectiveMapper;

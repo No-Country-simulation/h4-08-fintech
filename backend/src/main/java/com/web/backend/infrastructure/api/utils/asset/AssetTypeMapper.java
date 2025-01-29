@@ -1,7 +1,7 @@
 package com.web.backend.infrastructure.api.utils.asset;
 
-import com.web.backend.application.DTO.asset.AssetTypeRequest;
-import com.web.backend.application.DTO.asset.AssetTypeResponse;
+import com.web.backend.application.dto.asset.AssetTypeRequest;
+import com.web.backend.application.dto.asset.AssetTypeResponse;
 import com.web.backend.domain.model.asset.AssetType;
 import org.mapstruct.BeanMapping;
 import org.mapstruct.Mapper;

@@ -1,7 +1,7 @@
 package com.web.backend.infrastructure.api.controller.objective;
 
-import com.web.backend.application.DTO.objective.ObjectiveRequest;
-import com.web.backend.application.DTO.objective.ObjectiveResponse;
+import com.web.backend.application.dto.objective.ObjectiveRequest;
+import com.web.backend.application.dto.objective.ObjectiveResponse;
 import com.web.backend.application.service.interfaces.objective.ObjectiveService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;

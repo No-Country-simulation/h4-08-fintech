@@ -1,6 +1,6 @@
 package com.web.backend.infrastructure.api.external;
 
-import com.web.backend.application.DTO.alphavantage.GlobalQuoteResponse;
+import com.web.backend.application.dto.alphavantage.GlobalQuoteResponse;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;

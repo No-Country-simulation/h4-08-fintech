@@ -1,17 +1,17 @@
 package com.web.backend.application.service.impl.customer;
 
-import com.web.backend.application.DTO.customer.CustomerRequest;
-import com.web.backend.application.DTO.customer.CustomerResponse;
-import com.web.backend.application.DTO.investment.InvestmentResponse;
-import com.web.backend.application.DTO.objective.ObjectiveResponse;
+import com.web.backend.application.dto.customer.CustomerRequest;
+import com.web.backend.application.dto.customer.CustomerResponse;
+import com.web.backend.application.dto.investment.InvestmentResponse;
+import com.web.backend.application.dto.objective.ObjectiveResponse;
 import com.web.backend.application.exception.customer.CustomerNotFoundException;
 import com.web.backend.application.exception.user.UserNotFoundException;
 import com.web.backend.application.service.interfaces.customer.CustomerService;
-import com.web.backend.domain.model.Customer.Customer;
+import com.web.backend.domain.model.customer.Customer;
 import com.web.backend.domain.model.investment.Investment;
 import com.web.backend.domain.model.objective.Objective;
 import com.web.backend.domain.model.user.UserModel;
-import com.web.backend.domain.repository.Customer.RCustomer;
+import com.web.backend.domain.repository.customer.RCustomer;
 import com.web.backend.domain.repository.User.RUser;
 import com.web.backend.domain.repository.investment.InvestmentRepository;
 import com.web.backend.domain.repository.objective.ObjectiveRepository;

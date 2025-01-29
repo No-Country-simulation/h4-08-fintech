@@ -1,6 +1,6 @@
-package com.web.backend.application.DTO.investment;
+package com.web.backend.application.dto.investment;
 
-import com.web.backend.application.DTO.asset.AssetResponse;
+import com.web.backend.application.dto.asset.AssetResponse;
 
 import java.time.LocalDateTime;
 

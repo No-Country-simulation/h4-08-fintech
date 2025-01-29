@@ -1,13 +1,13 @@
 package com.web.backend.application.service.impl.asset;
 
-import com.web.backend.application.DTO.asset.AssetResponse;
-import com.web.backend.application.DTO.asset.AssetTypeRequest;
-import com.web.backend.application.DTO.asset.AssetTypeResponse;
+import com.web.backend.application.dto.asset.AssetTypeRequest;
+import com.web.backend.application.dto.asset.AssetTypeResponse;
+import com.web.backend.application.dto.asset.AssetResponse;
 import com.web.backend.application.exception.asset.AssetTypeNotFoundException;
 import com.web.backend.application.service.interfaces.asset.AssetTypeService;
-import com.web.backend.domain.model.AssetTemp.AssetTemp;
+import com.web.backend.domain.model.assetTemp.AssetTemp;
 import com.web.backend.domain.model.asset.AssetType;
-import com.web.backend.domain.repository.AssetTemp.RAssentTemp;
+import com.web.backend.domain.repository.assetTemp.RAssentTemp;
 import com.web.backend.domain.repository.asset.AssetTypeRepository;
 import com.web.backend.infrastructure.api.utils.asset.AssetMapper;
 import com.web.backend.infrastructure.api.utils.asset.AssetTypeMapper;
@@ -67,7 +67,7 @@ public class AssetTypeServiceImpl implements AssetTypeService {
 
         List<AssetTemp> assets = assetRepository.findAllByAssetType(assetType);
         for(AssetTemp asset: assets) {
-            asset.setAssetTypeApi(null);
+            asset.setAssetType(null);
         }
         assetRepository.saveAll(assets);
 

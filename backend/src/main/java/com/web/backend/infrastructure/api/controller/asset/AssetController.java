@@ -1,8 +1,8 @@
 package com.web.backend.infrastructure.api.controller.asset;
 
-import com.web.backend.application.DTO.asset.AssetCreateRequest;
-import com.web.backend.application.DTO.asset.AssetUpdateRequest;
-import com.web.backend.application.DTO.asset.AssetResponse;
+import com.web.backend.application.dto.asset.AssetCreateRequest;
+import com.web.backend.application.dto.asset.AssetUpdateRequest;
+import com.web.backend.application.dto.asset.AssetResponse;
 import com.web.backend.application.service.interfaces.asset.AssetService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;

@@ -77,7 +77,7 @@ export default function OnboardingStep4({ setAvailableToContinue }) {
           </label>
         ))}
       </div>
-      <div className="w-full text-start text-[13px] text-gray-500 mt-3">
+      <div className="text-center  text-[13px] text-gray-500 mt-3">
         Selecciona 1 opción
       </div>
     </OnboardingCard>

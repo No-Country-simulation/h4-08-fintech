@@ -1,4 +1,4 @@
-package com.web.backend.application.dto.Customer;
+package com.web.backend.application.dto.customer;
 
 import com.web.backend.domain.model.customer.Customer;
 import lombok.AllArgsConstructor;

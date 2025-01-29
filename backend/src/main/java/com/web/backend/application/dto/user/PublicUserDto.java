@@ -1,4 +1,4 @@
-package com.web.backend.application.dto.User;
+package com.web.backend.application.dto.user;
 
 import lombok.Getter;
 import lombok.Setter;

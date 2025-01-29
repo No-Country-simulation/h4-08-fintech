@@ -1,7 +1,7 @@
 package com.web.backend.application.service.impl.customer;
 
-import com.web.backend.application.dto.customerrr.CustomerRequest;
-import com.web.backend.application.dto.customerrr.CustomerResponse;
+import com.web.backend.application.dto.customer.CustomerRequest;
+import com.web.backend.application.dto.customer.CustomerResponse;
 import com.web.backend.application.dto.investment.InvestmentResponse;
 import com.web.backend.application.dto.objective.ObjectiveResponse;
 import com.web.backend.application.exception.customer.CustomerNotFoundException;

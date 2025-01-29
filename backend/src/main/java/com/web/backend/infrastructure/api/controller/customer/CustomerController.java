@@ -1,6 +1,6 @@
 package com.web.backend.infrastructure.api.controller.customer;
 
-import com.web.backend.application.dto.customerrr.CustomerUserRequest;
+import com.web.backend.application.dto.customer.CustomerUserRequest;
 import com.web.backend.application.dto.user.OnboardingRequest;
 import com.web.backend.application.service.User.customer.CustomerService;
 import com.web.backend.application.service.User.onboarding.OnboardingService;

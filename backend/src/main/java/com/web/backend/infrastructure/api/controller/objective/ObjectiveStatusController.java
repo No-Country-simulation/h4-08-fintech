@@ -1,7 +1,7 @@
 package com.web.backend.infrastructure.api.controller.objective;
 
-import com.web.backend.application.dtos.objective.ObjectiveStatusRequest;
-import com.web.backend.application.dtos.objective.ObjectiveStatusResponse;
+import com.web.backend.application.dto.objective.ObjectiveStatusRequest;
+import com.web.backend.application.dto.objective.ObjectiveStatusResponse;
 import com.web.backend.application.service.interfaces.objective.ObjectiveStatusService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;

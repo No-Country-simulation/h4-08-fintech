@@ -1,7 +1,7 @@
 package com.web.backend.application.service.interfaces.asset;
 
-import com.web.backend.application.dtos.asset.AssetTypeRequest;
-import com.web.backend.application.dtos.asset.AssetTypeResponse;
+import com.web.backend.application.dto.asset.AssetTypeRequest;
+import com.web.backend.application.dto.asset.AssetTypeResponse;
 
 import java.util.List;
 

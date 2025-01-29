@@ -1,9 +1,9 @@
 package com.web.backend.application.service.interfaces.customer;
 
-import com.web.backend.application.dtos.customer.CustomerRequest;
-import com.web.backend.application.dtos.customer.CustomerResponse;
-import com.web.backend.application.dtos.investment.InvestmentResponse;
-import com.web.backend.application.dtos.objective.ObjectiveResponse;
+import com.web.backend.application.dto.customer.CustomerRequest;
+import com.web.backend.application.dto.customer.CustomerResponse;
+import com.web.backend.application.dto.investment.InvestmentResponse;
+import com.web.backend.application.dto.objective.ObjectiveResponse;
 
 import java.util.List;
 

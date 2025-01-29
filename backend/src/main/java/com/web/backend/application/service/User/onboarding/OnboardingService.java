@@ -1,6 +1,6 @@
 package com.web.backend.application.service.User.onboarding;
 
-import com.web.backend.application.dtos.user.OnboardingRequest;
+import com.web.backend.application.dto.user.OnboardingRequest;
 import com.web.backend.application.service.User.customer.CustomerService;
 import com.web.backend.application.service.User.financials.FinancialProfileService;
 import com.web.backend.domain.model.customer.Customer;

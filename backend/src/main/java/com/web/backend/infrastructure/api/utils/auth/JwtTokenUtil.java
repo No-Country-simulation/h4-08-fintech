@@ -1,6 +1,6 @@
 package com.web.backend.infrastructure.api.utils.auth;
 
-import com.web.backend.application.dtos.user.PublicUserDto;
+import com.web.backend.application.dto.user.PublicUserDto;
 import com.web.backend.config.AppConfig;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

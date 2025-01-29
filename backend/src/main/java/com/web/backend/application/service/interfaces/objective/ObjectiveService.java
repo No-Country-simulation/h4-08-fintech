@@ -1,7 +1,7 @@
 package com.web.backend.application.service.interfaces.objective;
 
-import com.web.backend.application.dtos.objective.ObjectiveRequest;
-import com.web.backend.application.dtos.objective.ObjectiveResponse;
+import com.web.backend.application.dto.objective.ObjectiveRequest;
+import com.web.backend.application.dto.objective.ObjectiveResponse;
 
 import java.util.List;
 

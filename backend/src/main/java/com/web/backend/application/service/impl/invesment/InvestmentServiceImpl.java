@@ -1,7 +1,7 @@
 package com.web.backend.application.service.impl.invesment;
 
-import com.web.backend.application.dtos.investment.InvestmentRequest;
-import com.web.backend.application.dtos.investment.InvestmentResponse;
+import com.web.backend.application.dto.investment.InvestmentRequest;
+import com.web.backend.application.dto.investment.InvestmentResponse;
 import com.web.backend.application.exception.asset.AssetNotFoundException;
 import com.web.backend.application.exception.customer.CustomerNotFoundException;
 import com.web.backend.application.exception.customer.InsufficientBalanceException;

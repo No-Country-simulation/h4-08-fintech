@@ -1,6 +1,6 @@
 package com.web.backend.infrastructure.api.controller.investment;
 
-import com.web.backend.application.dtos.Recommendation.AssetRecommendation;
+import com.web.backend.application.dto.Recommendation.AssetRecommendation;
 import com.web.backend.application.service.investment.InvestmentRecommendationService;
 import com.web.backend.domain.model.financials.FinancialProfile;
 import com.web.backend.domain.repository.financials.RFinancialProfile;

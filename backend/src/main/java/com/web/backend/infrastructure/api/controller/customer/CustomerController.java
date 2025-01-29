@@ -1,11 +1,11 @@
-package com.web.backend.infrastructure.api.controller.Customer;
+package com.web.backend.infrastructure.api.controller.customer;
 
 import com.web.backend.application.DTO.Customer.CustomerUserRequest;
 import com.web.backend.application.DTO.User.OnboardingRequest;
-import com.web.backend.application.service.User.Customer.CustomerService;
-import com.web.backend.application.service.User.Onboarding.OnboardingService;
-import com.web.backend.domain.model.Customer.Customer;
-import com.web.backend.domain.model.Financials.FinancialProfile;
+import com.web.backend.application.service.User.customer.CustomerService;
+import com.web.backend.application.service.User.onboarding.OnboardingService;
+import com.web.backend.domain.model.customer.Customer;
+import com.web.backend.domain.model.financials.FinancialProfile;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;

@@ -1,7 +1,7 @@
 package com.web.backend.domain.model.investment;
 
-import com.web.backend.domain.model.AssetTemp.AssetTemp;
-import com.web.backend.domain.model.Customer.Customer;
+import com.web.backend.domain.model.assetTemp.AssetTemp;
+import com.web.backend.domain.model.customer.Customer;
 import com.web.backend.domain.utils.Auditable;
 import jakarta.persistence.*;
 import lombok.*;

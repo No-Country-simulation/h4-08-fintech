@@ -1,6 +1,5 @@
 package com.web.backend.application.service.User;
 
-import com.web.backend.application.DTO.Auth.LoginDto;
 import com.web.backend.application.DTO.User.PublicUserDto;
 import com.web.backend.domain.model.user.UserModel;
 import com.web.backend.domain.repository.User.RUser;

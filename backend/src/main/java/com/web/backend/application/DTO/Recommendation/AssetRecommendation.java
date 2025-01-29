@@ -1,6 +1,6 @@
 package com.web.backend.application.DTO.Recommendation;
 
-import com.web.backend.domain.model.AssetTemp.AssetTemp;
+import com.web.backend.domain.model.assetTemp.AssetTemp;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

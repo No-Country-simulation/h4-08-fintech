@@ -2,7 +2,7 @@ package com.web.backend.infrastructure.api.utils.customer;
 
 import com.web.backend.application.DTO.customer.CustomerRequest;
 import com.web.backend.application.DTO.customer.CustomerResponse;
-import com.web.backend.domain.model.Customer.Customer;
+import com.web.backend.domain.model.customer.Customer;
 import org.mapstruct.*;
 
 @Mapper(componentModel = "spring")

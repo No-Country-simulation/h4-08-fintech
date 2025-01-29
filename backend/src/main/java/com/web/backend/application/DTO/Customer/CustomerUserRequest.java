@@ -1,8 +1,7 @@
 package com.web.backend.application.DTO.Customer;
 
-import com.web.backend.domain.model.Customer.Customer;
+import com.web.backend.domain.model.customer.Customer;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 

@@ -2,13 +2,6 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Login from "./pages/Auth/Login";
 import Register from "./pages/Auth/Register";
 import { Onboarding } from "./pages/Onboarding/Onboarding";
-/* import OnboardingStep1 from "./components/Onboarding/OnboardingStep1";
-import OnboardingStep2 from "./components/Onboarding/OnboardingStep2";
-import OnboardingStep3 from "./components/Onboarding/OnboardingStep3";
-import OnboardingStep4 from "./components/Onboarding/OnboardingStep4";
-import OnboardingStep5 from "./components/Onboarding/OnboardingStep5"; 
-import { OnboardingStep6 } from "./components/Onboarding/OnboardingStep6";*/
-
 import { Dashboard } from "./pages/Dashboard/Dashboard";
 import { Investments } from "./pages/Dashboard/Investments";
 import { MainLayout } from "./layouts/MainLayout";
@@ -17,7 +10,6 @@ import { Notifications } from "./pages/Dashboard/Notifications"
 import { Home } from "./pages/Home";
 import AuthHome from "./pages/Auth/AuthHome";
 import { HomeLayout } from "./layouts/HomeLayout";
-
 
 export default function AppRouter() {
   return (

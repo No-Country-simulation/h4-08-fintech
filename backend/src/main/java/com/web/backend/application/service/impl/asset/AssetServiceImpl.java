@@ -77,12 +77,30 @@ public class AssetServiceImpl implements AssetService {
             }
 
             for (String[] record : records) {
-                recommendationService.populateAssetsByKeywordFromApi(record[0], 1);
-                AssetTemp asset = assetRepository.findById(record[0])
-                        .orElseThrow(() -> new AssetNotFoundException("Asset not found with id: " + record[0]));
-                AssetType assetType = assetTypeRepository.findById(Long.valueOf(record[1]))
-                        .orElseThrow(() -> new AssetTypeNotFoundException("Asset type not found with id: " + record[1]));
+                AssetTemp asset;
+                long assetTypeId = Long.valueOf(record[1]);
 
+                // If asset type is ETF or stock
+                if(assetTypeId == 0 || assetTypeId == 1) {
+                    recommendationService.populateAssetsByKeywordFromApi(record[0], 1);
+                    asset = assetRepository.findById(record[0])
+                            .orElseThrow(() -> new AssetNotFoundException("Asset not found with id: " + record[0]));
+                }
+                else {
+                    asset = AssetTemp.builder()
+                            .tickerSymbol(record[0])
+                            .assetName(record[2])
+                            .assetTypeApi(record[3])
+                            .sector(record[4])
+                            .riskLevel(Integer.parseInt(record[5]))
+                            .currentPrice(Double.parseDouble(record[6]))
+                            .potentialReturns(Float.parseFloat(record[7]))
+                            .currency(record[8])
+                            .build();
+                }
+
+                AssetType assetType = assetTypeRepository.findById(assetTypeId)
+                        .orElseThrow(() -> new AssetTypeNotFoundException("Asset type not found with id: " + assetTypeId));
                 asset.setAssetType(assetType);
 
                 assetRepository.save(asset);

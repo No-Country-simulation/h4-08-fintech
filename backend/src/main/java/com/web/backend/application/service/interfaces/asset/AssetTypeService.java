@@ -1,5 +1,6 @@
 package com.web.backend.application.service.interfaces.asset;
 
+import com.web.backend.application.DTO.asset.AssetResponse;
 import com.web.backend.application.DTO.asset.AssetTypeRequest;
 import com.web.backend.application.DTO.asset.AssetTypeResponse;
 
@@ -15,4 +16,6 @@ public interface AssetTypeService {
     AssetTypeResponse updateAssetType(Long id, AssetTypeRequest InvestmentTypeDTO);
 
     void deleteAssetType(Long id);
+
+    List<AssetResponse> findAssetsByAssetTypeId(Long assetTypeId);
 }

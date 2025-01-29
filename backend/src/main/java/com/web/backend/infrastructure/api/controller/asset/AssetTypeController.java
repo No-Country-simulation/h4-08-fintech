@@ -1,5 +1,6 @@
 package com.web.backend.infrastructure.api.controller.asset;
 
+import com.web.backend.application.DTO.asset.AssetResponse;
 import com.web.backend.application.DTO.asset.AssetTypeRequest;
 import com.web.backend.application.DTO.asset.AssetTypeResponse;
 import com.web.backend.application.service.interfaces.asset.AssetTypeService;
@@ -72,5 +73,15 @@ public class AssetTypeController {
             @PathVariable @Parameter(description = "Asset type ID", required = true) Long id) {
         assetTypeService.deleteAssetType(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @Operation(summary = "Find assets by asset type ID", description = "Returns a list of assets associated with the specified asset type ID")
+    @ApiResponse(responseCode = "200", description = "Successful operation")
+    @GetMapping("/{assetTypeId}/assets")
+    public ResponseEntity<List<AssetResponse>> findAssetsByAssetTypeId(
+            @Parameter(description = "ID of the asset type to find assets for", required = true)
+            @PathVariable Long assetTypeId) {
+        List<AssetResponse> assets = assetTypeService.findAssetsByAssetTypeId(assetTypeId);
+        return ResponseEntity.ok(assets);
     }
 }

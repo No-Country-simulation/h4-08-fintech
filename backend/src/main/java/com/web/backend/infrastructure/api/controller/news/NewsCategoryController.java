@@ -1,7 +1,7 @@
 package com.web.backend.infrastructure.api.controller.news;
 
-import com.web.backend.application.DTO.news.NewsCategoryRequest;
-import com.web.backend.application.DTO.news.NewsCategoryResponse;
+import com.web.backend.application.dto.news.NewsCategoryRequest;
+import com.web.backend.application.dto.news.NewsCategoryResponse;
 import com.web.backend.application.service.interfaces.news.NewsCategoryService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;

@@ -1,4 +1,4 @@
-package com.web.backend.application.DTO.news;
+package com.web.backend.application.dto.news;
 
 import jakarta.validation.constraints.NotBlank;
 

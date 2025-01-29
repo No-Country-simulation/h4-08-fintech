@@ -1,4 +1,4 @@
-package com.web.backend.application.DTO.objective;
+package com.web.backend.application.dto.objective;
 
 public record ObjectiveStatusResponse(
     Long id,

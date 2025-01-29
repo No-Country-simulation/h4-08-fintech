@@ -1,7 +1,7 @@
 package com.web.backend.application.service.interfaces.investment;
 
-import com.web.backend.application.DTO.investment.InvestmentRequest;
-import com.web.backend.application.DTO.investment.InvestmentResponse;
+import com.web.backend.application.dto.investment.InvestmentRequest;
+import com.web.backend.application.dto.investment.InvestmentResponse;
 
 import java.util.List;
 

@@ -1,10 +1,5 @@
 package com.web.backend.domain.model.user;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.web.backend.domain.model.Customer.Customer;
 import com.web.backend.domain.utils.Auditable;
 import com.web.backend.infrastructure.api.utils.RolesEnum;
 import jakarta.annotation.Nullable;

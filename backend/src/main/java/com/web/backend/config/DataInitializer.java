@@ -1,8 +1,7 @@
 package com.web.backend.config;
 
 
-import com.web.backend.application.service.Investment.InvestmentRecommendationService;
-import jakarta.annotation.PostConstruct;
+import com.web.backend.application.service.investment.InvestmentRecommendationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

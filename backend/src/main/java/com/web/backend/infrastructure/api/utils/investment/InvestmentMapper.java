@@ -1,9 +1,9 @@
 package com.web.backend.infrastructure.api.utils.investment;
 
 
-import com.web.backend.application.DTO.asset.AssetTypeResponse;
-import com.web.backend.application.DTO.investment.InvestmentRequest;
-import com.web.backend.application.DTO.investment.InvestmentResponse;
+import com.web.backend.application.dto.asset.AssetTypeResponse;
+import com.web.backend.application.dto.investment.InvestmentRequest;
+import com.web.backend.application.dto.investment.InvestmentResponse;
 import com.web.backend.domain.model.investment.Investment;
 import org.mapstruct.*;
 

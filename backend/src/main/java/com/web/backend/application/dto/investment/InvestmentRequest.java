@@ -1,4 +1,4 @@
-package com.web.backend.application.DTO.investment;
+package com.web.backend.application.dto.investment;
 
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotBlank;

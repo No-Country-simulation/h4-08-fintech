@@ -64,7 +64,7 @@ public class AssetTypeServiceImpl implements AssetTypeService {
 
         List<AssetTemp> assets = assetRepository.findAllByAssetType(assetType);
         for(AssetTemp asset: assets) {
-            asset.setAssetType(null);
+            asset.setAssetTypeApi(null);
         }
         assetRepository.saveAll(assets);
 

@@ -10,6 +10,7 @@ import java.util.Map;
 public class RiskLevelCalculatorService {
 
     public int calculateRiskLevel(AssetTemp asset, Map<String, Object> stockData) {
+        
         int riskFromSector = getRiskLevelFromSector(asset.getSector());
         int riskFromReturnsAndPrice = calculateRiskFromReturnsAndPrice(asset.getPotentialReturns(), asset.getCurrentPrice());
 

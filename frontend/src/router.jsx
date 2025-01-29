@@ -10,6 +10,7 @@ import { Notifications } from "./pages/Dashboard/Notifications"
 import { Home } from "./pages/Home";
 import AuthHome from "./pages/Auth/AuthHome";
 import { HomeLayout } from "./layouts/HomeLayout";
+import GoogleCallback from "./pages/Auth/GoogleCallback";
 
 export default function AppRouter() {
   return (
@@ -22,6 +23,7 @@ export default function AppRouter() {
         <Route path="/login" element={<Login />} />
         <Route path="/registro" element={<Register />} />
         <Route path="/onboarding" element={<Onboarding />} />
+        <Route path="/oauth/success" element={<GoogleCallback/>}/>
         {/* <Route path="/onboarding1" element={<OnboardingStep1 />} />
         <Route path="/onboarding2" element={<OnboardingStep2 />} />
         <Route path="/onboarding3" element={<OnboardingStep3 />} />

@@ -17,6 +17,8 @@ const Register = () => {
   }
 
   const handleGoogleRegister = () => {
+    console.log("registrando");
+    
     handleAuthGoogleLogin();
   }
 

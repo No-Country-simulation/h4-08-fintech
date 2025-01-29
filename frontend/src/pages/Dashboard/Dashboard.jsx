@@ -20,7 +20,7 @@ import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 export const Dashboard = () => {
     ChartJS.register(ArcElement, Tooltip, Legend);
     const user = {
-        name: 'Juan',
+        name: 'Nicolas',
         balance: 21560,
         transactions: 6200,
         save: 5000,

@@ -1,4 +1,4 @@
-package com.web.backend.infrastructure.api.controller.User;
+package com.web.backend.infrastructure.api.controller.user;
 
 import com.web.backend.application.service.User.UserService;
 import lombok.AllArgsConstructor;

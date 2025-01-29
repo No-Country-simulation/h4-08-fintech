@@ -1,6 +1,6 @@
 package com.web.backend.application.service.investment;
 
-import com.web.backend.application.dto.Recommendation.AssetRecommendation;
+import com.web.backend.application.dtos.Recommendation.AssetRecommendation;
 import com.web.backend.domain.model.financials.FinancialProfile;
 
 import java.util.Collection;

@@ -1,7 +1,7 @@
 package com.web.backend.infrastructure.api.controller.investment;
 
-import com.web.backend.application.dto.investment.InvestmentRequest;
-import com.web.backend.application.dto.investment.InvestmentResponse;
+import com.web.backend.application.dtos.investment.InvestmentRequest;
+import com.web.backend.application.dtos.investment.InvestmentResponse;
 import com.web.backend.application.service.interfaces.investment.InvestmentService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;

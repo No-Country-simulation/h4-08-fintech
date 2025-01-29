@@ -1,7 +1,7 @@
 package com.web.backend.infrastructure.api.utils.news;
 
-import com.web.backend.application.dto.news.NewsRequest;
-import com.web.backend.application.dto.news.NewsResponse;
+import com.web.backend.application.dtos.news.NewsRequest;
+import com.web.backend.application.dtos.news.NewsResponse;
 import com.web.backend.domain.model.news.News;
 import org.mapstruct.*;
 

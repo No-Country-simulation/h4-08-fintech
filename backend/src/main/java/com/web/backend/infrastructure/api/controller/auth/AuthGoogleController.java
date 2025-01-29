@@ -1,6 +1,6 @@
 package com.web.backend.infrastructure.api.controller.auth;
 
-import com.web.backend.application.dto.user.PublicUserDto;
+import com.web.backend.application.dtos.user.PublicUserDto;
 import com.web.backend.application.service.User.UserService;
 import com.web.backend.config.AppConfig;
 import com.web.backend.domain.model.user.UserModel;

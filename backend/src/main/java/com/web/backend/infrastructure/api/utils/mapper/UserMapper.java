@@ -1,7 +1,7 @@
 package com.web.backend.infrastructure.api.utils.mapper;
 
-import com.web.backend.application.dto.user.PublicUserDto;
-import com.web.backend.application.dto.UserUpdateDto;
+import com.web.backend.application.dtos.user.PublicUserDto;
+import com.web.backend.application.dtos.UserUpdateDto;
 import com.web.backend.domain.model.user.UserModel;
 import com.web.backend.infrastructure.api.controller.auth.RegisterAuthRequest;
 import org.mapstruct.Mapper;

@@ -1,7 +1,7 @@
 package com.web.backend.application.service.impl.objective;
 
-import com.web.backend.application.dto.objective.ObjectiveRequest;
-import com.web.backend.application.dto.objective.ObjectiveResponse;
+import com.web.backend.application.dtos.objective.ObjectiveRequest;
+import com.web.backend.application.dtos.objective.ObjectiveResponse;
 import com.web.backend.application.exception.customer.CustomerNotFoundException;
 import com.web.backend.application.exception.objective.ObjectiveNotFoundException;
 import com.web.backend.application.exception.objective.ObjectiveStatusNotFoundException;

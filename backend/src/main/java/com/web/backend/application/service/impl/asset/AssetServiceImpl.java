@@ -4,20 +4,17 @@ import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvException;
 import com.web.backend.application.dto.asset.AssetCreateRequest;
 import com.web.backend.application.dto.asset.AssetUpdateRequest;
-import com.web.backend.application.dto.alphavantage.GlobalQuoteResponse;
-import com.web.backend.application.dto.alphavantage.GlobalQuote;
 import com.web.backend.application.dto.asset.AssetResponse;
 import com.web.backend.application.exception.asset.AssetNotFoundException;
 import com.web.backend.application.exception.asset.AssetTypeNotFoundException;
-import com.web.backend.application.exception.asset.ExternalAPILimit;
-import com.web.backend.application.exception.asset.InvalidTickerException;
+import com.web.backend.application.service.investment.ISInvestmentRecommendationService;
 import com.web.backend.application.service.interfaces.asset.AssetService;
 import com.web.backend.domain.model.assetTemp.AssetTemp;
 import com.web.backend.domain.repository.assetTemp.RAssentTemp;
+import com.web.backend.domain.model.asset.AssetType;
 import com.web.backend.domain.repository.asset.AssetTypeRepository;
 import com.web.backend.infrastructure.api.external.AlphaVantageClient;
 import com.web.backend.infrastructure.api.utils.asset.AssetMapper;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -36,6 +33,7 @@ public class AssetServiceImpl implements AssetService {
     private final AssetMapper assetMapper;
     private final AlphaVantageClient alphavantageClient;
     private final String apikey = System.getenv("API_KEY");
+    private final ISInvestmentRecommendationService recommendationService;
 
     @Override
     public List<AssetResponse> getAssets(boolean deleted, String keyword, String sector) {
@@ -55,7 +53,6 @@ public class AssetServiceImpl implements AssetService {
     }
 
     @Override
-    @Transactional
     public AssetResponse createAsset(AssetCreateRequest assetRequest) {
         AssetTemp asset = assetMapper.toAsset(assetRequest);
 
@@ -63,7 +60,6 @@ public class AssetServiceImpl implements AssetService {
 //                .orElseThrow(() -> new AssetTypeNotFoundException("Asset type not found with id: " +
 //                        assetRequest.assetTypeId()));
 //        asset.setAssetType(assetType);
-        importAssetData(asset);
 
         assetRepository.save(asset);
         return assetMapper.toAssetResponse(asset);
@@ -81,13 +77,32 @@ public class AssetServiceImpl implements AssetService {
             }
 
             for (String[] record : records) {
-//                AssetType assetType = assetTypeRepository.findById(Long.valueOf(record[1]))
-//                        .orElseThrow(() -> new AssetTypeNotFoundException("Asset type not found with id: " + record[1]));
-                AssetTemp asset = AssetTemp.builder()
-                        .tickerSymbol(record[0])
-//                        .assetType(assetType)
-                        .build();
-                importAssetData(asset);
+                AssetTemp asset;
+                long assetTypeId = Long.valueOf(record[1]);
+
+                // If asset type is ETF or stock
+                if(assetTypeId == 0 || assetTypeId == 1) {
+                    recommendationService.populateAssetsByKeywordFromApi(record[0], 1);
+                    asset = assetRepository.findById(record[0])
+                            .orElseThrow(() -> new AssetNotFoundException("Asset not found with id: " + record[0]));
+                }
+                else {
+                    asset = AssetTemp.builder()
+                            .tickerSymbol(record[0])
+                            .assetName(record[2])
+                            .assetTypeApi(record[3])
+                            .sector(record[4])
+                            .riskLevel(Integer.parseInt(record[5]))
+                            .currentPrice(Double.parseDouble(record[6]))
+                            .potentialReturns(Float.parseFloat(record[7]))
+                            .currency(record[8])
+                            .build();
+                }
+
+                AssetType assetType = assetTypeRepository.findById(assetTypeId)
+                        .orElseThrow(() -> new AssetTypeNotFoundException("Asset type not found with id: " + assetTypeId));
+                asset.setAssetType(assetType);
+
                 assetRepository.save(asset);
                 createdAssets.add(asset);
             }
@@ -98,20 +113,6 @@ public class AssetServiceImpl implements AssetService {
         return createdAssets.stream().map(assetMapper::toAssetResponse).toList();
     }
 
-
-    // Add missing data from API AlphaVantage into asset
-    private void importAssetData(AssetTemp asset) {
-        GlobalQuoteResponse globalQuoteResponse = alphavantageClient.getGlobalQuote("GLOBAL_QUOTE", asset.getTickerSymbol(), apikey);
-        GlobalQuote globalQuote = globalQuoteResponse.globalQuote();
-
-        if(globalQuote == null)
-            throw new ExternalAPILimit("Alpha Vantage API usage limit reached.");
-        if(globalQuote.symbol() == null)
-            throw new InvalidTickerException("Invalid ticker: " + asset.getTickerSymbol());
-
-        asset.setCurrentPrice(globalQuote.price());
-        asset.setUpdatedAt(globalQuote.latestTradingDay().atStartOfDay());
-    }
 
     @Override
     public AssetResponse getAssetById(String ticker) {

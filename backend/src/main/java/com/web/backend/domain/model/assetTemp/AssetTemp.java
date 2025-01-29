@@ -1,8 +1,10 @@
 package com.web.backend.domain.model.assetTemp;
 
+import com.web.backend.domain.model.asset.AssetType;
 import com.web.backend.domain.utils.Auditable;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 import lombok.*;
 import org.hibernate.annotations.*;
 
@@ -20,7 +22,9 @@ public class AssetTemp extends Auditable {
     @Id
     private String tickerSymbol;
     private String assetName;
-    private String assetType;
+    @ManyToOne
+    private AssetType assetType;
+    private String assetTypeApi;
     private String sector;
     private int riskLevel;
     private double currentPrice;

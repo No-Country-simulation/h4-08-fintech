@@ -64,7 +64,7 @@ public class InvestmentRecommendationService implements ISInvestmentRecommendati
     }
 
     private boolean isAssetRelevantToGoal(AssetTemp asset, float mainGoal) {
-        String assetType = asset.getAssetType();
+        String assetType = asset.getAssetTypeApi();
         return assetType != null && assetType.equalsIgnoreCase("acciones") && mainGoal > 0;
     }
 
@@ -179,15 +179,13 @@ public class InvestmentRecommendationService implements ISInvestmentRecommendati
                     .currentPrice(currentPrice)
                     .potentialReturns(potentialReturns)
                     .sector(sector)
-                    .assetType(assetType)
+                    .assetTypeApi(assetType)
                     .build();
 
             int riskLevel = riskLevelCalculatorService.calculateRiskLevel(asset, stockData);
             asset.setRiskLevel(riskLevel);
 
-            if (!assetRepository.existsByTickerSymbol(symbol)) {
-                assetRepository.save(asset);
-            }
+            assetRepository.save(asset);
         }
     }
 
@@ -266,7 +264,7 @@ public class InvestmentRecommendationService implements ISInvestmentRecommendati
                 .currentPrice(currentPrice)
                 .potentialReturns(potentialReturns)
                 .sector(assetSector)
-                .assetType(assetType)
+                .assetTypeApi(assetType)
                 .build();
 
         int riskLevel = riskLevelCalculatorService.calculateRiskLevel(asset, stockData);

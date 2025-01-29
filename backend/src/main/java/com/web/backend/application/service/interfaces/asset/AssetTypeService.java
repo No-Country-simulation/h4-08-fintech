@@ -2,6 +2,7 @@ package com.web.backend.application.service.interfaces.asset;
 
 import com.web.backend.application.dto.asset.AssetTypeRequest;
 import com.web.backend.application.dto.asset.AssetTypeResponse;
+import com.web.backend.application.dto.asset.AssetResponse;
 
 import java.util.List;
 
@@ -15,4 +16,6 @@ public interface AssetTypeService {
     AssetTypeResponse updateAssetType(Long id, AssetTypeRequest InvestmentTypeDTO);
 
     void deleteAssetType(Long id);
+
+    List<AssetResponse> findAssetsByAssetTypeId(Long assetTypeId);
 }

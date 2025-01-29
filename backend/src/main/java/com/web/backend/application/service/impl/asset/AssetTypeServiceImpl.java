@@ -2,12 +2,14 @@ package com.web.backend.application.service.impl.asset;
 
 import com.web.backend.application.dto.asset.AssetTypeRequest;
 import com.web.backend.application.dto.asset.AssetTypeResponse;
+import com.web.backend.application.dto.asset.AssetResponse;
 import com.web.backend.application.exception.asset.AssetTypeNotFoundException;
 import com.web.backend.application.service.interfaces.asset.AssetTypeService;
 import com.web.backend.domain.model.assetTemp.AssetTemp;
 import com.web.backend.domain.model.asset.AssetType;
 import com.web.backend.domain.repository.assetTemp.RAssentTemp;
 import com.web.backend.domain.repository.asset.AssetTypeRepository;
+import com.web.backend.infrastructure.api.utils.asset.AssetMapper;
 import com.web.backend.infrastructure.api.utils.asset.AssetTypeMapper;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +24,7 @@ public class AssetTypeServiceImpl implements AssetTypeService {
     private final AssetTypeRepository assetTypeRepository;
     private final RAssentTemp assetRepository;
     private final AssetTypeMapper assetTypeMapper;
+    private final AssetMapper assetMapper;
 
     @Override
     public AssetTypeResponse createAssetType(AssetTypeRequest assetTypeRequest) {
@@ -69,5 +72,10 @@ public class AssetTypeServiceImpl implements AssetTypeService {
         assetRepository.saveAll(assets);
 
         assetTypeRepository.deleteById(id);;
+    }
+
+    public List<AssetResponse> findAssetsByAssetTypeId(Long assetTypeId) {
+        List<AssetTemp> assets = assetRepository.findByAssetTypeId(assetTypeId);
+        return assets.stream().map(assetMapper::toAssetResponse).toList();
     }
 }

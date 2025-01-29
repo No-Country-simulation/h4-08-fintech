@@ -43,7 +43,7 @@ public interface ISInvestmentRecommendationService {
      * @param amount Monto a invertir.
      * @return Mensaje de éxito o error.
      */
-    String placeInvestment(Long customerId, Long assetId, Double amount);
+    String placeInvestment(Long customerId, String assetId, Double amount);
 
     String withdrawInvestment(Long investmentId);
 }

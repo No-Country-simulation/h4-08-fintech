@@ -1,5 +1,6 @@
 package com.web.backend.domain.model.objective;
 
+import com.web.backend.domain.utils.Auditable;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -17,7 +18,7 @@ import org.hibernate.annotations.SQLRestriction;
 @Builder
 @SQLDelete(sql = "UPDATE objective_status SET deleted = true where id = ?")
 @SQLRestriction("deleted=false")
-public class ObjectiveStatus {
+public class ObjectiveStatus extends Auditable {
     @Id
     @GeneratedValue
     public Long id;

@@ -14,7 +14,7 @@ export const checkAuth = async () => {
   try {
     console.log("Iniciando solicitud a", `${URL_API}/auth/check?clearCookie=false`);
     
-    const response = await fetch('http://localhost:8080/auth/check?clearCookie=false', {
+    const response = await fetch(`${URL_API}/auth/check?clearCookie=false`, {
       method: 'GET',
       credentials: 'include',
       headers: {

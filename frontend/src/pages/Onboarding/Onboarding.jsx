@@ -9,13 +9,15 @@ import { OnboardingStep6 } from '../../components/Onboarding/OnboardingStep6';
 import {FinancialGoals as OnboardingStep3} from '../../components/Onboarding/OnboardingStep3';
 import OnboardingEnd from '../../components/Onboarding/OnboardingEnd';
 import { Button } from '../../components/common/Button';
+import { useNavigate } from 'react-router-dom';
 export const Onboarding = () => {
+    const navigate = useNavigate();
 const [step, SetStep] = useState(1);
 const [availableToContinue, setAvailableToContinue] = useState(true);
 
 const handleNext = () => {
     /* aca se pondran mas pasos */   
-    if (step < 7) {
+    if (step < 8) {
     SetStep((prevStep) => prevStep + 1);
     setAvailableToContinue(false);
     }
@@ -28,8 +30,12 @@ if (step > 1) {
 };
 
 useEffect(() => {
+    
 if (step === 1) {
     setAvailableToContinue(true);
+}
+if(step == 8){
+    navigate('/dashboard')
 }
 }, [step]);
 

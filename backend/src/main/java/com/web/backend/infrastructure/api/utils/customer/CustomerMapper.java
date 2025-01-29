@@ -1,7 +1,7 @@
 package com.web.backend.infrastructure.api.utils.customer;
 
-import com.web.backend.application.dto.customer.CustomerRequest;
-import com.web.backend.application.dto.customer.CustomerResponse;
+import com.web.backend.application.dto.customerrr.CustomerRequest;
+import com.web.backend.application.dto.customerrr.CustomerResponse;
 import com.web.backend.domain.model.customer.Customer;
 import org.mapstruct.*;
 

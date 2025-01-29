@@ -1,4 +1,4 @@
-package com.web.backend.application.DTO;
+package com.web.backend.application.dto;
 
 public class UserUpdateDto {
 

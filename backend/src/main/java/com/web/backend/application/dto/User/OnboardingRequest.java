@@ -1,6 +1,4 @@
-package com.web.backend.application.DTO.User;
-
-import jakarta.validation.constraints.NotEmpty;
+package com.web.backend.application.dto.User;
 
 import java.util.List;
 

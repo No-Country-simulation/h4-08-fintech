@@ -1,9 +1,7 @@
-package com.web.backend.application.DTO.asset;
+package com.web.backend.application.dto.asset;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-
-import java.time.LocalDateTime;
 
 public record AssetCreateRequest(
         @NotBlank(message = "El ticker no puede estar en blanco")

@@ -1,4 +1,4 @@
-package com.web.backend.application.DTO.asset;
+package com.web.backend.application.dto.asset;
 
 public record AssetTypeResponse(
         Long id,

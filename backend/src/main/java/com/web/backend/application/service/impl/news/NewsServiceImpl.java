@@ -1,7 +1,7 @@
 package com.web.backend.application.service.impl.news;
 
-import com.web.backend.application.DTO.news.NewsRequest;
-import com.web.backend.application.DTO.news.NewsResponse;
+import com.web.backend.application.dto.news.NewsRequest;
+import com.web.backend.application.dto.news.NewsResponse;
 import com.web.backend.application.exception.news.NewsCategoryNotFoundException;
 import com.web.backend.application.exception.news.NewsNotFoundException;
 import com.web.backend.application.exception.news.NewsSourceNotFoundException;

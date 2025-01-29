@@ -1,4 +1,4 @@
-package com.web.backend.application.DTO.Recommendation;
+package com.web.backend.application.dto.Recommendation;
 
 import com.web.backend.domain.model.assetTemp.AssetTemp;
 import lombok.AllArgsConstructor;

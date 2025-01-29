@@ -1,7 +1,7 @@
 package com.web.backend.infrastructure.api.controller.customer;
 
-import com.web.backend.application.DTO.Customer.CustomerUserRequest;
-import com.web.backend.application.DTO.User.OnboardingRequest;
+import com.web.backend.application.dto.Customer.CustomerUserRequest;
+import com.web.backend.application.dto.User.OnboardingRequest;
 import com.web.backend.application.service.User.customer.CustomerService;
 import com.web.backend.application.service.User.onboarding.OnboardingService;
 import com.web.backend.domain.model.customer.Customer;

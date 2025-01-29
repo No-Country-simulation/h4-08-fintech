@@ -1,4 +1,4 @@
-package com.web.backend.application.DTO.alphavantage;
+package com.web.backend.application.dto.alphavantage;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

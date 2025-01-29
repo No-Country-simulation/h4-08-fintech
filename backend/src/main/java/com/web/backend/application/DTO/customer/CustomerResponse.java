@@ -1,4 +1,4 @@
-package com.web.backend.application.DTO.customer;
+package com.web.backend.application.dto.customer;
 
 
 

@@ -1,12 +1,11 @@
 package com.web.backend.infrastructure.api.controller.news;
 
-import com.web.backend.application.DTO.news.NewsRequest;
-import com.web.backend.application.DTO.news.NewsResponse;
+import com.web.backend.application.dto.news.NewsRequest;
+import com.web.backend.application.dto.news.NewsResponse;
 import com.web.backend.application.service.interfaces.news.NewsService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;

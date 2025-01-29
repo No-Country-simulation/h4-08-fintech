@@ -5,6 +5,7 @@ import com.web.backend.domain.repository.investment.InvestmentRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -16,7 +17,7 @@ public class InvestmentAnalitics {
     public List<Investment> getBestOptionInvestment(){
         try{
 
-
+        return new ArrayList<Investment>();
 
         } catch (RuntimeException e) {
             throw new RuntimeException(e);

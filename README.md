@@ -112,7 +112,7 @@ Fomentar una cultura de ahorro e inversión responsable, proporcionando herramie
 
 | Nombre      | Apellido   | Rol         | LinkedIn  | GitHub   |
 |-------------|------------|-------------|-----------|----------|
-| Nicolas     | Lozano     | Backend     | [LinkedIn](#) | [GitHub](#) |
+| Nicolas     | Lozano     | Backend     | [LinkedIn](https://www.linkedin.com/in/nicoelozano/) | [GitHub](https://github.com/nicolaselozano) |
 | Chenhao     | Hu         | Backend     | [LinkedIn](#) | [GitHub](#) |
 | Juan José   | Giraldo    | Frontend    | [LinkedIn](#) | [GitHub](#) |
 | Fernanda    | Sivila     | Frontend    | [LinkedIn](https://www.linkedin.com/in/fernanda-sivila/) | [GitHub](https://github.com/fernandasivila) |

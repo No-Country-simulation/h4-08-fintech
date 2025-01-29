@@ -5,8 +5,8 @@ import java.time.LocalDateTime;
 public record AssetResponse(
         String tickerSymbol,
         String assetName,
-        String assetType,
-        //        AssetTypeResponse assetType,
+        String assetTypeApi,
+        AssetTypeResponse assetType,
         String sector,
         int riskLevel,
         double currentPrice,

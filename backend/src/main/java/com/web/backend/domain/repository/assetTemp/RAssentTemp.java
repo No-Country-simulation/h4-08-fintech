@@ -25,4 +25,6 @@ public interface RAssentTemp extends JpaRepository<AssetTemp, String> {
 
     @Query(value = "SELECT * FROM asset_Temp a WHERE a.deleted = :deleted AND a.sector LIKE :sector", nativeQuery = true)
     List<AssetTemp> findByDeletedAndSector(@Param("deleted") boolean deleted, @Param("keyword") String sector);
+
+    List<AssetTemp> findByAssetTypeId(Long assetTypeId);
 }

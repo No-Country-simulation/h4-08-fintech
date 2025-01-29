@@ -20,7 +20,7 @@ public class RiskLevelCalculatorService {
         }
 
         int riskFromVolatility = calculateRiskLevelFromVolatility(stockData);
-        int riskFromAssetType = getRiskLevelFromAssetType(asset.getAssetType());
+        int riskFromAssetType = getRiskLevelFromAssetType(asset.getAssetTypeApi());
 
         return (riskFromVolatility + riskFromSector + riskFromReturnsAndPrice + riskFromAssetType) / 4;
     }

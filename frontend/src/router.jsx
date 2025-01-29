@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
 import Login from "./pages/Auth/Login";
 import Register from "./pages/Auth/Register";
 import { Onboarding } from "./pages/Onboarding/Onboarding";
@@ -11,33 +11,35 @@ import { Home } from "./pages/Home";
 import AuthHome from "./pages/Auth/AuthHome";
 import { HomeLayout } from "./layouts/HomeLayout";
 import GoogleCallback from "./pages/Auth/GoogleCallback";
+import { Sidebar } from "./layouts/Sidebar";
+import { CSSTransition, TransitionGroup } from "react-transition-group";
+
 
 export default function AppRouter() {
-  return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<HomeLayout/>}>
-          <Route index element={<Home />} />
-        </Route>
-        <Route path="/auth" element={<AuthHome />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/registro" element={<Register />} />
-        <Route path="/onboarding" element={<Onboarding />} />
-        <Route path="/oauth/success" element={<GoogleCallback/>}/>
-        {/* <Route path="/onboarding1" element={<OnboardingStep1 />} />
-        <Route path="/onboarding2" element={<OnboardingStep2 />} />
-        <Route path="/onboarding3" element={<OnboardingStep3 />} />
-        <Route path="/onboarding4" element={<OnboardingStep4 />} />
-        <Route path="/onboarding5" element={<OnboardingStep5 />} /> 
-        <Route path="/onboarding6" element={<OnboardingStep6 />} />*/}
+  const location = useLocation();
 
-        <Route path="/dashboard" element={<MainLayout/>}>
-          <Route index element={<Dashboard />} />
-          <Route path="notificaciones" element={<Notifications />}/>
-          <Route path="inversiones" element={<Investments />} /> 
-        </Route>
-        <Route path="*" element={<Error404 />} />
-      </Routes>
-    </Router>
+  return (
+      <TransitionGroup>
+      <CSSTransition key={location.key} classNames="fade" timeout={300}>
+        <Routes location={location}>
+          <Route path="/" element={<HomeLayout/>}>
+            <Route index element={<Home />} />
+          </Route>
+          <Route path="/sidebar" element={<Sidebar />}/>
+          <Route path="/auth" element={<AuthHome />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/registro" element={<Register />} />
+          <Route path="/onboarding" element={<Onboarding />} />
+          <Route path="/oauth/success" element={<GoogleCallback/>}/>
+
+          <Route path="/dashboard" element={<MainLayout/>}>
+            <Route index element={<Dashboard />} />
+            <Route path="notificaciones" element={<Notifications />}/>
+            <Route path="inversiones" element={<Investments />} /> 
+          </Route>
+          <Route path="*" element={<Error404 />} />
+        </Routes>
+        </CSSTransition>
+        </TransitionGroup>
   );
 }

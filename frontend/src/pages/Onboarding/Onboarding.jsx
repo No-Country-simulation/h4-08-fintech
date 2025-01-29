@@ -40,7 +40,7 @@ if(step == 8){
 }, [step]);
 
 return (
-<div className="flex flex-col items-center justify-center bg-gradient bg-center h-screen w-screen relative px-5 font-jakarta">
+<div className="relative flex flex-col items-center justify-center w-screen h-screen px-5 bg-center bg-gradient font-jakarta">
     {step > 1 ? (
     <Button icon={ArrowBack} altText='flecha hacia atras' onClick={handleBack} style={"absolute top-5 left-5"}/>
     ) : null }
@@ -82,7 +82,7 @@ return (
     />
     )}
 
-    <div className="fixed bottom-1 w-full px-5">
+    <div className="fixed w-full px-5 bottom-1">
     {step > 1  && step<7 && (
         <div className="flex justify-center gap-[6px] mb-4">
         {Array.from({ length: 5 }).map((_, index) => (

@@ -2,11 +2,10 @@ import { Link, useLocation } from "react-router-dom"
 import { Button } from "./common/Button";
 import Menu from "../assets/icons/menu.svg"
 import Logo from "../assets/logo.svg"
-import LogoLanding from "../assets/logo-v2.svg"
 import Notification from "../assets/icons/notification.svg"
 import ArrowBack from '../assets/icons/arrow-back.svg';
 
-export const Header = () => {
+export const Header = ({toggleSidebar}) => {
     const location = useLocation().pathname;
 
     const needMenu = location == '/dashboard' || location == '/dashboard/inversiones' || location == '/dashboard/comunidad' || location == '/'
@@ -24,9 +23,9 @@ export const Header = () => {
     ]
     
     return (
-        <header className={`bg-transparent flex px-4 py-2 ${isAuth? 'justify-between' : ''} items-center`}>
+        <header className={`bg-transparent flex px-4 py-2 ${isAuth? 'justify-between' : ''} items-center`} data-aos="zoom-in" data-aos-duration="300">
             { needMenu?
-                <Button icon={Menu} altText="menu"/>
+                <Button icon={Menu} altText="menu" onClick={toggleSidebar}/>
                 :
                 <Link to={'/dashboard'}>
                 <Button icon={ArrowBack} altText='flecha hacia atras' style={'rm-auto'}/>

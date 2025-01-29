@@ -18,7 +18,7 @@ import { Link } from "react-router-dom"
 import { BenefitCard } from "../components/Landing/BenefitCard"
 import { StepCard } from "../components/Landing/StepCard"
 import Marquee from "react-fast-marquee"
-import { LandingPage2 } from "./LandingPage/LandingPage2"
+import { LandingPage2 } from "./LandingPage/Landing"
 
 export const Home = () => {
 
@@ -107,10 +107,6 @@ export const Home = () => {
             </section>
 
             <section className="flex items-center w-full mt-14">
-                {/* <img src={Sponsor1} alt="sponsor-1" className="mt-3 mr-7" />
-                <img src={Sponsor2} alt="sponsor-2" />
-                <img src={Sponsor3} alt="sponsor-3" className="mt-3 mr-7"/>
-                <img src={Sponsor4} alt="sponsor-4" /> */}
 
                 <Marquee gradient={false} speed={50}>
                     {images.map((src, index) => (

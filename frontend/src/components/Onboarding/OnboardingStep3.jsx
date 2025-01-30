@@ -9,6 +9,8 @@ import {
   GraduationCap,
 } from "lucide-react";
 import { OnboardingCard } from "../common/OnboardingCard";
+import { useDispatch, useSelector } from "react-redux";
+import { setFinancialGoals } from "../../../redux/slices/onboardingSlice";
 
 export const FinancialGoals = ({ setAvailableToContinue }) => {
   const [selectedGoals, setSelectedGoals] = useState([]);
@@ -53,6 +55,10 @@ export const FinancialGoals = ({ setAvailableToContinue }) => {
       setSelectedGoals([...selectedGoals, goalId]);
     }
   };
+
+  const {financialKnowledge} = useSelector((state) => state.onBoarding)
+
+  console.log(financialKnowledge)
 
   useEffect(() => {
     if (selectedGoals.length >= 1 && selectedGoals.length <= 3) {

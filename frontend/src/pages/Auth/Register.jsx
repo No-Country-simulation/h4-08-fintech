@@ -4,7 +4,7 @@ import { ErrorMessage, Field, Form, Formik } from "formik";
 import * as yup from "yup";
 import { useState } from "react";
 import { handleAuthGoogleLogin } from "../../services/api/auth/authGoogle";
-
+import {URL_API} from "../../../vars.js"
 const Register = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showRepeatPassword, setShowRepeatPassword] = useState(false);
@@ -38,8 +38,26 @@ const Register = () => {
     setShowRepeatPassword(!showRepeatPassword);
   };
 
-  const handleSubmit = (data) => {
-    console.log(data);
+  const handleSubmit = async (data) => {
+    try{
+      const response = await fetch (`${URL_API}/auth/register`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+      })
+      if (!response.ok) {
+        console.log("respuesta ==>", response)
+      }
+      const result = await response.json();
+      window.alert('Registro exitoso');
+      setTimeout(() => {
+        window.location.href = '/login';
+      }, 5000);    }
+    catch(error){
+      console.error('Error:', error);
+    }
   };
 
   return (
@@ -49,7 +67,7 @@ const Register = () => {
         <Formik
           initialValues={initialValues}
           validationSchema={validationSchema}
-          handleSubmit={handleSubmit}>
+          onSubmit={handleSubmit}>
           {({errors, touched}) => (
             <Form className="w-full">
             <div className="mb-4">

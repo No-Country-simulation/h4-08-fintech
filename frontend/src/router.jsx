@@ -10,8 +10,7 @@ import { Notifications } from "./pages/Dashboard/Notifications"
 import { Home } from "./pages/Home";
 import AuthHome from "./pages/Auth/AuthHome";
 import { HomeLayout } from "./layouts/HomeLayout";
-
-
+import GoogleCallback from "./pages/Auth/GoogleCallback";
 
 export default function AppRouter() {
   return (

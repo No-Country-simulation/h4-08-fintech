@@ -2,7 +2,7 @@ import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import { FaApple } from "react-icons/fa";
 import { useState } from "react";
-
+import { loginUser } from "../../services/api/auth/authLogin";
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import * as yup from "yup";
 import { handleAuthGoogleLogin } from "../../services/api/auth/authGoogle";
@@ -30,17 +30,8 @@ const Login = () => {
   }
 
   const handleSubmit = (data) => {
-    console.log(data);
-    const userTest = {
-      email: "prueba@gmail.com",
-      password: "12345678",
-    };
-    if (userTest.email === data.email && userTest.password === data.password) {
-      console.log("inicio de sesion correcto");
-
-    } else {
-      alert("error al iniciar");
-    }
+    const {email, password} = data;
+    loginUser(email, password)
   };
 
   return (

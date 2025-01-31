@@ -4,8 +4,7 @@ import { ErrorMessage, Field, Form, Formik } from "formik";
 import * as yup from "yup";
 import { useState } from "react";
 import { handleAuthGoogleLogin } from "../../services/api/auth/authGoogle";
-import {URL_API} from "../../../vars.js"
-import {registerUser} from "../../services/authRegister.js"
+import {registerUser} from "../../services/api/auth/authRegister"
 
 const Register = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -40,7 +39,7 @@ const Register = () => {
     setShowRepeatPassword(!showRepeatPassword);
   };
 
-  const handleSubmit =  (data) => {
+  const handleSubmit = (data) => {
     const {username, email, password} = data
     registerUser(email, username, password)
   };

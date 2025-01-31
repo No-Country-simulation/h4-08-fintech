@@ -1,10 +1,11 @@
 
-const URL_API = " http://localhost:8080"
+import {URL_API} from "../../../../vars"
 
 export default async function SendOnBoardingData(data) {
   try {
     const response = await fetch(`${URL_API}/customer?email=1`, {
       method: 'POST',
+      credentials: true,
       headers: {
         'Content-Type': 'application/json',
       },

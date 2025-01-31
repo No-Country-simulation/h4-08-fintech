@@ -1,17 +1,21 @@
 import { useState } from "react";
 import { OnboardingCard } from "../common/OnboardingCard"
+import {setSavingsCapacity} from "../../../redux/slices/onboardingSlice";
+import { useDispatch } from "react-redux";
 
 export const OnboardingStep6 = ({setAvailableToContinue}) => {
     const min = 100000;
     const max = 1000000;
     const [investmentBalance, setInvestmentValue] = useState(min);
     const [percentage, setPercentage] = useState(0);
+    const dispatch = useDispatch()
 
     const handleChange = (e) => {
         setAvailableToContinue(true);
         const value = e.target.value;
         getPercentage(value);
         setInvestmentValue(value);
+        dispatch(setSavingsCapacity(investmentBalance));
     };
 
     const getPercentage = (value) => {

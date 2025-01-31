@@ -2,17 +2,23 @@ import { FaSackDollar } from "react-icons/fa6";
 import { GiTakeMyMoney } from "react-icons/gi";
 import { OnboardingCard } from "../common/OnboardingCard";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { setEstimatedIncome } from "../../../redux/slices/onboardingSlice";
+import { setEstimatedExpenses } from "../../../redux/slices/onboardingSlice";
 
 export const OnboardingStep5 = () => {
   const [ingresos, setIngresos] = useState(0.0);
   const [gastos, setGastos] = useState(0.0);
   const [editingIngreso, setEditingIngreso] = useState(false);
   const [editingGasto, setEditingGasto] = useState(false);
+  const dispatch = useDispatch();
+
 
   const handleIngresoChange = (e) => {
     const value = parseFloat(e.target.value);
     if (!isNaN(value)) {
       setIngresos(value);
+      dispatch(setEstimatedIncome(value));
     }
   };
 
@@ -20,6 +26,7 @@ export const OnboardingStep5 = () => {
     const value = parseFloat(e.target.value);
     if (!isNaN(value)) {
       setGastos(value);
+      dispatch(setEstimatedExpenses(value));
     }
   };
 

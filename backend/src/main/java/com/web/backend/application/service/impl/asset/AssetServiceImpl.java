@@ -13,7 +13,7 @@ import com.web.backend.domain.model.assetTemp.AssetTemp;
 import com.web.backend.domain.repository.assetTemp.RAssentTemp;
 import com.web.backend.domain.model.asset.AssetType;
 import com.web.backend.domain.repository.asset.AssetTypeRepository;
-import com.web.backend.infrastructure.api.external.AlphaVantageClient;
+import com.web.backend.infrastructure.external.AlphaVantageClient;
 import com.web.backend.infrastructure.api.utils.asset.AssetMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

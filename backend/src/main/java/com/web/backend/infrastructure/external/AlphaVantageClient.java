@@ -1,4 +1,4 @@
-package com.web.backend.infrastructure.api.external;
+package com.web.backend.infrastructure.external;
 
 import com.web.backend.application.dto.alphavantage.GlobalQuoteResponse;
 import org.springframework.cloud.openfeign.FeignClient;

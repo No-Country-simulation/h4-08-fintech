@@ -16,6 +16,16 @@ public class FinancialProfileService {
     private final RFinancialProfile financialProfileRepository;
     private final RCustomer customerRepository;
 
+    public FinancialProfile getFinancialProfile(Long customerId){
+        try{
+
+            return financialProfileRepository.findByCustomerId(customerId).orElseThrow();
+
+        } catch (RuntimeException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public FinancialProfile createFinancialProfile(Long customerId, FinancialProfile financialProfile) {
         Customer customer = customerRepository.findById(customerId)
                 .orElseThrow(() -> new RuntimeException("Customer no encontrado con ID: " + customerId));

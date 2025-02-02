@@ -1,6 +1,9 @@
 package com.web.backend.infrastructure.api.controller.investment;
 
 import com.web.backend.application.dto.Recommendation.AssetRecommendation;
+import com.web.backend.application.dto.investment.InvestmentListResponse;
+import com.web.backend.application.dto.investment.SInvestmentListResponse;
+import com.web.backend.application.service.interfaces.investment.InvestmentService;
 import com.web.backend.application.service.investment.InvestmentRecommendationService;
 import com.web.backend.domain.model.financials.FinancialProfile;
 import com.web.backend.domain.repository.financials.RFinancialProfile;
@@ -17,6 +20,7 @@ import java.util.Optional;
 @AllArgsConstructor
 public class InvestmentRController {
 
+    private final InvestmentService investmentService;
     private final InvestmentRecommendationService recommendationService;
     private final RFinancialProfile rFinancialProfile;
 
@@ -73,12 +77,12 @@ public class InvestmentRController {
 
     @PostMapping("/populate-risk")
     public ResponseEntity<String> populateAssetsByRiskLvl(
-            @RequestParam short risklvl,
+            @RequestParam short riskily,
             @RequestParam Integer limit,
             @RequestBody List<String> predefinedSymbols) {
         try {
             int assetLimit = limit != null ? limit : 10;
-            recommendationService.populateAssetsByRiskLevel(risklvl, assetLimit, predefinedSymbols);
+            recommendationService.populateAssetsByRiskLevel(riskily, assetLimit, predefinedSymbols);
             return ResponseEntity.ok("Assets populated successfully from Alpha Vantage API.");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -102,6 +106,7 @@ public class InvestmentRController {
                     .body("Unexpected error: " + e.getMessage());
         }
     }
+
     @PostMapping("/withdraw")
     public ResponseEntity<?> withdrawInvestment(
             @RequestParam Long investmentId) {
@@ -116,5 +121,4 @@ public class InvestmentRController {
                     .body("Unexpected error: " + e.getMessage());
         }
     }
-
 }

@@ -17,7 +17,7 @@ public class CookieConfig {
     }
 
     public boolean isSecure() {
-        return Boolean.parseBoolean(dotenv.get("COOKIE_SECURE", "false"));
+        return Boolean.parseBoolean(dotenv.get("COOKIE_SECURE", "true"));
     }
 
     public String getSameSite() {

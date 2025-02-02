@@ -1,7 +1,9 @@
 package com.web.backend.application.service.impl.invesment;
 
+import com.web.backend.application.dto.investment.InvestmentListResponse;
 import com.web.backend.application.dto.investment.InvestmentRequest;
 import com.web.backend.application.dto.investment.InvestmentResponse;
+import com.web.backend.application.dto.investment.SInvestmentListResponse;
 import com.web.backend.application.exception.asset.AssetNotFoundException;
 import com.web.backend.application.exception.customer.CustomerNotFoundException;
 import com.web.backend.application.exception.customer.InsufficientBalanceException;
@@ -15,8 +17,12 @@ import com.web.backend.domain.repository.customer.RCustomer;
 import com.web.backend.domain.repository.investment.InvestmentRepository;
 import com.web.backend.infrastructure.api.utils.investment.InvestmentMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -28,18 +34,49 @@ public class InvestmentServiceImpl implements InvestmentService {
     private final InvestmentMapper investmentMapper;
     private final RCustomer customerRepository;
 
+    public SInvestmentListResponse getAllInvestmentCustomer(Long customerId, int limit, int page, String sortBy, boolean ascending) {
+
+        try {
+
+            Double totalAmountInvestment = (double) 0;
+
+            Sort sort = ascending ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
+            Pageable pageable = PageRequest.of(page, limit, sort);
+
+            List<Investment> allCInvestment = investmentRepository.findLimitByCustomerId(customerId, pageable);
+
+            List<InvestmentListResponse> listI = new ArrayList<InvestmentListResponse>();
+            for (Investment investment : allCInvestment) {
+
+                InvestmentListResponse listResponse = investmentMapper.toInvestmentListResponse(investment);
+                totalAmountInvestment += investment.getAmount();
+                listI.add(listResponse);
+
+            }
+
+            return SInvestmentListResponse.builder()
+                    .listResponse(listI)
+                    .totalTransactions(totalAmountInvestment)
+                    .build();
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
     public InvestmentResponse createInvestment(InvestmentRequest investmentRequest) {
         Investment investment = investmentMapper.toInvestment(investmentRequest);
 
         AssetTemp asset = assetRepository.findById(investmentRequest.assetId())
-                        .orElseThrow(() -> new AssetNotFoundException("Asset not found with id: " + investmentRequest.assetId()));
+                .orElseThrow(() -> new AssetNotFoundException("Asset not found with id: " + investmentRequest.assetId()));
 //        investment.setAsset(asset);
 
         Customer customer = customerRepository.findById(investmentRequest.customerId())
                 .orElseThrow(() -> new CustomerNotFoundException("Customer not found with id: " + investmentRequest.customerId()));
         investment.setCustomer(customer);
 
-        if(customer.getBalance() < investment.getAmount() * asset.getCurrentPrice())
+        if (customer.getBalance() < investment.getAmount() * asset.getCurrentPrice())
             throw new InsufficientBalanceException("Customer with insufficient balance");
 
         investmentRepository.save(investment);
@@ -65,7 +102,7 @@ public class InvestmentServiceImpl implements InvestmentService {
 
         investmentMapper.updateInvestmentFromRequest(investmentRequest, existingInvestment);
 
-        if(investmentRequest.customerId()!= null) {
+        if (investmentRequest.customerId() != null) {
             Customer customer = customerRepository.findById(investmentRequest.customerId())
                     .orElseThrow(() -> new CustomerNotFoundException("Customer not found with id: " + investmentRequest.customerId()));
             existingInvestment.setCustomer(customer);

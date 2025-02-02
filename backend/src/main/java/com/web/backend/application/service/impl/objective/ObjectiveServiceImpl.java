@@ -14,6 +14,8 @@ import com.web.backend.domain.repository.objective.ObjectiveRepository;
 import com.web.backend.domain.repository.objective.ObjectiveStatusRepository;
 import com.web.backend.infrastructure.api.utils.objective.ObjectiveMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -84,5 +86,13 @@ public class ObjectiveServiceImpl implements ObjectiveService {
         if(!objectiveRepository.existsById(id))
                 throw new ObjectiveNotFoundException("Objective not found with id: " + id);
         objectiveRepository.deleteById(id);
+    }
+
+    public List<Objective> getAllCustomerObj(Long customerId){
+        return objectiveRepository.findByCustomerId(customerId);
+    }
+
+    public Page<Objective> getAllCustomerObjLimit(Long customerId, Pageable pageable){
+        return objectiveRepository.findByCustomerId(customerId,pageable);
     }
 }

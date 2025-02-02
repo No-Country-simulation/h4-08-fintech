@@ -16,6 +16,20 @@ public class CustomerService implements ICustomerService {
     private final RCustomer repository;
     private final UserService userService;
 
+    public Customer getById(Long customerId){
+        try{
+
+            return repository.findById(customerId).orElseThrow();
+
+        } catch (RuntimeException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public Customer getByEmail(String email) {
+        return repository.findByUserModelEmail(email).orElse(null);
+    }
+
     public Customer createCustomerUser(String email, Customer newCustomer) {
         Optional<Customer> customerExist = repository.findByPhoneNumber(newCustomer.getPhoneNumber());
         if (customerExist.isPresent()) {

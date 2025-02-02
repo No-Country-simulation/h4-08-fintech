@@ -3,7 +3,9 @@ package com.web.backend.infrastructure.api.controller.auth;
 import com.web.backend.application.dto.auth.ResponseMessage;
 import com.web.backend.application.dto.user.PublicUserDto;
 import com.web.backend.application.service.User.UserService;
+import com.web.backend.application.service.User.customer.CustomerService;
 import com.web.backend.config.AppConfig;
+import com.web.backend.domain.model.customer.Customer;
 import com.web.backend.domain.model.user.UserModel;
 import com.web.backend.infrastructure.api.utils.auth.AESUtil;
 import com.web.backend.infrastructure.api.utils.auth.CreateCookie;
@@ -19,10 +21,10 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/auth")
 @AllArgsConstructor
-@CrossOrigin(origins = "http://localhost:5173", allowCredentials = "true")
 public class AuthController {
 
     private final UserService userService;
+    private final CustomerService customerService;
     private JwtTokenUtil jwtTokenUtil;
     private final AESUtil aesUtil;
     private final AppConfig appConfig;
@@ -49,7 +51,7 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<?> loginAndTokenGen(@RequestBody UserModel loginAuthRequest) throws Exception {
 
-        PublicUserDto user = userService.loginUser(loginAuthRequest,LoginType.PASSWORD);
+        PublicUserDto user = userService.loginUser(loginAuthRequest, LoginType.PASSWORD);
 
         String token = jwtTokenUtil.generateToken(loginAuthRequest.getEmail());
         if (user.getEmail().isEmpty() || user.getUsername().isEmpty()) throw new RuntimeException("Error en el login");
@@ -60,38 +62,25 @@ public class AuthController {
         return ResponseEntity.status(302)
                 .header(HttpHeaders.LOCATION, appConfig.getProperty("CLIENT_API"))
                 .header(HttpHeaders.SET_COOKIE, CreateCookie.auth(token).toString())
-                .header(HttpHeaders.SET_COOKIE, CreateCookie.cookie("email",encryptedEmail).toString())
-                .header(HttpHeaders.SET_COOKIE, CreateCookie.cookie("name",encryptedName).toString())
+                .header(HttpHeaders.SET_COOKIE, CreateCookie.cookie("email", encryptedEmail).toString())
+                .header(HttpHeaders.SET_COOKIE, CreateCookie.cookie("name", encryptedName).toString())
                 .body(user);
 
     }
 
     @GetMapping("/check")
-    public ResponseEntity<?> testLogin(@RequestParam boolean clearCookie,
-                                       @CookieValue(value = "jwt", required = false) String jwtCookie,
-                                       @CookieValue(value = "email", required = false) String emailCookie,
-                                       @CookieValue(value = "name", required = false) String nameCookie) {
+    public ResponseEntity<?> checkAndGetData(
+            @RequestParam(required = false, defaultValue = "false") String clearCookie,
+            @CookieValue(value = "jwt", required = false) String jwtCookie,
+            @CookieValue(value = "email", required = false) String emailCookie,
+            @CookieValue(value = "name", required = false) String nameCookie) {
 
         System.out.println("Checkeando");
 
-        if (clearCookie) {
-            ResponseCookie clearJwtCookie = ResponseCookie.from("jwt", "")
-                    .path("/")
-                    .maxAge(0)
-                    .httpOnly(true)
-                    .build();
-
-            ResponseCookie clearEmailCookie = ResponseCookie.from("email", "")
-                    .path("/")
-                    .maxAge(0)
-                    .httpOnly(true)
-                    .build();
-
-            ResponseCookie clearNameCookie = ResponseCookie.from("name", "")
-                    .path("/")
-                    .maxAge(0)
-                    .httpOnly(true)
-                    .build();
+        if (Boolean.parseBoolean(clearCookie)) {
+            ResponseCookie clearJwtCookie = ResponseCookie.from("jwt", "").path("/").maxAge(0).httpOnly(true).build();
+            ResponseCookie clearEmailCookie = ResponseCookie.from("email", "").path("/").maxAge(0).httpOnly(true).build();
+            ResponseCookie clearNameCookie = ResponseCookie.from("name", "").path("/").maxAge(0).httpOnly(true).build();
 
             return ResponseEntity.ok()
                     .header(HttpHeaders.SET_COOKIE, clearJwtCookie.toString())
@@ -105,15 +94,28 @@ public class AuthController {
             String decryptedEmail = emailCookie != null ? aesUtil.decrypt(emailCookie) : "No email cookie";
             String decryptedName = nameCookie != null ? aesUtil.decrypt(nameCookie) : "No name cookie";
 
+            Customer customer = customerService.getByEmail(decryptedEmail);
+
             ResponseMessage response = ResponseMessage.builder()
                     .email(decryptedEmail)
                     .username(decryptedName)
                     .build();
 
-            return ResponseEntity.ok(response);
+            if (customer != null) {
+                String encryptedCustomerId = aesUtil.encrypt(String.valueOf(customer.getId()));
+
+                return ResponseEntity.ok()
+                        .header(HttpHeaders.SET_COOKIE, CreateCookie.cookie("customer_id", encryptedCustomerId).toString())
+                        .body(response);
+            } else {
+                System.out.println("El usuario no tiene un Customer asociado.");
+                return ResponseEntity.ok(response);
+            }
+
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("Error al desencriptar las cookies: " + e.getMessage());
         }
     }
+
 }
 

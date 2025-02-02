@@ -16,80 +16,106 @@ import Summary from "../../assets/icons/directAccess/summary.svg"
 import { ButtonAccess } from "../../components/common/ButtonAccess"
 import { Doughnut } from "react-chartjs-2"
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
+import { useEffect, useState } from "react"
+import { getCustomerData } from "../../services/api/dashboard/customerProfileData"
+import { getRecomendedAssets } from "../../services/api/dashboard/invesmentRecomendation"
 
 export const Dashboard = () => {
     ChartJS.register(ArcElement, Tooltip, Legend);
-    const user = {
-        name: 'Nicolas',
-        balance: 21560,
-        transactions: 6200,
-        save: 5000,
-        card: '1111111111118912',
-        incomes: 500000,
-        expensives: 250000,
-        objetives: [
-            {
-                name: "Vacaciones",
-                dueDate: '2025-02-07',
-                savePerMonth: 0,
-                goal: 1000,
-                current: 20
-            }
-        ]
-    }
-    const perfilCompleted = 25
 
-    const recommendedInvestments = [
+    const [user, setUser] = useState({
+        name: "Cargando...",
+        balance: 0,
+        transactions: 0,
+        save: 0,
+        card: "1111111111118912",
+        incomes: 0,
+        expensives: 0,
+        objetives: []
+    });
+
+    const perfilCompleted = 25;
+    const [recommendedInvestments, setRecommendedInvestments] = useState([
         {
             company: "Apple Inc.",
-            name: 'APPL',
+            name: "APPL",
             costARS: 13350,
             costUSD: 225.59,
             state: 0.94,
-            icon: {Apple}
+            icon: { Apple }
         },
         {
             company: "Apple Inc.",
-            name: 'APPL',
+            name: "APPL",
             costARS: 13350,
             costUSD: 225.59,
             state: 0.94,
-            icon: {Apple}
+            icon: { Apple }
         },
         {
             company: "Apple Inc.",
-            name: 'APPL',
+            name: "APPL",
             costARS: 13350,
             costUSD: 225.59,
             state: 0.94,
-            icon: {Apple}
+            icon: { Apple }
         },
         {
             company: "Apple Inc.",
-            name: 'APPL',
+            name: "APPL",
             costARS: 13350,
             costUSD: 225.59,
             state: 0.94,
-            icon: {Apple}
+            icon: { Apple }
         }
-    ]
+    ]);
+
+    useEffect(() => {
+        const fetchRecommendedAssets = async () => {
+            const investments = await getRecomendedAssets();
+            if (investments) {
+                setRecommendedInvestments(investments);
+            }
+        };
+    
+        fetchRecommendedAssets();
+    }, []);
+    
+    useEffect(() => {
+        const getCData = async () => {
+            const data = await getCustomerData();
+            if (data) {
+                setUser({
+                    name: data.name || "Usuario",
+                    balance: data.balance || 0,
+                    transactions: data.transactions || 0,
+                    save: data.save || 0,
+                    card: "1111111111118912", // default
+                    incomes: data.incomes || 0,
+                    expensives: data.expensives || 0,
+                    objetives: data.objetives || []
+                });
+            }
+        };
+
+        getCData();
+    }, []);
 
     const financialRadiograph = [
-        {name: "Ingresos", value: user.incomes, color: '#0058CC'},
-        {name: "Gastos", value: user.expensives, color: '#EE5E37'},
-        {name: "Ahorros", value: user.save, color: '#C6FF66'}
-    ]
+        { name: "Ingresos", value: user.incomes, color: "#0058CC" },
+        { name: "Gastos", value: user.expensives, color: "#EE5E37" },
+        { name: "Ahorros", value: user.save, color: "#C6FF66" }
+    ];
 
     const data = {
-        labels: financialRadiograph.map(data => data.name),
+        labels: financialRadiograph.map((item) => item.name),
         datasets: [
-        {
-            data: financialRadiograph.map(data => data.value),
-            backgroundColor: financialRadiograph.map(data => data.color),
-            borderWidth: 0,
-           //hoverBackgroundColor: ["#FF6384", "#36A2EB", "#FFCE56", "#4BC0C0"],
-        },
-        ],
+            {
+                data: financialRadiograph.map((item) => item.value),
+                backgroundColor: financialRadiograph.map((item) => item.color),
+                borderWidth: 0
+            }
+        ]
     };
 
     const options = {
@@ -101,35 +127,31 @@ export const Dashboard = () => {
             }
         },
         tooltip: {
-            enabled: true,
+            enabled: true
         },
-        cutout: '60%',
+        cutout: "60%",
         animations: {
             tension: {
-            duration: 2000,
-            easing: "easeInOutBounce", // Animación personalizada
-            },
-        },
+                duration: 2000,
+                easing: "easeInOutBounce"
+            }
+        }
     };
-    
 
     const formatCardNumber = (card) => {
-        const masked = card.slice(0, 12).replace(/\d/g, "*") + card.slice(12);
-        return masked.match(/.{1,4}/g).join(" ");
-    }
-    
+        return card.slice(0, 12).replace(/\d/g, "*") + card.slice(12);
+    };
+
     const getPercentageOfSave = (goal, current) => {
-        return current * 100 / goal
-    }
+        return (current * 100) / goal;
+    };
 
     const daysUntil = (targetDate) => {
         const today = new Date();
         const target = new Date(targetDate);
         const differenceInMilliseconds = target - today;
-
-        const days = Math.ceil(differenceInMilliseconds / (1000 * 60 * 60 * 24));
-        return days;
-    }
+        return Math.ceil(differenceInMilliseconds / (1000 * 60 * 60 * 24));
+    };
 
     return (
         <main>

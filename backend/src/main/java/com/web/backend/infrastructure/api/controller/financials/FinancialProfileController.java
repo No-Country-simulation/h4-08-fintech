@@ -82,8 +82,8 @@ public class FinancialProfileController {
             List<Map<String, Object>> mappedObjectives = objectivesPage.getContent().stream().map(obj -> {
                 Map<String, Object> objectiveData = new HashMap<>();
                 objectiveData.put("name", obj.getTitle());
-                objectiveData.put("dueDate", obj.getDueDate());  // Convertir a formato adecuado
-                objectiveData.put("savePerMonth", obj.getProgress());  // O calcular como prefieras
+                objectiveData.put("dueDate", obj.getDueDate());
+                objectiveData.put("savePerMonth", obj.getProgress());
                 objectiveData.put("goal", obj.getTargetAmount());
                 objectiveData.put("current", obj.getCurrentAmount());
                 return objectiveData;

@@ -1,5 +1,6 @@
 package com.web.backend.config;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Setter;
 import org.apache.catalina.filters.CorsFilter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,5 +31,9 @@ public class AppConfig  {
 
     public String getProperty(String key) {
         return env.getProperty(key);
+    }
+
+    public ObjectMapper objectMapper() {
+        return new ObjectMapper();
     }
 }

@@ -5,15 +5,17 @@ import com.opencsv.exceptions.CsvException;
 import com.web.backend.application.dto.asset.AssetCreateRequest;
 import com.web.backend.application.dto.asset.AssetUpdateRequest;
 import com.web.backend.application.dto.asset.AssetResponse;
+import com.web.backend.application.dto.asset.PriceUpdateResponse;
 import com.web.backend.application.exception.asset.AssetNotFoundException;
 import com.web.backend.application.exception.asset.AssetTypeNotFoundException;
+import com.web.backend.application.service.impl.websocket.WebsocketService;
 import com.web.backend.application.service.investment.ISInvestmentRecommendationService;
 import com.web.backend.application.service.interfaces.asset.AssetService;
 import com.web.backend.domain.model.assetTemp.AssetTemp;
 import com.web.backend.domain.repository.assetTemp.RAssentTemp;
 import com.web.backend.domain.model.asset.AssetType;
 import com.web.backend.domain.repository.asset.AssetTypeRepository;
-import com.web.backend.infrastructure.api.external.AlphaVantageClient;
+import com.web.backend.infrastructure.external.AlphaVantageClient;
 import com.web.backend.infrastructure.api.utils.asset.AssetMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -34,6 +36,7 @@ public class AssetServiceImpl implements AssetService {
     private final AlphaVantageClient alphavantageClient;
     private final String apikey = System.getenv("API_KEY");
     private final ISInvestmentRecommendationService recommendationService;
+    private final WebsocketService websocketService;
 
     @Override
     public List<AssetResponse> getAssets(boolean deleted, String keyword, String sector) {
@@ -132,6 +135,9 @@ public class AssetServiceImpl implements AssetService {
         }
         assetMapper.updateAssetFromRequest(assetRequest, asset);
         AssetTemp updatedAsset = assetRepository.save(asset);
+
+        PriceUpdateResponse response = assetMapper.toPriceUpdateResponse(updatedAsset);
+        websocketService.broadcastNewPrices(response);
 
         return assetMapper.toAssetResponse(updatedAsset);
     }

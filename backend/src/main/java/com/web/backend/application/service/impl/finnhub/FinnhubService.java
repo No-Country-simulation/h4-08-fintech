@@ -1,6 +1,7 @@
 package com.web.backend.application.service.impl.finnhub;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.web.backend.application.dto.asset.PriceUpdateResponse;
 import com.web.backend.application.dto.finnhub.Trade;
@@ -34,15 +35,18 @@ public class FinnhubService {
     }
 
     public void processMessage(String message) throws JsonProcessingException {
-        Map<String, Object> messageMap = objectMapper.readValue(message, Map.class);
+        Map<String, Object> messageMap = objectMapper.readValue(message, new TypeReference<Map<String, Object>>() {});
         String type = (String) messageMap.get("type");
-        // If the message is a trade, it updates the price and sends the updated price to the sessions
+
         if (TRADE_TYPE.equals(type)) {
-            List<Trade> trades = objectMapper.convertValue(messageMap.get("data"), List.class);
-            Trade lastTrade = trades.get(trades.size() - 1);
-            updatePrice(lastTrade);
-            PriceUpdateResponse response = new PriceUpdateResponse(lastTrade.getS(), lastTrade.getP());
-            websocketService.broadcastNewPrices(response);
+            List<Map<String, Object>> tradeDataList = objectMapper.convertValue(messageMap.get("data"), new TypeReference<List<Map<String, Object>>>() {});
+            if (!tradeDataList.isEmpty()) {
+                Map<String, Object> lastTradeData = tradeDataList.get(tradeDataList.size() - 1);
+                Trade lastTrade = objectMapper.convertValue(lastTradeData, Trade.class);
+                updatePrice(lastTrade);
+                PriceUpdateResponse response = new PriceUpdateResponse(lastTrade.getS(), lastTrade.getP());
+                websocketService.broadcastNewPrices(response);
+            }
         }
     }
 

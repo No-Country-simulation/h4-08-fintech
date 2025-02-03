@@ -2,6 +2,7 @@ package com.web.backend.infrastructure.api.controller.investment;
 
 import com.web.backend.application.dto.investment.InvestmentRequest;
 import com.web.backend.application.dto.investment.InvestmentResponse;
+import com.web.backend.application.dto.investment.SInvestmentListResponse;
 import com.web.backend.application.service.interfaces.investment.InvestmentService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -73,4 +74,30 @@ public class InvestmentController {
         investmentService.deleteInvestment(id);
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping("/customer")
+    public ResponseEntity<?> getAllInvestmentCustomer(
+            @CookieValue(value = "customer_id", required = false) String customerId,
+            @RequestParam(defaultValue = "5") int limit,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "id") String sortBy,
+            @RequestParam(defaultValue = "true") boolean ascending
+    ){
+        try{
+
+            SInvestmentListResponse investmentListResponses = investmentService.getAllInvestmentCustomer(
+                    Long.valueOf(customerId),
+                    limit,
+                    page,
+                    sortBy,
+                    ascending
+            );
+
+            return  ResponseEntity.ok(investmentListResponses);
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 }

@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-const initialState = {
+export const initialState = {
   "financialKnowledge": null,
   "riskTolerance": null,
   "estimatedIncome": null,

@@ -1,26 +1,36 @@
-import { useEffect, useState } from "react";
-import { OnboardingCard } from "../common/OnboardingCard";
+import { useEffect, useState } from 'react'
+import { OnboardingCard } from '../common/OnboardingCard'
+import { useDispatch } from "react-redux"
+import { setFinancialKnowledge } from '../../../redux/slices/onboardingSlice'
 
 export default function OnboardingStep2({ setAvailableToContinue }) {
+
   const [selectedLevel, setSelectedLevel] = useState("");
 
   const levels = [
     {
-      id: "basic",
-      title: "Básico",
-      description: "Estoy empezando",
+      id: 'basic',
+      title: 'Básico',
+      value: "básico",
+      description: 'Estoy empezando'
     },
     {
-      id: "intermediate",
-      title: "Intermedio",
-      description: "Conozco conceptos básicos",
+      id: 'intermediate',
+      title: 'Intermedio',
+      value: "intermedio",
+      description: 'Conozco conceptos básicos'
     },
     {
-      id: "advanced",
-      title: "Avanzado",
-      description: "Tengo experiencia en inversiones /finanzas",
-    },
-  ];
+      id: 'advanced',
+      title: 'Avanzado',
+      value: "avanzado",
+      description: 'Tengo experiencia en inversiones / finanzas'
+    }
+  ]
+
+const dispatch = useDispatch()
+
+
 
   useEffect(() => {
     if (selectedLevel !== "") {
@@ -44,6 +54,7 @@ export default function OnboardingStep2({ setAvailableToContinue }) {
                 ? "border-[#0051FF] bg-[#F5F9FF] ring-1 ring-[#0051FF]"
                 : "border-gray-200 bg-white"
             }`}
+              onClick={() =>{dispatch(setFinancialKnowledge(level.value))}}
           >
             <div className="flex items-center gap-3">
               <div

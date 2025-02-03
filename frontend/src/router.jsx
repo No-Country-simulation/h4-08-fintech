@@ -23,14 +23,6 @@ export default function AppRouter() {
         <Route path="/login" element={<Login />} />
         <Route path="/registro" element={<Register />} />
         <Route path="/onboarding" element={<Onboarding />} />
-        <Route path="/oauth/success" element={<GoogleCallback/>}/>
-        {/* <Route path="/onboarding1" element={<OnboardingStep1 />} />
-        <Route path="/onboarding2" element={<OnboardingStep2 />} />
-        <Route path="/onboarding3" element={<OnboardingStep3 />} />
-        <Route path="/onboarding4" element={<OnboardingStep4 />} />
-        <Route path="/onboarding5" element={<OnboardingStep5 />} /> 
-        <Route path="/onboarding6" element={<OnboardingStep6 />} />*/}
-
         <Route path="/dashboard" element={<MainLayout/>}>
           <Route index element={<Dashboard />} />
           <Route path="notificaciones" element={<Notifications />}/>

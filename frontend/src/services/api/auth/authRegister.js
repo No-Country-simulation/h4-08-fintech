@@ -16,11 +16,14 @@ export const registerUser = (email, username, password) => {
     })
     .then(response => response.json())
     .then(data => {
-        console.log('Usuario registrado:', data);
-        alert('Usuario registrado correctamente');
+        window.alert('Registro exitoso');
+      setTimeout(() => {
+        window.location.href = '/login';
+      }, 5000); 
     })
     .catch(error => {
         console.error('Error registrando usuario:', error);
         alert('Error al registrar el usuario');
+        return false
     });
 }

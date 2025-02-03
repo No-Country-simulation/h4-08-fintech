@@ -4,6 +4,7 @@ import { ErrorMessage, Field, Form, Formik } from "formik";
 import * as yup from "yup";
 import { useState } from "react";
 import { handleAuthGoogleLogin } from "../../services/api/auth/authGoogle";
+import {registerUser} from "../../services/api/auth/authRegister"
 
 const Register = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -39,7 +40,8 @@ const Register = () => {
   };
 
   const handleSubmit = (data) => {
-    console.log(data);
+    const {username, email, password} = data
+    registerUser(email, username, password)
   };
 
   return (
@@ -49,7 +51,7 @@ const Register = () => {
         <Formik
           initialValues={initialValues}
           validationSchema={validationSchema}
-          handleSubmit={handleSubmit}>
+          onSubmit={handleSubmit}>
           {({errors, touched}) => (
             <Form className="w-full">
             <div className="mb-4">

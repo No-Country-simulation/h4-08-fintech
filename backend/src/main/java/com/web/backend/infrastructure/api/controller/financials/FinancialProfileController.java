@@ -44,15 +44,15 @@ public class FinancialProfileController {
 
     @GetMapping("/dashboard")
     public ResponseEntity<?> getProfileDataDashboard(
-            @CookieValue(value = "customer_id", required = false) String customerId,
+            @CookieValue(value = "email", required = false) String emailCookie,
             @RequestParam(defaultValue = "5") int limit,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "id") String sortBy,
             @RequestParam(defaultValue = "true") boolean ascending
     ) {
         try {
-            Long decryptedCustomerId = customerId != null ? Long.valueOf(aesUtil.decrypt(customerId)) : null;
-            Customer customer = customerService.getById(decryptedCustomerId);
+            Customer customer = customerService.getByEmail(aesUtil.decrypt(emailCookie));
+
             FinancialProfile financialProfile = financialProfileService.getFinancialProfile(customer.getId());
 
             Sort sort = ascending ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
@@ -60,10 +60,9 @@ public class FinancialProfileController {
 
             Page<Objective> objectivesPage = objectiveService.getAllCustomerObjLimit(customer.getId(), pageable);
 
-            assert customerId != null;
 
             SInvestmentListResponse investmentListResponses = investmentService.getAllInvestmentCustomer(
-                    Long.valueOf(customerId),
+                    customer.getId(),
                     limit,
                     page,
                     sortBy,

@@ -205,13 +205,15 @@ public class InvestmentRecommendationService implements ISInvestmentRecommendati
 
             for (String symbol : topSymbolsOfTheDay) {
                 if (processedAssets >= limit) break;
-                processedAssets += processAsset(symbol, riskLevelParam);
+                processedAssets ++;
+                processAsset(symbol, riskLevelParam);
             }
 
             if (predefinedSymbols != null) {
                 for (String symbol : predefinedSymbols) {
                     if (processedAssets >= limit) break;
-                    processedAssets += processAsset(symbol, riskLevelParam);
+                    processedAssets ++;
+                    processAsset(symbol, riskLevelParam);
                 }
             }
 
@@ -233,17 +235,18 @@ public class InvestmentRecommendationService implements ISInvestmentRecommendati
                 .toList();
     }
 
-    private int processAsset(String symbol, short riskLevelParam) {
+    private void processAsset(String symbol, short riskLevelParam) {
+        System.out.println("ProcessAsset " + symbol);
         if (assetRepository.existsByTickerSymbol(symbol)) {
-            return 0;
+            return;
         }
-
+        System.out.println("Loading");
         Map<String, Object> stockData = alphaVantageClient.getStockData(symbol);
         Map<String, Object> overviewData = alphaVantageClient.getOverviewData(symbol);
 
         if (stockData == null || overviewData == null) {
             System.out.println("Datos incompletos para el símbolo: " + symbol);
-            return 0;
+            return;
         }
 
         String name = (String) overviewData.getOrDefault("Name", "Desconocido");
@@ -270,14 +273,13 @@ public class InvestmentRecommendationService implements ISInvestmentRecommendati
         int riskLevel = riskLevelCalculatorService.calculateRiskLevel(asset, stockData);
 
         if (riskLevel != riskLevelParam) {
-            return 0;
+            return;
         }
 
         asset.setRiskLevel(riskLevel);
         assetRepository.save(asset);
 
         System.out.println("Activo procesado y guardado: " + asset);
-        return 1; // Activo procesado
     }
 
 

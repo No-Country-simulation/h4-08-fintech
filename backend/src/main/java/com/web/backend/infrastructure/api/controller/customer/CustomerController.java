@@ -32,7 +32,7 @@ public class CustomerController {
 
     @PostMapping("/onboarding")
     public ResponseEntity<Map<String, Object>> onboardCustomer(
-            @RequestParam String email,
+            @CookieValue(value = "email", required = true) String email,
             @Valid @RequestBody OnboardingRequest request) {
 
         Map<String, Object> response = new HashMap<>();

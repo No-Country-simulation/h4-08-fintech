@@ -4,6 +4,7 @@ import com.web.backend.application.dto.asset.AssetCreateRequest;
 import com.web.backend.application.dto.asset.AssetUpdateRequest;
 import com.web.backend.application.dto.asset.AssetResponse;
 import com.web.backend.application.service.interfaces.asset.AssetService;
+import com.web.backend.domain.model.assetTemp.AssetTemp;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;

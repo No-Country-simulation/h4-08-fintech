@@ -7,6 +7,7 @@ import com.web.backend.application.service.interfaces.investment.InvestmentServi
 import com.web.backend.application.service.investment.InvestmentRecommendationService;
 import com.web.backend.domain.model.financials.FinancialProfile;
 import com.web.backend.domain.repository.financials.RFinancialProfile;
+import com.web.backend.infrastructure.api.utils.auth.AESUtil;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,18 +24,22 @@ public class InvestmentRController {
     private final InvestmentService investmentService;
     private final InvestmentRecommendationService recommendationService;
     private final RFinancialProfile rFinancialProfile;
+    private final AESUtil aesUtil;
 
     @GetMapping("/recommended")
     public ResponseEntity<?> getRecommendedAssets(
-            @RequestParam Long customerId) {
+            @CookieValue(value = "customer_id", required = false) String customerId) {
         try {
-            Optional<FinancialProfile> profileOpt = rFinancialProfile.findByCustomerId(customerId);
+
+            Long customer_id = Long.valueOf(aesUtil.decrypt(customerId));
+
+            Optional<FinancialProfile> profileOpt = rFinancialProfile.findByCustomerId(customer_id);
             if (profileOpt.isEmpty()) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                        .body("Financial profile not found for customer ID: " + customerId);
+                        .body("Financial profile not found for customer ID: " + customer_id);
             }
 
-            List<AssetRecommendation> recommendations = recommendationService.getRecommendations(customerId);
+            List<AssetRecommendation> recommendations = recommendationService.getRecommendations(customer_id);
             return ResponseEntity.ok(recommendations);
 
         } catch (Exception e) {

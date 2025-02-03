@@ -43,7 +43,7 @@ public class FinnhubService {
             if (!tradeDataList.isEmpty()) {
                 Map<String, Object> lastTradeData = tradeDataList.get(tradeDataList.size() - 1);
                 Trade lastTrade = objectMapper.convertValue(lastTradeData, Trade.class);
-                updatePrice(lastTrade);
+//                updatePrice(lastTrade);
                 PriceUpdateResponse response = new PriceUpdateResponse(lastTrade.getS(), lastTrade.getP());
                 websocketService.broadcastNewPrices(response);
             }

@@ -9,38 +9,40 @@ import {
   GraduationCap,
 } from "lucide-react";
 import { OnboardingCard } from "../common/OnboardingCard";
+import { useDispatch, useSelector } from "react-redux";
+import { setFinancialGoals } from "../../../redux/slices/onboardingSlice";
 
 export const FinancialGoals = ({ setAvailableToContinue }) => {
   const [selectedGoals, setSelectedGoals] = useState([]);
 
   const goals = [
     {
-      id: "vacaciones",
+      id: 1,
       title: "Vacaciones",
       icon: Plane,
     },
     {
-      id: "hogar",
+      id: 2,
       title: "Hogar",
       icon: Home,
     },
     {
-      id: "ahorrar",
+      id: 3,
       title: "Ahorrar",
       icon: PiggyBank,
     },
     {
-      id: "invertir",
+      id: 4,
       title: "Invertir",
       icon: TrendingUp,
     },
     {
-      id: "deudas",
+      id: 5,
       title: "Deudas",
       icon: Wallet2,
     },
     {
-      id: "educacion",
+      id: 6,
       title: "Educación",
       icon: GraduationCap,
     },
@@ -53,6 +55,8 @@ export const FinancialGoals = ({ setAvailableToContinue }) => {
       setSelectedGoals([...selectedGoals, goalId]);
     }
   };
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (selectedGoals.length >= 1 && selectedGoals.length <= 3) {
@@ -76,7 +80,10 @@ export const FinancialGoals = ({ setAvailableToContinue }) => {
             return (
               <button
                 key={goal.id}
-                onClick={() => toggleGoal(goal.id)}
+                onClick={() => {
+                  toggleGoal(goal.id)
+                  dispatch(setFinancialGoals([...selectedGoals, goal.id]))
+                  }}
                 className={`flex items-center gap-2 p-3 rounded-[14px] border transition-all ${
                   isSelected
                     ? "border-[#0051FF] bg-[#F5F9FF] ring-1 ring-[#0051FF]"

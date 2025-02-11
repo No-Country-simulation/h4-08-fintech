@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import { OnboardingCard } from "../common/OnboardingCard";
+import { useDispatch } from "react-redux";
+import { setTolerance } from "../../../redux/slices/onboardingSlice";
 
 export default function OnboardingStep4({ setAvailableToContinue }) {
   const [selectedLevel, setSelectedLevel] = useState("");
@@ -21,6 +23,8 @@ export default function OnboardingStep4({ setAvailableToContinue }) {
       description: "Estoy dispuesto a asumir más riesgos",
     },
   ];
+
+  const dispatch = useDispatch()
 
   useEffect(() => {
     if (selectedLevel !== "") {
@@ -71,13 +75,16 @@ export default function OnboardingStep4({ setAvailableToContinue }) {
               name="knowledge-level"
               value={level.id}
               checked={selectedLevel === level.id}
-              onChange={(e) => setSelectedLevel(e.target.value)}
+              onChange={(e) => {
+                setSelectedLevel(e.target.value)
+                dispatch(setTolerance(e.target.value))
+                }}
               className="sr-only"
             />
           </label>
         ))}
       </div>
-      <div className="w-full text-start text-[13px] text-gray-500 mt-3">
+      <div className="text-center  text-[13px] text-gray-500 mt-3">
         Selecciona 1 opción
       </div>
     </OnboardingCard>

@@ -2,13 +2,13 @@
 export const OnboardingCard = ({title, content, children}) => {
     
     return(
-        <div className="font-jakarta w-full flex flex-col items-center bg-blur rounded-2xl shadow-lg text-center border-2 border-gradient-stroke px-2 py-7" 
+        <div className="flex flex-col items-center w-full px-2 text-center border-2 shadow-lg font-jakarta bg-blur rounded-2xl border-gradient-stroke py-7" 
         data-aos="flip-left"
-        data-aos-duration="300"
+        data-aos-duration="500"
 
         >
-            <h2 className=" w-full text-center font-bold text-2xl">{title}</h2>
-            <p className="w-11/12 text-center mt-5 font-light text-gray-800 text-base tracking-tighter leading-tight">{content}</p>
+            <h2 className="w-full text-2xl font-bold text-center ">{title}</h2>
+            <p className="w-11/12 mt-5 text-base font-light leading-tight tracking-tighter text-center text-gray-800">{content}</p>
             <div className="w-full mt-8">
                 {children}
             </div>

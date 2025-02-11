@@ -3,9 +3,9 @@
 export const HeaderLandingP = ({ title, subtitle, description }) => {
   return (
     <div className="my-6">
-      <p className="font-semibold text-violet-700 text-center">{title}</p>
-      <h3 className="font-semibold text-center text-3xl m-5">{subtitle}</h3>
-      <p className="text-gray-600 text-center mx-5">
+      <p className="font-semibold text-center text-[#932EFA]"  data-aos="fade-up" data-aos-duration="300">{title}</p>
+      <h3 className="text-center m-3 text-3xl font-bold text-[#000000] leading-none"  data-aos="fade-up" data-aos-duration="300">{subtitle}</h3>
+      <p className="mx-5 text-center text-[#4D525F]"  data-aos="fade-up" data-aos-duration="300">
         {/\biUPi\b/i.test(description) ? (
           <>
             {description.split(/\biUPi\b/i).map((part, index, array) => (

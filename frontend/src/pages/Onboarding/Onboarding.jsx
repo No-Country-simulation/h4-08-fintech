@@ -38,8 +38,8 @@ export const Onboarding = () => {
     }
   }, [step]);
 
-  return (
-    <div className="flex flex-col items-center justify-center bg-gradient bg-center h-screen w-screen relative px-5 font-jakarta">
+return (
+<div className="relative flex flex-col items-center justify-center w-screen h-screen px-5 bg-center bg-gradient font-jakarta">
       {step > 1 ? (
         <Button
           icon={ArrowBack}

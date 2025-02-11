@@ -1,7 +1,7 @@
 import imgLanding from "../../assets/img-landing.png";
 import imgLanding2 from '../../assets/img-landing2.png'
 
-import { HeaderLandingP } from "../../components/common/HeaderLandingP";
+import { HeaderLandingP } from "../../components/Landing/HeaderLandingP";
 export const LandingPage2 = () => {
   const feature = [
     {
@@ -60,8 +60,8 @@ export const LandingPage2 = () => {
       },
   ];
   return (
-    <div  data-aos="fade-up" data-aos-duration="600">
-      <img src={imgLanding} alt="" className="mx-auto py-5"  />
+    <div>
+      <img src={imgLanding} alt="" className="py-5 mx-auto" data-aos="fade-up" data-aos-duration="600" />
       <HeaderLandingP
         title="SEGURIDAD"
         subtitle="Protegemos tu dinero en cada paso "
@@ -69,15 +69,14 @@ export const LandingPage2 = () => {
           es nuestra prioridad. Tu dinero está protegido con tecnología avanzada
           que incluye:"
       />
-      <div className="bg-white rounded-md mx-5 py-8 border-none" data-aos="fade-up"
-      data-aos-duration="600">
+      <div className="py-8 mx-5 bg-white border-none rounded-md" >
         {feature.map((item, index) => (
-          <div key={index} className="m-5">
+          <div key={index} className="m-5" data-aos="fade-up" data-aos-duration="400">
             <div
               className={` w-2 h-2 rounded-full ${item.color} mx-auto my-5`}
             ></div>
-            <h3 className="font-semibold my-3 text-xl">{item.title}</h3>
-            <p className="  text-gray-600">{item.desc}</p>
+            <h3 className="my-3 text-xl font-semibold">{item.title}</h3>
+            <p className="text-gray-600 ">{item.desc}</p>
             {index !== feature.length - 1 && (
               <div className="w-28 h-[1px] bg-gray-400 mx-auto my-7"></div>
             )}
@@ -91,19 +90,19 @@ export const LandingPage2 = () => {
       />
 {
     testimonials.map((item, index)=>(
-      <div className="bg-white rounded-md mx-5 p-8 border-none mt-8 py-8 " key={index} data-aos="fade-up"
+      <div className="p-8 py-8 mx-5 mt-8 bg-white border-none rounded-md " key={index} data-aos="fade-up"
       data-aos-duration="600">
         <div>⭐⭐⭐⭐⭐</div>
         <p className="my-5">
-         {item.comment}
+          {item.comment}
         </p>{" "}
         <div className="flex items-center gap-4">
-          <div className="rounded-full w-12 h-12 bg-black overflow-hidden">
-          <img src={item.url}  alt="Descripción de la imagen" className="object-cover h-full w-full"/>
+          <div className="w-12 h-12 overflow-hidden bg-black rounded-full">
+          <img src={item.url}  alt="Descripción de la imagen" className="object-cover w-full h-full"/>
           </div>
           <div className="flex flex-col tracking-wider">
-            <label className=" font-semibold text-base">{item.name} </label>
-            <label className="text-gray-600 font-normal text-sm">{item.age} años</label>
+            <label className="text-base font-semibold ">{item.name} </label>
+            <label className="text-sm font-normal text-gray-600">{item.age} años</label>
           </div>
         </div>
       </div>
@@ -113,7 +112,7 @@ export const LandingPage2 = () => {
 <div className="my-8"  data-aos="fade-up"
   data-aos-duration="800">
   <div
-    className="rounded-lg mx-5"
+    className="mx-5 rounded-lg"
     style={{
       backgroundImage: `url(${imgLanding2})`,
       backgroundRepeat: 'no-repeat',
@@ -121,16 +120,16 @@ export const LandingPage2 = () => {
       paddingBottom: '2rem', 
     }}
   >
-    <h2 className="font-semibold text-center text-3xl text-white my-5 pt-5">
+    <h2 className="pt-5 my-5 text-3xl font-semibold text-center text-white">
       ¿Listo para dar el siguiente paso y hacer crecer tu dinero?
     </h2>
-    <p className="text-white text-center px-4">
+    <p className="px-4 text-center text-white">
       Comenzá con iUPi hoy mismo. Simple, seguro y pensado para vos. Diseñado para ayudarte a invertir y manejar tus finanzas sin complicaciones. ¿Qué esperás? Tu próxima meta financiera está al alcance de tus manos.
     </p>
-    <p className="font-semibold mt-4 text-white text-center px-4">
+    <p className="px-4 mt-4 font-semibold text-center text-white">
       Regístrate ahora y descubrí cómo podés empezar a ganar con tu dinero.
     </p>
-    <button className="w-80 mx-auto my-5 bg-blue-500 border-blue-500 flex items-center justify-center border text-white font-semibold p-3 rounded-2xl">
+    <button className="flex items-center justify-center p-3 mx-auto my-5 font-semibold text-white bg-blue-500 border border-blue-500 w-80 rounded-2xl">
       Comenzar
     </button>
   </div>

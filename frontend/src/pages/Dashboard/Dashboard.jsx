@@ -156,9 +156,9 @@ export const Dashboard = () => {
     return (
         <main>
             <h1 className="text-3xl font-semibold text-gray-900" data-aos="zoom-in"
-        data-aos-duration="500">Bienvenido {user.name}!</h1>
+        data-aos-duration="600">Bienvenido {user.name}!</h1>
             <section className="relative px-3 py-3 border-2 shadow-lg mt-7 bg-blur rounded-2xl border-gradient-stroke" data-aos="fade-up"
-        data-aos-duration="500">
+        data-aos-duration="600">
                 <span className="px-2 py-1 text-xs font-medium text-white bg-blue-500 rounded-full">Importante</span>
                 <h2 className="mt-2 text-xl font-semibold tracking-tight text-gray-900">Termina de completar tu perfil</h2>
                 <p className="text-xs font-normal text-gray-700 tracking-tigh">Nos ayudará a mejorar nuestras recomendaciones</p>
@@ -270,7 +270,7 @@ export const Dashboard = () => {
             {user.objetives.length > 0? 
                 user.objetives.map((objetive, i) => {
                 return (
-                    <section key={i} className="relative flex flex-col w-full px-3 py-3 mt-4 border-2 shadow-lg col bg-blur rounded-2xl border-gradient-stroke" data-aos="fade-up"
+                    <section key={i} className="relative flex flex-col w-full px-3 py-3 mt-4 border-2 shadow-lg col bg-blur rounded-2xl border-gradient-stroke" data-aos="flip-right"
                     data-aos-duration="500">
                         <div className="flex">
                             <span className="w-[48px] h-[48px] bg-white rounded-full flex justify-center items-center"><img src={Plain}/></span>
@@ -314,7 +314,7 @@ export const Dashboard = () => {
             {
                 recommendedInvestments.map((investment, i) => {
                     return(
-                        <section key={i} className="relative flex items-center justify-between w-full px-3 py-3 mt-4 border-2 shadow-lg bg-blur rounded-2xl border-gradient-stroke" data-aos="fade-up"
+                        <section key={i} className="relative flex items-center justify-between w-full px-3 py-3 mt-4 border-2 shadow-lg bg-blur rounded-2xl border-gradient-stroke" data-aos="flip-right"
                         data-aos-duration="500">
                                 <div className="flex items-center">
                                     <span className="w-[48px] h-[48px] bg-white rounded-full flex justify-center items-center"><img src={Apple}/></span>
